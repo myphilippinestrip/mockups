@@ -147,8 +147,8 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(circle at 15% 20%, rgba(26,22,20,0.55) 0%, transparent 45%),
-      linear-gradient(180deg, rgba(26,22,20,0.5) 0%, rgba(26,22,20,0.3) 35%, rgba(26,22,20,0.55) 65%, rgba(26,22,20,0.75) 100%);
+      radial-gradient(circle at 15% 20%, rgba(26,22,20,0.40) 0%, transparent 40%),
+      linear-gradient(180deg, rgba(26,22,20,0.35) 0%, rgba(26,22,20,0.1) 40%, rgba(26,22,20,0.45) 100%);
   }
 
   .hero-content {
@@ -183,7 +183,7 @@
 
   .hero-headline {
     font-family: var(--display);
-    font-weight: 400;
+    font-weight: 500;
     font-size: clamp(44px, 10vw, 88px);
     line-height: 0.98;
     letter-spacing: -0.025em;
@@ -220,6 +220,10 @@
     align-items: center;
     gap: 10px;
     color: var(--paper);
+  }
+
+  @media (max-width: 767px) {
+    .hero-scroll { display: none; }
   }
 
   .hero-scroll::after {
