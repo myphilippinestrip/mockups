@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Philippines Trip — Beyond the postcard</title>
+<meta name="description" content="The Philippines you haven't seen yet. Second, third and fourth trips for travellers who already love the country.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --coral: #D9443C;
+    --coral-dark: #B8352E;
+    --ocean: #2E74B0;
+    --palm: #2E8B4F;
+    --sunset: #E8883A;
+    --ink: #1A1614;
+    --ink-soft: #5B544E;
+    --paper: #FFFFFF;
+    --cream: #FAF7F2;
+    --line: #E8E2DA;
+    --display: 'Fraunces', Georgia, serif;
+    --body: 'DM Sans', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
+  }
+
+  .topbar.scrolled {
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 22px;
+  }
+
+  .logo-mark { display: flex; align-items: center; gap: 10px; }
+  .logo-mark img { width: 38px; height: 38px; object-fit: contain; }
+  .logo-mark .logo-white { display: block; }
+  .logo-mark .logo-colour { display: none; }
+  .topbar.scrolled .logo-mark .logo-white { display: none; }
+  .topbar.scrolled .logo-mark .logo-colour { display: block; }
+
+  .wordmark {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+    transition: color 0.4s ease;
+    line-height: 1;
+  }
+
+  .topbar.scrolled .wordmark { color: var(--ink); }
+  .wordmark em { font-style: italic; font-weight: 400; }
+
+  .topbar-right { display: flex; align-items: center; gap: 32px; }
+  .topbar-nav { display: flex; gap: 28px; }
+
+  .topbar-nav a {
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--paper);
+    opacity: 0.9;
+    transition: color 0.4s ease, opacity 0.3s ease;
+  }
+
+  .topbar-nav a:hover { opacity: 1; }
+  .topbar.scrolled .topbar-nav a { color: var(--ink); }
+
+  .enquire-link {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper);
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    padding-bottom: 3px;
+    transition: color 0.4s ease, border-color 0.4s ease;
+  }
+
+  .topbar.scrolled .enquire-link {
+    color: var(--coral);
+    border-bottom-color: var(--coral);
+  }
+
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 620px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    color: var(--paper);
+  }
+
+  .hero-media { position: absolute; inset: 0; z-index: 1; }
+
+  .hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.82) saturate(1.02);
+  }
+
+  .hero-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26,22,20,0.45) 0%, rgba(26,22,20,0.1) 40%, rgba(26,22,20,0.65) 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 22px 80px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    animation: fadeUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-overline {
+    font-family: var(--body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.9;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-overline::before { content: ''; width: 28px; height: 1px; background: var(--paper); }
+
+  .hero-headline {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(44px, 10vw, 88px);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    margin-bottom: 24px;
+    max-width: 14ch;
+  }
+
+  .hero-headline em { font-style: italic; font-weight: 300; color: var(--sunset); }
+
+  .hero-lede {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(17px, 2vw, 20px);
+    line-height: 1.5;
+    max-width: 420px;
+    opacity: 0.95;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    font-family: var(--body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--paper);
+  }
+
+  .hero-scroll::after {
+    content: '';
+    width: 1px;
+    height: 22px;
+    background: var(--paper);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  .opener { padding: 100px 26px 90px; background: var(--paper); }
+  .opener-inner { max-width: 720px; margin: 0 auto; }
+
+  .section-label {
+    font-family: var(--body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before { content: ''; width: 28px; height: 1px; background: var(--coral); }
+
+  .opener-text {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(22px, 2.8vw, 28px);
+    line-height: 1.35;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+  }
+
+  .opener-text em { font-style: italic; font-weight: 300; color: var(--coral); }
+  .opener-text p + p { margin-top: 1.1em; }
+
+  .opener-signature {
+    margin-top: 40px;
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .destinations { background: var(--cream); padding: 90px 0 90px; overflow: hidden; }
+
+  .destinations-head {
+    padding: 0 26px;
+    max-width: 1200px;
+    margin: 0 auto 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .destinations-title {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(36px, 8vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .destinations-title em { font-style: italic; font-weight: 300; color: var(--coral); }
+
+  .destinations-count {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  .destinations-count span { color: var(--coral); }
+
+  .destination-scroller-wrap { position: relative; }
+
+  .destination-scroller {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 26px 4px;
+  }
+
+  .destination-scroller::-webkit-scrollbar { display: none; }
+
+  .destination {
+    flex: 0 0 auto;
+    width: calc(82vw);
+    max-width: 340px;
+    position: relative;
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: block;
+    cursor: pointer;
+  }
+
+  .destination-media { position: relative; aspect-ratio: 4/5; overflow: hidden; }
+
+  .destination-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .destination:hover .destination-media img { transform: scale(1.04); }
+
+  .destination-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26,22,20,0.22) 0%, rgba(26,22,20,0.08) 40%, rgba(26,22,20,0.78) 100%);
+  }
+
+  .destination-content {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 24px 22px 28px;
+    color: var(--paper);
+  }
+
+  .destination-mood {
+    font-family: var(--body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    opacity: 0.95;
+  }
+
+  .destination-mood span { color: var(--sunset); }
+
+  .destination-name {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(30px, 5vw, 38px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+
+  .destination-name em { font-style: italic; font-weight: 300; }
+
+  .destination-tagline {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.45;
+    opacity: 0.92;
+    max-width: 300px;
+  }
+
+  .destination-number {
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    z-index: 2;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--paper);
+    letter-spacing: 0.08em;
+    opacity: 0.9;
+  }
+
+  .destination-arrow {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    z-index: 2;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--paper);
+    transition: all 0.3s ease;
+  }
+
+  .destination:hover .destination-arrow {
+    background: var(--coral);
+    border-color: var(--coral);
+    transform: rotate(-45deg);
+  }
+
+  .destination-progress {
+    max-width: 1200px;
+    margin: 32px auto 0;
+    padding: 0 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .progress-dots { display: flex; gap: 6px; flex: 1; max-width: 240px; }
+
+  .progress-dot {
+    flex: 1;
+    height: 2px;
+    background: rgba(26, 22, 20, 0.15);
+    transition: background 0.3s ease;
+  }
+
+  .progress-dot.active { background: var(--coral); }
+
+  .progress-counter {
+    font-family: var(--body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  .progress-counter strong { color: var(--coral); font-weight: 500; }
+
+  @media (min-width: 900px) {
+    .destination-scroller {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      overflow: visible;
+      padding: 0;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .destination { width: auto; max-width: none; }
+    .destination-media { aspect-ratio: 3/4; }
+    .destination-progress { display: none; }
+  }
+
+  @media (min-width: 900px) and (max-width: 1200px) {
+    .destination-scroller { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .interstitial {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 100px 26px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .interstitial::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(217,68,60,0.18) 0%, transparent 42%),
+      radial-gradient(circle at 80% 80%, rgba(46,116,176,0.14) 0%, transparent 42%);
+  }
+
+  .interstitial-content { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; }
+
+  .interstitial-mark {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 64px;
+    line-height: 0.8;
+    color: var(--coral);
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .interstitial-quote {
+    font-family: var(--display);
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    margin-bottom: 30px;
+  }
+
+  .interstitial-attribution {
+    font-family: var(--body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.65;
+  }
+
+  .journal { padding: 90px 26px 80px; background: var(--paper); }
+  .journal-inner { max-width: 1200px; margin: 0 auto; }
+
+  .journal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 48px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .journal-title {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(34px, 7vw, 52px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .journal-title em { font-style: italic; font-weight: 300; color: var(--ocean); }
+
+  .journal-link {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--coral);
+    border-bottom: 1px solid var(--coral);
+    padding-bottom: 3px;
+    white-space: nowrap;
+  }
+
+  .journal-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+
+  .journal-media {
+    aspect-ratio: 3/2;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .journal-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .journal-item:hover .journal-media img { transform: scale(1.03); }
+
+  .journal-meta {
+    display: flex;
+    gap: 14px;
+    font-family: var(--body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+
+  .journal-meta .pillar { color: var(--coral); }
+
+  .journal-heading {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .journal-excerpt {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .newsletter { padding: 100px 26px 90px; background: var(--cream); }
+  .newsletter-content { max-width: 560px; margin: 0 auto; }
+
+  .newsletter-title {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(32px, 7vw, 48px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+  }
+
+  .newsletter-title em { font-style: italic; font-weight: 300; color: var(--coral); }
+
+  .newsletter-copy {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+  }
+
+  .newsletter-form { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .newsletter-input {
+    flex: 1;
+    min-width: 220px;
+    padding: 16px 18px;
+    font-family: var(--body);
+    font-size: 14px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 0;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .newsletter-input:focus { border-color: var(--ink); }
+
+  .newsletter-btn {
+    padding: 16px 28px;
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: var(--coral);
+    color: var(--paper);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .newsletter-btn:hover { background: var(--coral-dark); }
+
+  .newsletter-fine {
+    margin-top: 18px;
+    font-family: var(--body);
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  .footer {
+    background: var(--paper);
+    padding: 70px 26px 40px;
+    border-top: 1px solid var(--line);
+  }
+
+  .footer-inner { max-width: 1200px; margin: 0 auto; }
+
+  .footer-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .footer-head img { width: 36px; height: 36px; object-fit: contain; }
+
+  .footer-brand {
+    font-family: var(--display);
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .footer-brand em { font-style: italic; font-weight: 300; color: var(--coral); }
+
+  .footer-tagline {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin-bottom: 56px;
+    max-width: 40ch;
+  }
+
+  .footer-cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    margin-bottom: 50px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; font-size: 14px; color: var(--ink-soft); }
+  .footer-col li a { transition: color 0.2s; }
+  .footer-col li a:hover { color: var(--coral); }
+
+  .footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--body);
+    font-size: 12px;
+    color: var(--ink-soft);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+    padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .bottom-nav-inner { display: flex; justify-content: space-around; align-items: center; }
+
+  .bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 6px 10px;
+  }
+
+  .bottom-nav a.cta { color: var(--coral); }
+
+  .bottom-nav svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.5;
+    fill: none;
+    stroke: currentColor;
+  }
+
+  @media (max-width: 900px) {
+    .journal-list { grid-template-columns: 1fr; gap: 50px; }
+    .footer-cols { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  }
+
+  @media (max-width: 767px) {
+    body { padding-bottom: 68px; }
+    .topbar { padding: 14px 18px; }
+    .topbar.scrolled { padding: 10px 18px; }
+    .topbar-nav { display: none; }
+    .topbar-right { gap: 0; }
+    .logo-mark img { width: 34px; height: 34px; }
+    .wordmark { font-size: 15px; }
+    .hero-content { padding: 0 22px 90px; }
+    .bottom-nav { display: block; }
+    .footer-cols { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <a href="#" class="logo-mark">
+    <img src="logo-white.png" alt="" class="logo-white">
+    <img src="logo-colour.png" alt="" class="logo-colour">
+    <span class="wordmark">My <em>Philippines</em> Trip</span>
+  </a>
+  <div class="topbar-right">
+    <nav class="topbar-nav">
+      <a href="#destinations">Destinations</a>
+      <a href="#journal">Journal</a>
+      <a href="#">About</a>
+    </nav>
+    <a href="#enquire" class="enquire-link">Start a letter</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-media">
+    <img src="https://images.unsplash.com/photo-1566559532512-cbe0e5b92c2d?w=1800&q=85&auto=format&fit=crop" alt="">
+  </div>
+  <div class="hero-content">
+    <div class="hero-overline">Beyond the postcard</div>
+    <h1 class="hero-headline">The Philippines you <em>haven't seen</em> yet.</h1>
+    <p class="hero-lede">Second, third, and fourth trips — for the traveller who has already been, and is ready to come back differently.</p>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<section class="opener">
+  <div class="opener-inner">
+    <div class="section-label">A letter, to begin</div>
+    <div class="opener-text">
+      <p>You have been to the Philippines. Most likely, you went to Palawan; most likely, you loved it. You told your friends about the limestone and the water, and you have been waiting — quietly, these past two or three years — for the right excuse to come back.</p>
+      <p>Our job is not to introduce you to the Philippines. It is to introduce you to <em>the Philippines you haven't seen yet.</em></p>
+    </div>
+    <div class="opener-signature">— The editors · April 2026</div>
+  </div>
+</section>
+
+<section class="destinations" id="destinations">
+  <div class="destinations-head">
+    <h2 class="destinations-title">Eight <em>destinations</em></h2>
+    <div class="destinations-count">Start <span>anywhere</span></div>
+  </div>
+
+  <div class="destination-scroller-wrap">
+    <div class="destination-scroller" id="destScroller">
+
+      <a href="#" class="destination" data-idx="0">
+        <div class="destination-media">
+          <img src="https://images.unsplash.com/photo-1552560880-2482cef14240?w=900&q=85&auto=format&fit=crop" alt="Iloilo">
+        </div>
+        <div class="destination-number">01 / 08</div>
+        <div class="destination-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="destination-content">
+          <div class="destination-mood">Heritage · <span>houses that open by appointment</span></div>
+          <h3 class="destination-name"><em>Iloilo</em></h3>
+          <p class="destination-tagline">Kansi sour enough to flinch at. Calle Real at 6:40. A grandson who answers the phone on the third ring.</p>
+        </div>
+      </a>
+
+      <a href="#" class="destination" data-idx="1">
+        <div class="destination-media">
+          <img src="https://images.unsplash.com/photo-1517862039274-fbf9c4e4f8ad?w=900&q=85&auto=format&fit=crop" alt="Bohol">
+        </div>
+        <div class="destination-number">02 / 08</div>
+        <div class="destination-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="destination-content">
+          <div class="destination-mood">Wonder · <span>hills before the coaches</span></div>
+          <h3 class="destination-name"><em>Bohol</em></h3>
+          <p class="destination-tagline">The Chocolate Hills at 5:40 in the morning are a different country to the ones at noon. We go at 5:40.</p>
+        </div>
+      </a>
+
+      <a href="#" class="destination" data-idx="2">
+        <div class="destination-media">
+          <img src="https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=900&q=85&auto=format&fit=crop" alt="Bacolod">
+        </div>
+        <div class="destination-number">03 / 08</div>
+        <div class="destination-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="destination-content">
+          <div class="destination-mood">Exuberance · <span>a city built on sugar</span></div>
+          <h3 class="destination-name"><em>Bacolod</em></h3>
+          <p class="destination-tagline">Ancestral houses along the old Negros roads, MassKara in October, the right kind of late-afternoon light the rest of the year.</p>
+        </div>
+      </a>
+
+      <a href="#" class="destination" data-idx="3">
+        <div class="destination-media">
+          <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?w=900&q=85&auto=format&fit=crop" alt="Dumaguete and Siquijor">
+        </div>
+        <div class="destination-number">04 / 08</div>
+        <div class="destination-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="destination-content">
+          <div class="destination-mood">Gentleness · <span>a boulevard at 6:40</span></div>
+          <h3 class="destination-name"><em>Dumaguete</em><br>&amp; Siquijor</h3>
+          <p class="destination-tagline">Four days because three isn't enough. A ferry at 7. A balete tree that has been holding its ground since before the Spanish.</p>
+        </div>
+      </a>
+
+      <a href="#" class="destination" data-idx="4">
+        <div class="destination-media">
+          <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=900&q=85&auto=format&fit=crop" alt="Siargao">
+        </div>
+        <div class="destination-number">05 / 08</div>
+        <div class="destination-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="destination-content">
+          <div class="destination-mood">Ease · <span>what the surfers do off the board</span></div>
+          <h3 class="destination-name"><em>Siargao</em></h3>
+          <p class="destination-tagline">Go for the surf and you miss Siargao. Go for what the surfers do on their rest days.</p>
+        </div>
+      </a>
+
+      <a href="#" class="destination" data-idx="5">
+        <div class="destination-media">
+          <img src="https://images.unsplash.com/photo-1504598318550-17eba1008a68?w=900&q=85&auto=format&fit=crop" alt="Coron">
+        </div>
+        <div class="destination-number">06 / 08</div>
+        <div class="destination-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="destination-content">
+          <div class="destination-mood">Vertical · <span>limestone up, limestone down</span></div>
+          <h3 class="destination-name"><em>Coron</em></h3>
+          <p class="destination-tagline">Walls that go up and down in equal measure. Lagoons on their own clock. Snorkelling that ruins you for elsewhere.</p>
+        </div>
+      </a>
+
+      <a href="#" class="destination" data-idx="6">
+        <div class="destination-media">
+          <img src="https://images.unsplash.com/photo-1565073624497-7e91b5cc3843?w=900&q=85&auto=format&fit=crop" alt="Cebu">
+        </div>
+        <div class="destination-number">07 / 08</div>
+        <div class="destination-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="destination-content">
+          <div class="destination-mood">Origin · <span>the first cross, the first everything</span></div>
+          <h3 class="destination-name"><em>Cebu</em></h3>
+          <p class="destination-tagline">Heritage-led and unhurried. Oslob is off the itinerary, for reasons we are happy to explain.</p>
+        </div>
+      </a>
+
+      <a href="#" class="destination" data-idx="7">
+        <div class="destination-media">
+          <img src="https://images.unsplash.com/photo-1537956965359-7573183d1f57?w=900&q=85&auto=format&fit=crop" alt="Boracay">
+        </div>
+        <div class="destination-number">08 / 08</div>
+        <div class="destination-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="destination-content">
+          <div class="destination-mood">Restoration · <span>the quieter island, after</span></div>
+          <h3 class="destination-name"><em>Boracay</em></h3>
+          <p class="destination-tagline">Not the comeback you have already heard about, but the quieter thing that happened after. Station One at the hours most visitors miss.</p>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="destination-progress">
+      <div class="progress-dots" id="progressDots">
+        <div class="progress-dot active"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+      </div>
+      <div class="progress-counter">
+        <strong id="currentIdx">01</strong> / 08
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="interstitial">
+  <div class="interstitial-content">
+    <span class="interstitial-mark">"</span>
+    <p class="interstitial-quote">The first trip to the Philippines is a photograph. The second is a sentence. By the fourth, it is a paragraph you have started writing and don't quite want to finish.</p>
+    <p class="interstitial-attribution">— From the editorial</p>
+  </div>
+</section>
+
+<section class="journal" id="journal">
+  <div class="journal-inner">
+    <div class="journal-head">
+      <h2 class="journal-title">From the <em>journal</em></h2>
+      <a href="#" class="journal-link">All dispatches</a>
+    </div>
+
+    <div class="journal-list">
+
+      <a href="#" class="journal-item">
+        <div class="journal-media">
+          <img src="https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?w=800&q=85&auto=format&fit=crop" alt="">
+        </div>
+        <div class="journal-meta">
+          <span class="pillar">Plates</span>
+          <span>6 min read</span>
+        </div>
+        <h3 class="journal-heading">Elma, and thirty-one years of kansi</h3>
+        <p class="journal-excerpt">On the La Paz market stall that will not give the recipe, but will tell you where to buy the beef.</p>
+      </a>
+
+      <a href="#" class="journal-item">
+        <div class="journal-media">
+          <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=85&auto=format&fit=crop" alt="">
+        </div>
+        <div class="journal-meta">
+          <span class="pillar">Places</span>
+          <span>5 min read</span>
+        </div>
+        <h3 class="journal-heading">The balete tree in Siquijor, and why it stays</h3>
+        <p class="journal-excerpt">A four-hundred-year-old tree, a small coin offering, and the quiet ways an island holds its ground.</p>
+      </a>
+
+      <a href="#" class="journal-item">
+        <div class="journal-media">
+          <img src="https://images.unsplash.com/photo-1583418007992-a03fbf6e4cbd?w=800&q=85&auto=format&fit=crop" alt="">
+        </div>
+        <div class="journal-meta">
+          <span class="pillar">Practical</span>
+          <span>4 min read</span>
+        </div>
+        <h3 class="journal-heading">Wet season in Bohol — what actually shifts</h3>
+        <p class="journal-excerpt">The months the brochures tell you to avoid, and the reasons they are sometimes the better ones to go.</p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="newsletter" id="newsletter">
+  <div class="newsletter-content">
+    <div class="section-label">The Saturday Dispatch</div>
+    <h2 class="newsletter-title">A letter, most <em>Saturdays</em>.</h2>
+    <p class="newsletter-copy">One considered piece a week — a place, a person, a plate, or a practical note. Six hundred words, coffee-length. Saturday 09:00 CET.</p>
+    <form class="newsletter-form" onsubmit="event.preventDefault(); this.querySelector('.newsletter-btn').textContent='Subscribed';">
+      <input type="email" class="newsletter-input" placeholder="your@email.com" required>
+      <button type="submit" class="newsletter-btn">Subscribe</button>
+    </form>
+    <p class="newsletter-fine">No promotions. No filler. Unsubscribe any Saturday.</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-head">
+      <img src="logo-colour.png" alt="">
+      <div class="footer-brand">My <em>Philippines</em> Trip</div>
+    </div>
+    <p class="footer-tagline">Second, third and fourth trips for travellers who already love the Philippines. Fulfilled on the ground by Strikers Travel Corp.</p>
+
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Destinations</h4>
+        <ul>
+          <li><a href="#">Iloilo</a></li>
+          <li><a href="#">Bohol</a></li>
+          <li><a href="#">Bacolod</a></li>
+          <li><a href="#">Dumaguete &amp; Siquijor</a></li>
+          <li><a href="#">Siargao</a></li>
+          <li><a href="#">Coron</a></li>
+          <li><a href="#">Cebu</a></li>
+          <li><a href="#">Boracay</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Journal</h4>
+        <ul>
+          <li><a href="#">Places</a></li>
+          <li><a href="#">People</a></li>
+          <li><a href="#">Plates</a></li>
+          <li><a href="#">Practical</a></li>
+          <li><a href="#">Postcards</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="#">Our philosophy</a></li>
+          <li><a href="#">The editors</a></li>
+          <li><a href="#">Start a letter</a></li>
+          <li><a href="#">The Saturday Dispatch</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">TikTok</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 My Philippines Trip</span>
+      <span>Fulfilled by Strikers Travel Corp · Manila</span>
+    </div>
+  </div>
+</footer>
+
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a href="#destinations">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 1 8 8c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 8-8z"/></svg>
+      Destinations
+    </a>
+    <a href="#journal">
+      <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z"/><path d="M14 3v6h6"/></svg>
+      Journal
+    </a>
+    <a href="#">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+      About
+    </a>
+    <a href="#enquire" class="cta">
+      <svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+      Start a letter
+    </a>
+  </div>
+</nav>
+
+<script>
+  const topbar = document.getElementById('topbar');
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        if (window.scrollY > 80) topbar.classList.add('scrolled');
+        else topbar.classList.remove('scrolled');
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  const scroller = document.getElementById('destScroller');
+  const dots = document.querySelectorAll('.progress-dot');
+  const currentIdx = document.getElementById('currentIdx');
+  const cards = scroller.querySelectorAll('.destination');
+
+  function updateProgress() {
+    if (window.innerWidth >= 900) return;
+    const scrollLeft = scroller.scrollLeft;
+    const cardWidth = cards[0].offsetWidth + 16;
+    const idx = Math.min(Math.round(scrollLeft / cardWidth), 7);
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    currentIdx.textContent = String(idx + 1).padStart(2, '0');
+  }
+
+  scroller.addEventListener('scroll', () => {
+    requestAnimationFrame(updateProgress);
+  });
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.journal-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(40px)';
+    el.style.transition = 'opacity 1s cubic-bezier(0.22,1,0.36,1), transform 1s cubic-bezier(0.22,1,0.36,1)';
+    revealObserver.observe(el);
+  });
+</script>
+
+</body>
+</html>
