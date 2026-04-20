@@ -134,6 +134,14 @@
     filter: brightness(0.82) saturate(1.02);
   }
 
+  .hero-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.82) saturate(1.02);
+    display: block;
+  }
+
   .hero-media::after {
     content: '';
     position: absolute;
@@ -825,7 +833,10 @@
 
 <section class="hero">
   <div class="hero-media">
-    <!-- Hero video will go here -->
+    <video autoplay muted loop playsinline preload="auto" poster="" aria-hidden="true">
+      <source src="myphtrip-mobile.webm" type="video/webm">
+      <source src="myphtrip-mobile.mp4" type="video/mp4">
+    </video>
   </div>
   <div class="hero-content">
     <div class="hero-overline">Beyond the postcard</div>
