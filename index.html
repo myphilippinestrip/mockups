@@ -220,6 +220,13 @@
     align-items: center;
     gap: 10px;
     color: var(--paper);
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .hero-scroll:hover {
+    opacity: 1;
   }
 
   @media (max-width: 767px) {
@@ -849,10 +856,10 @@
     <h1 class="hero-headline">The Philippines you <em>haven't seen</em> yet.</h1>
     <p class="hero-lede">Second, third, and fourth trips — for the traveller who has already been, and is ready to come back differently.</p>
   </div>
-  <div class="hero-scroll">Scroll</div>
+  <a href="#opener" class="hero-scroll" aria-label="Scroll to next section">Scroll</a>
 </section>
 
-<section class="opener">
+<section class="opener" id="opener">
   <div class="opener-inner">
     <div class="section-label">A letter, to begin</div>
     <div class="opener-text">
