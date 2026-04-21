@@ -252,6 +252,58 @@
     .scene-img { aspect-ratio: 16 / 9; }
   }
 
+  /* -------- THE DAYS -------- */
+  .days {
+    padding: 64px 28px 48px;
+  }
+  .days-inner {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .days-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--coral);
+    text-align: left;
+    margin-bottom: 32px;
+  }
+  .days-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .day-eyebrow {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+    margin-bottom: 6px;
+  }
+  .day-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .day-body {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+    margin-top: 10px;
+  }
+
   /* -------- PRACTICAL PANEL -------- */
   .practical {
     max-width: 620px;
@@ -690,6 +742,33 @@
       <p class="scene-body">Molo is the one people call the feminist church. Every saint in the nave is a woman, which is unusual enough to have its own small scholarship. Jaro is the grander building and the patron saint&rsquo;s home. Pick one, arrive before the 9am mass, and stay for it whether or not you are Catholic. The singing is the reason.</p>
     </article>
 
+  </section>
+
+  <section class="days" aria-labelledby="days-title">
+    <div class="days-inner">
+      <h2 class="days-title" id="days-title">The days</h2>
+      <ol class="days-list">
+
+        <li>
+          <div class="day-eyebrow">Day 01</div>
+          <h3 class="day-title">Arrival</h3>
+          <p class="day-body">Landing at Iloilo International. Private transfer to your heritage hotel downtown. Afternoon free to settle in, walk Calle Real, or rest depending on flight time. Dinner on your own, with your guide&rsquo;s recommendations in hand.</p>
+        </li>
+
+        <li>
+          <div class="day-eyebrow">Day 02</div>
+          <h3 class="day-title">Heritage, market, table</h3>
+          <p class="day-body">Morning walk of Calle Real with your guide, Casa Mariquit included if it is open that day. La Paz market for kansi or batchoy, whichever your guide thinks is strongest that week. Afternoon at Molo church and plaza. Evening free.</p>
+        </li>
+
+        <li>
+          <div class="day-eyebrow">Day 03</div>
+          <h3 class="day-title">Church, and onward</h3>
+          <p class="day-body">Sunday morning at Molo or Jaro, including the 9am mass. A late breakfast nearby. Return transfer to Iloilo airport for your afternoon flight out.</p>
+        </li>
+
+      </ol>
+    </div>
   </section>
 
   <section class="practical" aria-label="Practical note">
