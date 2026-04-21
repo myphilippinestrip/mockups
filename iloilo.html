@@ -155,7 +155,7 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    padding: 0 28px 72px;
+    padding: 0 28px calc(64px + 72px + env(safe-area-inset-bottom) + 24px);
     max-width: 1200px;
     margin: 0 auto;
   }
@@ -662,6 +662,7 @@
   }
 
   @media (min-width: 768px) {
+    .cover-content { padding-bottom: calc(64px + env(safe-area-inset-bottom) + 24px); }
     .lede { padding: 88px 28px; }
     .shape { padding: 72px 28px; }
     .close { padding: 88px 28px; }
