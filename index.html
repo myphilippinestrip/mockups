@@ -203,47 +203,27 @@
     opacity: 0.95;
   }
 
-  .hero-scroll {
-    position: absolute;
-    bottom: 22px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
+  .hero-cta {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 14px 26px;
     font-family: var(--body);
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 500;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    opacity: 0.75;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
     color: var(--paper);
-    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--coral);
+    border-radius: 2px;
     text-decoration: none;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
   }
 
-  .hero-scroll:hover {
-    opacity: 1;
-  }
-
-  @media (max-width: 767px) {
-    .hero-scroll { display: none; }
-  }
-
-  .hero-scroll::after {
-    content: '';
-    width: 1px;
-    height: 22px;
-    background: var(--paper);
-    animation: scrollPulse 2s ease-in-out infinite;
-  }
-
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
-    50% { opacity: 1; transform: scaleY(1); }
+  .hero-cta:hover {
+    background: var(--coral);
+    border-color: var(--coral);
+    color: var(--paper);
   }
 
   .opener { padding: 100px 26px 90px; background: var(--paper); }
@@ -855,8 +835,8 @@
     <div class="hero-overline">Beyond the postcard</div>
     <h1 class="hero-headline">The Philippines you <em>haven't seen</em> yet.</h1>
     <p class="hero-lede">Second, third, and fourth trips — for the traveller who has already been, and is ready to come back differently.</p>
+    <a href="#opener" class="hero-cta">A letter, to begin →</a>
   </div>
-  <a href="#opener" class="hero-scroll" aria-label="Scroll to next section">Scroll</a>
 </section>
 
 <section class="opener" id="opener">
