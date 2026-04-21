@@ -42,7 +42,7 @@
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    padding-bottom: 80px;
+    padding-bottom: calc(120px + env(safe-area-inset-bottom));
   }
 
   img { max-width: 100%; display: block; }
@@ -155,7 +155,7 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    padding: 0 28px calc(64px + 72px + env(safe-area-inset-bottom) + 24px);
+    padding: 0 28px calc(64px + 56px + env(safe-area-inset-bottom) + 24px);
     max-width: 1200px;
     margin: 0 auto;
   }
@@ -416,7 +416,7 @@
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: calc(56px + env(safe-area-inset-bottom));
     z-index: 55;
     height: 64px;
     background: var(--paper);
@@ -461,55 +461,43 @@
   }
   .price-cta:hover { background: var(--coral-dark); }
 
-  /* -------- BOTTOM NAV (matches about.html) -------- */
-  .bottom-nav {
-    display: none;
+  /* -------- BACK NAV (destination pages) -------- */
+  .back-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 60;
-    background: rgba(255,255,255,0.96);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-top: 1px solid var(--line);
-    padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
-  }
-  .bottom-nav-inner { display: flex; justify-content: space-between; align-items: center; }
-  .bottom-nav a {
-    flex: 1;
+    z-index: 50;
+    height: 56px;
+    padding: 0 20px env(safe-area-inset-bottom);
+    background: var(--paper);
+    border-top: 1px solid rgba(26, 22, 20, 0.08);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 4px;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink);
+    text-decoration: none;
     font-family: var(--body);
-    font-size: 10px;
     font-weight: 500;
-    letter-spacing: 0.1em;
+    font-size: 13px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--ink-soft);
-    padding: 6px 10px;
+    transition: color 200ms ease;
+    padding: 10px 4px;
+    min-height: 44px;
   }
-  .bottom-nav a.cta { color: var(--coral); position: relative; }
-  .bottom-nav a.active { color: var(--coral); }
-  .bottom-nav svg {
-    width: 20px;
-    height: 20px;
-    stroke-width: 1.5;
-    fill: none;
-    stroke: currentColor;
+  .back-link:hover,
+  .back-link:focus-visible { color: var(--coral); }
+  .back-link svg {
+    transition: transform 200ms ease;
+    flex-shrink: 0;
   }
-  .bottom-nav a.cta svg { width: 24px; height: 24px; }
-  .bottom-nav .badge {
-    position: absolute;
-    top: -2px;
-    right: calc(50% - 16px);
-    width: 10px;
-    height: 10px;
-    background: var(--coral);
-    border-radius: 50%;
-    border: 1.5px solid rgba(255, 255, 255, 0.96);
-  }
+  .back-link:hover svg,
+  .back-link:focus-visible svg { transform: translateX(-2px); }
 
   /* -------- DRAWER + BACKDROP + TOAST -------- */
   .drawer-backdrop {
@@ -651,18 +639,15 @@
 
   /* -------- MEDIA QUERIES -------- */
   @media (max-width: 767px) {
-    body { padding-bottom: 140px; }
     .topbar { padding: 14px 18px; }
     .topbar.scrolled { padding: 10px 18px; }
     .topbar-nav { display: none; }
     .topbar-right { gap: 0; }
     .logo-mark img { width: 34px; height: 34px; }
     .wordmark { font-size: 15px; }
-    .bottom-nav { display: block; }
   }
 
   @media (min-width: 768px) {
-    .cover-content { padding-bottom: calc(64px + env(safe-area-inset-bottom) + 24px); }
     .lede { padding: 88px 28px; }
     .shape { padding: 72px 28px; }
     .close { padding: 88px 28px; }
@@ -836,26 +821,11 @@
   <a href="#drawer" class="price-cta open-drawer">Start a letter</a>
 </div>
 
-<nav class="bottom-nav">
-  <div class="bottom-nav-inner">
-    <a href="/#destinations" class="active">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-      Destinations
-    </a>
-    <a href="#">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-      Journal
-    </a>
-    <a href="/about.html">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
-      About
-    </a>
-    <a href="#" class="cta">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-      <span class="badge"></span>
-      ASK
-    </a>
-  </div>
+<nav class="back-nav" aria-label="Back to destinations">
+  <a href="/#destinations" class="back-link">
+    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    <span>All destinations</span>
+  </a>
 </nav>
 
 <div class="drawer-backdrop" id="drawer-backdrop" aria-hidden="true"></div>
