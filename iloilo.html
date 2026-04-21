@@ -42,7 +42,7 @@
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    padding-bottom: calc(120px + env(safe-area-inset-bottom));
+    padding-bottom: calc(112px + env(safe-area-inset-bottom));
   }
 
   img { max-width: 100%; display: block; }
@@ -155,7 +155,7 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    padding: 0 28px calc(64px + 56px + env(safe-area-inset-bottom) + 24px);
+    padding: 0 28px calc(56px + 56px + env(safe-area-inset-bottom) + 24px);
     max-width: 1200px;
     margin: 0 auto;
   }
@@ -304,6 +304,22 @@
     margin-top: 10px;
   }
 
+  /* -------- PRICE LINE (quiet body price) -------- */
+  .price-line {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 48px 28px;
+    text-align: center;
+  }
+  .price-line p {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    color: rgba(26, 22, 20, 0.7);
+  }
+
   /* -------- PRACTICAL PANEL -------- */
   .practical {
     max-width: 620px;
@@ -418,7 +434,7 @@
     right: 0;
     bottom: calc(56px + env(safe-area-inset-bottom));
     z-index: 55;
-    height: 64px;
+    height: 56px;
     background: var(--paper);
     border-top: 1px solid rgba(26, 22, 20, 0.10);
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
@@ -428,21 +444,20 @@
     padding: 0 20px;
     gap: 12px;
   }
-  .price-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .price-from {
-    font-family: var(--display);
-    font-weight: 500;
-    font-size: 17px;
-    color: var(--ink);
-    line-height: 1.15;
-  }
-  .price-note {
+  .ask-link {
     font-family: var(--body);
-    font-weight: 400;
-    font-size: 12px;
-    color: rgba(26, 22, 20, 0.6);
-    line-height: 1.15;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--ink);
+    padding: 12px 4px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    transition: color 200ms ease;
+    text-decoration: none;
   }
+  .ask-link:hover,
+  .ask-link:focus-visible { color: var(--coral); }
   .price-cta {
     background: var(--coral);
     color: var(--paper);
@@ -564,6 +579,26 @@
     color: var(--ink);
     margin-top: 6px;
   }
+  .drawer-context {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .drawer-context-trip {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.2;
+    color: var(--coral);
+  }
+  .drawer-context-price {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+    color: rgba(26, 22, 20, 0.7);
+    margin-top: 4px;
+  }
 
   .drawer-toast {
     position: absolute;
@@ -658,6 +693,7 @@
   }
 
   @media (min-width: 768px) {
+    .cover-content { padding-bottom: calc(56px + env(safe-area-inset-bottom) + 24px); }
     .lede { padding: 88px 28px; }
     .shape { padding: 72px 28px; }
     .close { padding: 88px 28px; }
@@ -767,6 +803,10 @@
     </div>
   </section>
 
+  <div class="price-line">
+    <p>From USD 99 per person, twin share.</p>
+  </div>
+
   <section class="practical" aria-label="Practical note">
     <div class="practical-card">
       <button
@@ -823,11 +863,8 @@
 
 </main>
 
-<div class="price-bar" role="region" aria-label="Trip price">
-  <div class="price-info">
-    <span class="price-from">From USD 99</span>
-    <span class="price-note">per person, twin share</span>
-  </div>
+<div class="price-bar" role="region" aria-label="Trip actions">
+  <a href="#drawer" class="ask-link open-drawer">Have a question?</a>
   <a href="#drawer" class="price-cta open-drawer">Book this trip</a>
 </div>
 
@@ -856,6 +893,10 @@
   <div class="drawer-toast" id="drawer-toast" role="status" aria-live="polite">Mockup. This will connect to the real flow.</div>
 
   <header class="drawer-head">
+    <div class="drawer-context">
+      <p class="drawer-context-trip">Iloilo &middot; 3D2N</p>
+      <p class="drawer-context-price">From USD 99 per person, twin share</p>
+    </div>
     <span class="drawer-eyebrow">Get in touch</span>
     <h2 class="drawer-title-main" id="drawer-title">Have a question?</h2>
   </header>
