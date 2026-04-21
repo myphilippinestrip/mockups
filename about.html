@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About · My Philippines Trip</title>
+<meta name="description" content="A letter from My Philippines Trip. Who we are, what we believe, and how this works.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --coral: #D9443C;
+    --coral-dark: #B8352E;
+    --ocean: #2E74B0;
+    --palm: #2E8B4F;
+    --sunset: #E8883A;
+    --ink: #1A1614;
+    --ink-soft: #5B544E;
+    --paper: #FFFFFF;
+    --cream: #FAF7F2;
+    --line: #E8E2DA;
+    --display: 'Fraunces', Georgia, serif;
+    --body: 'DM Sans', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
+  }
+
+  .topbar.scrolled {
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 22px;
+  }
+
+  .logo-mark { display: flex; align-items: center; gap: 10px; -webkit-tap-highlight-color: transparent; }
+  .logo-mark img { width: 38px; height: 38px; object-fit: contain; }
+  .logo-mark .logo-white { display: block; }
+  .logo-mark .logo-colour { display: none; }
+  .topbar.scrolled .logo-mark .logo-white { display: none; }
+  .topbar.scrolled .logo-mark .logo-colour { display: block; }
+
+  .wordmark {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+    transition: color 0.4s ease;
+    line-height: 1;
+  }
+
+  .topbar.scrolled .wordmark { color: var(--ink); }
+  .wordmark em { font-style: italic; font-weight: 400; }
+
+  .topbar-right { display: flex; align-items: center; gap: 32px; }
+  .topbar-nav { display: flex; gap: 28px; }
+
+  .topbar-nav a {
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--paper);
+    opacity: 0.9;
+    transition: color 0.4s ease, opacity 0.3s ease;
+  }
+
+  .topbar-nav a:hover { opacity: 1; }
+  .topbar.scrolled .topbar-nav a { color: var(--ink); }
+
+  .enquire-link {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper);
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    padding-bottom: 3px;
+    transition: color 0.4s ease, border-color 0.4s ease;
+  }
+
+  .topbar.scrolled .enquire-link {
+    color: var(--coral);
+    border-bottom-color: var(--coral);
+  }
+
+  /* Page-light chrome: force the top nav into its "scrolled" appearance
+     when the page has no hero section underneath it. */
+  body.page-light .topbar {
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  body.page-light .wordmark { color: var(--ink); }
+  body.page-light .logo-mark .logo-white { display: none; }
+  body.page-light .logo-mark .logo-colour { display: block; }
+  body.page-light .topbar-nav a { color: var(--ink); }
+  body.page-light .enquire-link {
+    color: var(--coral);
+    border-bottom-color: var(--coral);
+  }
+
+  /* Active state — current page indicator in both navs */
+  .topbar-nav a.active,
+  body.page-light .topbar-nav a.active,
+  .topbar.scrolled .topbar-nav a.active { color: var(--coral); opacity: 1; }
+  .bottom-nav a.active { color: var(--coral); }
+
+  .footer {
+    background: var(--paper);
+    padding: 70px 26px 40px;
+    border-top: 1px solid var(--line);
+  }
+
+  .footer-inner { max-width: 1200px; margin: 0 auto; }
+
+  .footer-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .footer-head img { width: 36px; height: 36px; object-fit: contain; }
+
+  .footer-brand {
+    font-family: var(--display);
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .footer-brand em { font-style: italic; font-weight: 300; color: var(--coral); }
+
+  .footer-tagline {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin-bottom: 56px;
+    max-width: 40ch;
+  }
+
+  .footer-cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    margin-bottom: 50px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; font-size: 14px; color: var(--ink-soft); }
+  .footer-col li a { transition: color 0.2s; }
+  .footer-col li a:hover { color: var(--coral); }
+
+  .footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--body);
+    font-size: 12px;
+    color: var(--ink-soft);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+    padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .bottom-nav-inner { display: flex; justify-content: space-between; align-items: center; }
+
+  .bottom-nav a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 6px 10px;
+  }
+
+  .bottom-nav a.cta { color: var(--coral); position: relative; }
+
+  .bottom-nav svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.5;
+    fill: none;
+    stroke: currentColor;
+  }
+
+  .bottom-nav a.cta svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .bottom-nav .badge {
+    position: absolute;
+    top: -2px;
+    right: calc(50% - 16px);
+    width: 10px;
+    height: 10px;
+    background: var(--coral);
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.96);
+  }
+
+  /* --- About page layout --- */
+  .about-page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 80px 28px 120px;
+    background: var(--paper);
+  }
+
+  @media (min-width: 768px) {
+    .about-page { padding: 120px 48px 80px; }
+  }
+
+  .about-kicker {
+    text-align: center;
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 32px;
+  }
+
+  .about-kicker::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--coral);
+    margin: 0 auto 16px;
+  }
+
+  .about-headline {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  @media (min-width: 768px) {
+    .about-headline { font-size: 64px; }
+  }
+
+  .about-letter p {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+
+  @media (min-width: 768px) {
+    .about-letter p { font-size: 18px; }
+  }
+
+  .about-letter p + p { margin-top: 24px; }
+
+  .about-section-header {
+    font-family: var(--display);
+    font-weight: 500;
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-align: left;
+    margin: 0 0 24px;
+  }
+
+  @media (min-width: 768px) {
+    .about-section-header { font-size: 28px; }
+  }
+
+  .about-letter .about-section-header + p { margin-top: 0; }
+
+  .about-ornament {
+    text-align: center;
+    font-family: var(--display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--coral);
+    margin: 48px 0;
+  }
+
+  .about-signature {
+    font-family: var(--display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--ink);
+    text-align: left;
+    margin-top: 48px;
+  }
+
+  @media (max-width: 900px) {
+    .footer-cols { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  }
+
+  @media (max-width: 767px) {
+    body { padding-bottom: 68px; }
+    .topbar { padding: 14px 18px; }
+    .topbar.scrolled { padding: 10px 18px; }
+    .topbar-nav { display: none; }
+    .topbar-right { gap: 0; }
+    .logo-mark img { width: 34px; height: 34px; }
+    .wordmark { font-size: 15px; }
+    .bottom-nav { display: block; }
+    .footer-cols { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body class="page-light">
+
+<header class="topbar" id="topbar">
+  <a href="/" class="logo-mark">
+    <img src="logo-white.png" alt="" class="logo-white">
+    <img src="logo-colour.png" alt="" class="logo-colour">
+    <span class="wordmark">My <em>Philippines</em> Trip</span>
+  </a>
+  <div class="topbar-right">
+    <nav class="topbar-nav">
+      <a href="/#destinations">Destinations</a>
+      <a href="#">Journal</a>
+      <a href="/about.html" class="active">About</a>
+    </nav>
+    <a href="#" class="enquire-link">Start a letter</a>
+  </div>
+</header>
+
+<main class="about-page">
+  <article class="about-letter">
+    <div class="about-kicker">Beyond the postcard</div>
+    <h1 class="about-headline">A letter.</h1>
+
+    <p>You&rsquo;ve been to the Philippines. Most likely, you went to Palawan. Most likely, you loved it. You came home with sunburn and a kind of quiet conviction about the country, and you have been waiting, politely, these past two or three years, for the right excuse to return.</p>
+
+    <p>This is the excuse.</p>
+
+    <div class="about-ornament">*</div>
+
+    <p>My Philippines Trip is a small project. Built for travellers who love the country, working alongside Filipino travel operators. We believe the Philippines is best understood on the second visit, the third, and the fourth. The first trip is a photograph. The second is a sentence. By the fourth, it is a paragraph you have started writing and don&rsquo;t quite want to finish.</p>
+
+    <p>Our job is not to introduce you to the Philippines. It is to introduce you to the Philippines you haven&rsquo;t seen yet.</p>
+
+    <p>Eight destinations, chosen carefully. Iloilo for its heritage houses and its kansi. Bohol for the Chocolate Hills at dawn. Bacolod for the sugar and the exuberance. Dumaguete and Siquijor for gentleness. Siargao for what the surfers do on their rest days. Coron for vertical limestone. Cebu for the origin, heritage-led, with Oslob stripped out for reasons we are happy to explain. Boracay, restored and quieter than you remember.</p>
+
+    <p>We do not do first trips. We do not do twenty-destination grand tours. We do not do anything that could just as easily be sold as Bali or Thailand. Each of the eight destinations has been chosen because it does something distinct, and because it rewards the traveller who has already been, who knows the rhythms, the food, the light, the particular patience the Philippines requires.</p>
+
+    <div class="about-ornament">*</div>
+
+    <h2 class="about-section-header">How this works.</h2>
+
+    <p>You book with us. We show you the trips, we tell you what each one includes, and we make the booking easy. Once you have booked, your trip is run entirely on the ground by <strong>Strikers Travel Corp</strong>, our operations partner in Manila. Strikers will be in touch to confirm your arrival, to answer your questions, and to look after you from the moment you land. They are accredited by the Philippines Department of Tourism and have been operating for more than ten years. Their owner is the current President of PHILTOA, the country&rsquo;s national tour operators association. Strikers handles vehicles, guides, hotels, ferries, the early mornings and the long afternoons. We choose the trips and make them easy to book. They run the days.</p>
+
+    <div class="about-ornament">*</div>
+
+    <h2 class="about-section-header">What we believe.</h2>
+
+    <p>We believe in specificity. A trip that says &ldquo;experience authentic local culture&rdquo; is a trip that hasn&rsquo;t bothered to say what it actually is. A trip that says &ldquo;kansi at Elma&rsquo;s stall in La Paz market, thirty-one years she has been making it, she will not give the recipe but will tell you which stall across the aisle sells the right cut of beef,&rdquo; that is a trip we want to write about, and that is a trip we want to send you on.</p>
+
+    <p>We believe in honesty. If a ferry is uncomfortable, we say so. If a guesthouse has three rooms and one shared bathroom, that is the sentence. We don&rsquo;t oversell, because we don&rsquo;t think the Philippines needs it.</p>
+
+    <p>We believe the best trips come from paying attention: to a place, to its people, to a specific meal on a specific morning.</p>
+
+    <div class="about-ornament">*</div>
+
+    <p>If any of this sounds like the kind of trip you want to take, start a letter. We will write back.</p>
+
+    <p class="about-signature">&mdash; My Philippines Trip</p>
+  </article>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-head">
+      <img src="logo-colour.png" alt="">
+      <div class="footer-brand">My <em>Philippines</em> Trip</div>
+    </div>
+    <p class="footer-tagline">Second, third and fourth trips for travellers who already love the Philippines. Fulfilled on the ground by Strikers Travel Corp.</p>
+
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Destinations</h4>
+        <ul>
+          <li><a href="/#destinations">Iloilo</a></li>
+          <li><a href="/#destinations">Bohol</a></li>
+          <li><a href="/#destinations">Bacolod</a></li>
+          <li><a href="/#destinations">Dumaguete &amp; Siquijor</a></li>
+          <li><a href="/#destinations">Siargao</a></li>
+          <li><a href="/#destinations">Coron</a></li>
+          <li><a href="/#destinations">Cebu</a></li>
+          <li><a href="/#destinations">Boracay</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Journal</h4>
+        <ul>
+          <li><a href="#">Places</a></li>
+          <li><a href="#">People</a></li>
+          <li><a href="#">Plates</a></li>
+          <li><a href="#">Practical</a></li>
+          <li><a href="#">Postcards</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <ul>
+          <li><a href="/about.html">Our philosophy</a></li>
+          <li><a href="/about.html">The editors</a></li>
+          <li><a href="#">Start a letter</a></li>
+          <li><a href="#">The Saturday Dispatch</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">TikTok</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 My Philippines Trip</span>
+      <span>Fulfilled by Strikers Travel Corp &middot; Manila</span>
+    </div>
+  </div>
+</footer>
+
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a href="/#destinations">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      Destinations
+    </a>
+    <a href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Journal
+    </a>
+    <a href="/about.html" class="active">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
+      About
+    </a>
+    <a href="#" class="cta">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+      <span class="badge"></span>
+      ASK
+    </a>
+  </div>
+</nav>
+
+<script>
+  const topbar = document.getElementById('topbar');
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        if (window.scrollY > 80) topbar.classList.add('scrolled');
+        else topbar.classList.remove('scrolled');
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+</script>
+
+</body>
+</html>
