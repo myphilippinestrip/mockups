@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<!--
+  iloilo.html. Iloilo destination page. Template for all eight destinations.
+
+  Placeholder: hero image (Unsplash), three scene images (Unsplash), USD 99 price point.
+  Real: every line of copy, navigation wiring, drawer/accordion/price-bar chrome.
+-->
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<title>Iloilo, quietly · My Philippines Trip</title>
+<meta name="description" content="Three days in Iloilo. Heritage houses, kansi in La Paz, and the quieter Philippines most travellers have not seen yet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --coral: #D9443C;
+    --coral-dark: #B8352E;
+    --ocean: #2E74B0;
+    --palm: #2E8B4F;
+    --sunset: #E8883A;
+    --ink: #1A1614;
+    --ink-soft: #5B544E;
+    --paper: #FFFFFF;
+    --cream: #FAF7F2;
+    --line: #E8E2DA;
+    --display: 'Fraunces', Georgia, serif;
+    --body: 'DM Sans', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding-bottom: 80px;
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
+
+  :focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; border-radius: 2px; }
+
+  /* -------- TOPBAR (transparent over hero, solid on scroll) -------- */
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
+  }
+
+  .topbar.scrolled {
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 22px;
+  }
+
+  .logo-mark { display: flex; align-items: center; gap: 10px; -webkit-tap-highlight-color: transparent; }
+  .logo-mark img { width: 38px; height: 38px; object-fit: contain; }
+  .logo-mark .logo-white { display: block; }
+  .logo-mark .logo-colour { display: none; }
+  .topbar.scrolled .logo-mark .logo-white { display: none; }
+  .topbar.scrolled .logo-mark .logo-colour { display: block; }
+
+  .wordmark {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+    transition: color 0.4s ease;
+    line-height: 1;
+  }
+  .topbar.scrolled .wordmark { color: var(--ink); }
+  .wordmark em { font-style: italic; font-weight: 400; }
+
+  .topbar-right { display: flex; align-items: center; gap: 32px; }
+  .topbar-nav { display: flex; gap: 28px; }
+
+  .topbar-nav a {
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--paper);
+    opacity: 0.9;
+    transition: color 0.4s ease, opacity 0.3s ease;
+  }
+  .topbar-nav a:hover { opacity: 1; }
+  .topbar.scrolled .topbar-nav a { color: var(--ink); }
+
+  .enquire-link {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper);
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    padding-bottom: 3px;
+    transition: color 0.4s ease, border-color 0.4s ease;
+  }
+  .topbar.scrolled .enquire-link {
+    color: var(--coral);
+    border-bottom-color: var(--coral);
+  }
+
+  /* -------- COVER -------- */
+  .cover {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: min(100vh, 100dvh);
+    min-height: 70vh;
+    overflow: hidden;
+    color: var(--paper);
+    display: flex;
+    align-items: flex-end;
+  }
+  .cover-img {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .cover-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.88) saturate(1.03);
+  }
+  .cover-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26,22,20,0.35) 0%, rgba(26,22,20,0) 40%, rgba(26,22,20,0.72) 100%);
+  }
+  .cover-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 28px 72px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .cover-eyebrow {
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--paper);
+    margin-bottom: 16px;
+  }
+  .cover-headline {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--paper);
+    font-size: clamp(48px, 12vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* -------- LEDE -------- */
+  .lede {
+    padding: 64px 28px;
+  }
+  .lede-inner {
+    max-width: 620px;
+    margin: 0 auto;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(22px, 5.5vw, 24px);
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+    color: var(--coral);
+  }
+
+  /* -------- SHAPE / PROSE -------- */
+  .shape {
+    padding: 48px 28px;
+  }
+  .shape-inner {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .shape-inner p {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .shape-inner p + p { margin-top: 20px; }
+
+  /* -------- SCENES -------- */
+  .scene { margin-bottom: 48px; }
+  .scene:last-of-type { margin-bottom: 0; }
+  .scene-img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+  .scene-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .scene-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--coral);
+    max-width: 620px;
+    margin: 24px auto 16px;
+    padding: 0 28px;
+  }
+  .scene-body {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  @media (min-width: 768px) {
+    .scene-img { aspect-ratio: 16 / 9; }
+  }
+
+  /* -------- PRACTICAL PANEL -------- */
+  .practical {
+    max-width: 620px;
+    margin: 48px 28px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 28px;
+  }
+  .practical-card {
+    border: 1px solid rgba(46, 116, 176, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .practical-toggle {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+    min-height: 64px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .practical-label {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+  }
+  .practical-chevron {
+    width: 20px;
+    height: 20px;
+    stroke: var(--ocean);
+    stroke-width: 1.5;
+    fill: none;
+    flex-shrink: 0;
+    transition: transform 300ms ease;
+  }
+  .practical-toggle[aria-expanded="true"] .practical-chevron { transform: rotate(180deg); }
+
+  .practical-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 300ms ease, opacity 300ms ease;
+  }
+  .practical-toggle[aria-expanded="true"] + .practical-content {
+    max-height: 2000px;
+    opacity: 1;
+  }
+
+  .practical-dl {
+    padding: 0 20px 20px;
+    display: grid;
+    gap: 16px;
+  }
+  .practical-dl dt {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+    margin-bottom: 4px;
+  }
+  .practical-dl dd {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .practical-chevron,
+    .practical-content,
+    .drawer,
+    .drawer-backdrop,
+    .drawer-toast { transition: none !important; }
+  }
+
+  /* -------- CLOSE -------- */
+  .close {
+    padding: 64px 28px;
+  }
+  .close-inner {
+    max-width: 620px;
+    margin: 0 auto;
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .close-inner a {
+    color: var(--coral);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: color 200ms ease;
+  }
+  .close-inner a:hover { color: var(--coral-dark); }
+
+  /* -------- STICKY PRICE BAR (above bottom nav) -------- */
+  .price-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 55;
+    height: 64px;
+    background: var(--paper);
+    border-top: 1px solid rgba(26, 22, 20, 0.10);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    gap: 12px;
+  }
+  .price-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .price-from {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+  .price-note {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 12px;
+    color: rgba(26, 22, 20, 0.6);
+    line-height: 1.15;
+  }
+  .price-cta {
+    background: var(--coral);
+    color: var(--paper);
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 15px;
+    height: 40px;
+    padding: 0 24px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: background 200ms ease;
+    text-decoration: none;
+  }
+  .price-cta:hover { background: var(--coral-dark); }
+
+  /* -------- BOTTOM NAV (matches about.html) -------- */
+  .bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+    padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+  }
+  .bottom-nav-inner { display: flex; justify-content: space-between; align-items: center; }
+  .bottom-nav a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 6px 10px;
+  }
+  .bottom-nav a.cta { color: var(--coral); position: relative; }
+  .bottom-nav a.active { color: var(--coral); }
+  .bottom-nav svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.5;
+    fill: none;
+    stroke: currentColor;
+  }
+  .bottom-nav a.cta svg { width: 24px; height: 24px; }
+  .bottom-nav .badge {
+    position: absolute;
+    top: -2px;
+    right: calc(50% - 16px);
+    width: 10px;
+    height: 10px;
+    background: var(--coral);
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.96);
+  }
+
+  /* -------- DRAWER + BACKDROP + TOAST -------- */
+  .drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgba(26, 22, 20, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
+  }
+  .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+
+  .drawer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    height: 78vh;
+    max-height: 600px;
+    background: var(--paper);
+    border-radius: 20px 20px 0 0;
+    transform: translateY(100%);
+    transition: transform 300ms ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.18);
+  }
+  .drawer.open { transform: translateY(0); }
+
+  .drawer-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+  .drawer-close svg { width: 20px; height: 20px; stroke: var(--ink); stroke-width: 1.5; fill: none; }
+
+  .drawer-head {
+    padding: 24px 24px 8px;
+    text-align: center;
+  }
+  .drawer-eyebrow {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+  }
+
+  .drawer-toast {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    max-width: calc(100% - 80px);
+    padding: 12px;
+    background: var(--paper);
+    border: 1px solid rgba(26, 22, 20, 0.08);
+    border-radius: 12px;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--ink);
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease, transform 300ms ease;
+    z-index: 3;
+  }
+  .drawer-toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .drawer-body {
+    padding: 16px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .door {
+    border: 1px solid rgba(26, 22, 20, 0.08);
+    border-radius: 12px;
+    padding: 20px;
+    background: var(--paper);
+  }
+  .door-eyebrow {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .door-eyebrow.ocean { color: var(--ocean); }
+  .door-eyebrow.coral { color: var(--coral); }
+  .door-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-top: 8px;
+  }
+  .door-copy {
+    font-family: var(--body);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-top: 12px;
+  }
+  .door-btn {
+    width: 100%;
+    height: 44px;
+    margin-top: 16px;
+    border-radius: 999px;
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--paper);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 200ms ease;
+  }
+  .door-btn.ocean { background: var(--ocean); }
+  .door-btn.ocean:hover { background: #225b8a; }
+  .door-btn.coral { background: var(--coral); }
+  .door-btn.coral:hover { background: var(--coral-dark); }
+
+  /* -------- MEDIA QUERIES -------- */
+  @media (max-width: 767px) {
+    body { padding-bottom: 140px; }
+    .topbar { padding: 14px 18px; }
+    .topbar.scrolled { padding: 10px 18px; }
+    .topbar-nav { display: none; }
+    .topbar-right { gap: 0; }
+    .logo-mark img { width: 34px; height: 34px; }
+    .wordmark { font-size: 15px; }
+    .bottom-nav { display: block; }
+  }
+
+  @media (min-width: 768px) {
+    .lede { padding: 88px 28px; }
+    .shape { padding: 72px 28px; }
+    .close { padding: 88px 28px; }
+    .practical { margin: 72px auto; }
+    .scene { margin-bottom: 72px; }
+    .drawer-body { flex-direction: row; gap: 16px; }
+    .door { flex: 1; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <a href="/" class="logo-mark">
+    <img src="logo-white.png" alt="" class="logo-white">
+    <img src="logo-colour.png" alt="" class="logo-colour">
+    <span class="wordmark">My <em>Philippines</em> Trip</span>
+  </a>
+  <div class="topbar-right">
+    <nav class="topbar-nav">
+      <a href="/#destinations">Destinations</a>
+      <a href="#">Journal</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <a href="#drawer" class="enquire-link open-drawer">Start a letter</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="cover" aria-labelledby="cover-headline">
+    <div class="cover-img">
+      <img src="https://images.unsplash.com/photo-1582582494705-f8ce0b0c24f0?w=1600&q=85&auto=format&fit=crop" alt="A narrow street in Iloilo&rsquo;s old downtown at dusk, warm amber light on restored façades.">
+    </div>
+    <div class="cover-content">
+      <div class="cover-eyebrow">Heritage &middot; 3D2N &middot; Iloilo</div>
+      <h1 class="cover-headline" id="cover-headline">Iloilo, quietly.</h1>
+    </div>
+  </section>
+
+  <section class="lede" aria-label="Lede">
+    <div class="lede-inner">
+      <p>Three days in a city that does not raise its voice. The heritage houses open by appointment, and appointment means phoning a grandson. The kansi in La Paz is bone-marrow sour. The churches are older than most of Europe thinks they are. This is the Philippines most Palawan travellers have not seen yet.</p>
+    </div>
+  </section>
+
+  <section class="shape" aria-label="The shape of it">
+    <div class="shape-inner">
+      <p>Iloilo rewards slowness. This is a heritage city, one of the oldest in the country, and its pleasures are the kind you find by walking, eating, and asking. Nothing on this trip is rushed. Nothing is big-ticket. The work of the three days is to let the place land.</p>
+      <p>You stay in the old downtown, walk Calle Real most mornings, and eat at the market at least twice. A guide who knows the heritage-house families will open doors that are not on any public itinerary. Sunday morning is for Molo or Jaro, whichever feels right that week.</p>
+      <p>The trip is private throughout. Your vehicle, your guide, your pace. There are no groups, no optional add-ons at the desk, no surprise upsells. The package is the package.</p>
+    </div>
+  </section>
+
+  <section class="scenes" aria-label="Scenes">
+
+    <article class="scene">
+      <div class="scene-img">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=85&auto=format&fit=crop" alt="A steaming bowl of kansi with pale bone marrow and batuan broth on a market table.">
+      </div>
+      <h2 class="scene-title">A morning in La Paz</h2>
+      <p class="scene-body">The best morning of the week for kansi is Tuesday, because the bones come in fresh on Monday evening and the pot has had the right amount of time. The soup is famously sour, batuan fruit does the work, and travellers who have only had Manila versions tend to flinch at the first spoonful and then, within a minute, understand. Batchoy at Ted&rsquo;s afterwards, if there&rsquo;s room.</p>
+    </article>
+
+    <article class="scene">
+      <div class="scene-img">
+        <img src="https://images.unsplash.com/photo-1580519542036-c47de6196ba5?w=1200&q=85&auto=format&fit=crop" alt="Calle Real&rsquo;s restored colonial façades running into a soft afternoon haze.">
+      </div>
+      <h2 class="scene-title">Calle Real, on foot</h2>
+      <p class="scene-body">The old main street runs about a kilometre. Most of the façades are restored now, some are not, which is arguably better. A good guide will stop at three or four specific buildings and tell you which grandson to phone for interior access. Casa Mariquit is the usual one. It still opens on request.</p>
+    </article>
+
+    <article class="scene">
+      <div class="scene-img">
+        <img src="https://images.unsplash.com/photo-1548019865-905f427c9ea1?w=1200&q=85&auto=format&fit=crop" alt="Interior of a centuries-old church, carved nave, light falling across empty pews before mass.">
+      </div>
+      <h2 class="scene-title">Molo or Jaro, on Sunday</h2>
+      <p class="scene-body">Molo is the one people call the feminist church. Every saint in the nave is a woman, which is unusual enough to have its own small scholarship. Jaro is the grander building and the patron saint&rsquo;s home. Pick one, arrive before the 9am mass, and stay for it whether or not you are Catholic. The singing is the reason.</p>
+    </article>
+
+  </section>
+
+  <section class="practical" aria-label="Practical note">
+    <div class="practical-card">
+      <button
+        type="button"
+        class="practical-toggle"
+        id="practical-btn"
+        aria-expanded="false"
+        aria-controls="practical-panel">
+        <span class="practical-label">The Practical Note</span>
+        <svg class="practical-chevron" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="practical-content" id="practical-panel" role="region" aria-labelledby="practical-btn">
+        <dl class="practical-dl">
+          <div>
+            <dt>Length</dt>
+            <dd>3 days, 2 nights</dd>
+          </div>
+          <div>
+            <dt>Private</dt>
+            <dd>your own vehicle, driver, and guide throughout</dd>
+          </div>
+          <div>
+            <dt>Included</dt>
+            <dd>accommodation in a boutique heritage hotel, downtown Iloilo; all private transfers; private guiding; entrance fees; bottled water; select meals as noted in the day plan</dd>
+          </div>
+          <div>
+            <dt>Not included</dt>
+            <dd>international flights, domestic flight to and from Iloilo, travel insurance, meals not listed, personal expenses</dd>
+          </div>
+          <div>
+            <dt>Lead time</dt>
+            <dd>10 days from booking to departure. Full payment required at booking.</dd>
+          </div>
+          <div>
+            <dt>When to go</dt>
+            <dd>November through May is the dry window. June through October is wet but workable. The city absorbs rain better than you might expect.</dd>
+          </div>
+          <div>
+            <dt>From</dt>
+            <dd>USD 99 per person, twin share. Priced in USD, settled in PHP via Maya at checkout.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="close" aria-label="The close">
+    <div class="close-inner">
+      <p>Three days in Iloilo will not cover the city. That is the point. You leave knowing which grandson to phone, which morning the kansi is right, and which church sings on Sundays. When you are ready to come back for a fourth day, or a second city, we will be here. <a href="#drawer" class="open-drawer">Start a letter</a>.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="price-bar" role="region" aria-label="Trip price">
+  <div class="price-info">
+    <span class="price-from">From USD 99</span>
+    <span class="price-note">per person, twin share</span>
+  </div>
+  <a href="#drawer" class="price-cta open-drawer">Start a letter</a>
+</div>
+
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a href="/#destinations" class="active">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      Destinations
+    </a>
+    <a href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Journal
+    </a>
+    <a href="/about.html">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
+      About
+    </a>
+    <a href="#" class="cta">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+      <span class="badge"></span>
+      ASK
+    </a>
+  </div>
+</nav>
+
+<div class="drawer-backdrop" id="drawer-backdrop" aria-hidden="true"></div>
+
+<aside
+  class="drawer"
+  id="drawer"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="drawer-title"
+  aria-hidden="true">
+  <button type="button" class="drawer-close" id="drawer-close" aria-label="Close">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 6l12 12M18 6l-12 12" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <div class="drawer-toast" id="drawer-toast" role="status" aria-live="polite">Mockup. This will connect to the real flow.</div>
+
+  <header class="drawer-head">
+    <span class="drawer-eyebrow" id="drawer-title">Get in touch</span>
+  </header>
+
+  <div class="drawer-body">
+
+    <article class="door">
+      <span class="door-eyebrow ocean">Answer now</span>
+      <h3 class="door-title">Start a conversation</h3>
+      <p class="door-copy">Ask anything about this trip. We&rsquo;ll get back to you quickly.</p>
+      <button type="button" class="door-btn ocean" id="door-conversation-btn">Start conversation</button>
+    </article>
+
+    <article class="door">
+      <span class="door-eyebrow coral">Not ready yet</span>
+      <h3 class="door-title">Write a letter</h3>
+      <p class="door-copy">Tell us the shape of your trip and we&rsquo;ll write back within a day.</p>
+      <button type="button" class="door-btn coral" id="door-letter-btn">Write a letter</button>
+    </article>
+
+  </div>
+</aside>
+
+<script>
+  // Topbar scrolled state
+  (function () {
+    const topbar = document.getElementById('topbar');
+    let ticking = false;
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(function () {
+          if (window.scrollY > 80) topbar.classList.add('scrolled');
+          else topbar.classList.remove('scrolled');
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  })();
+
+  // Accordion
+  (function () {
+    const btn = document.getElementById('practical-btn');
+    btn.addEventListener('click', function () {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+    });
+  })();
+
+  // Drawer
+  (function () {
+    const drawer = document.getElementById('drawer');
+    const backdrop = document.getElementById('drawer-backdrop');
+    const closeBtn = document.getElementById('drawer-close');
+    const toast = document.getElementById('drawer-toast');
+    const triggers = document.querySelectorAll('.open-drawer');
+    let lastFocus = null;
+    let toastTimer = null;
+
+    function focusables() {
+      return Array.from(drawer.querySelectorAll('button, a, [tabindex]:not([tabindex="-1"])'))
+        .filter(function (el) { return !el.disabled && el.offsetParent !== null; });
+    }
+
+    function openDrawer(e) {
+      if (e) e.preventDefault();
+      lastFocus = document.activeElement;
+      drawer.classList.add('open');
+      backdrop.classList.add('open');
+      drawer.setAttribute('aria-hidden', 'false');
+      backdrop.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      const f = focusables();
+      if (f.length) f[0].focus();
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      backdrop.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+      backdrop.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    }
+
+    triggers.forEach(function (t) { t.addEventListener('click', openDrawer); });
+    backdrop.addEventListener('click', closeDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) {
+        closeDrawer();
+      }
+    });
+
+    // Focus trap
+    drawer.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      const f = focusables();
+      if (!f.length) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    function showToast() {
+      toast.classList.add('visible');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toast.classList.remove('visible'); }, 3000);
+    }
+
+    document.getElementById('door-conversation-btn').addEventListener('click', function () {
+      console.log('Start conversation clicked');
+      showToast();
+    });
+    document.getElementById('door-letter-btn').addEventListener('click', function () {
+      console.log('Write a letter clicked');
+      showToast();
+    });
+  })();
+</script>
+
+</body>
+</html>
