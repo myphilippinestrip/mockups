@@ -399,10 +399,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .practical-chevron,
-    .practical-content,
-    .drawer,
-    .drawer-backdrop,
-    .drawer-toast { transition: none !important; }
+    .practical-content { transition: none !important; }
   }
 
   /* -------- CLOSE -------- */
@@ -514,174 +511,6 @@
   .back-link:hover svg,
   .back-link:focus-visible svg { transform: translateX(-2px); }
 
-  /* -------- DRAWER + BACKDROP + TOAST -------- */
-  .drawer-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 90;
-    background: rgba(26, 22, 20, 0.4);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 300ms ease;
-  }
-  .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
-
-  .drawer {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100;
-    height: 78vh;
-    max-height: 600px;
-    background: var(--paper);
-    border-radius: 20px 20px 0 0;
-    transform: translateY(100%);
-    transition: transform 300ms ease;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.18);
-  }
-  .drawer.open { transform: translateY(0); }
-
-  .drawer-close {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-  }
-  .drawer-close svg { width: 20px; height: 20px; stroke: var(--ink); stroke-width: 1.5; fill: none; }
-
-  .drawer-head {
-    padding: 24px 24px 8px;
-    text-align: center;
-  }
-  .drawer-eyebrow {
-    font-family: var(--body);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ocean);
-  }
-  .drawer-title-main {
-    font-family: var(--display);
-    font-style: italic;
-    font-weight: 400;
-    font-size: 22px;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-    margin-top: 6px;
-  }
-  .drawer-context {
-    text-align: center;
-    margin-bottom: 24px;
-  }
-  .drawer-context-trip {
-    font-family: var(--display);
-    font-style: italic;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 1.2;
-    color: var(--coral);
-  }
-  .drawer-context-price {
-    font-family: var(--body);
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 1.4;
-    color: rgba(26, 22, 20, 0.7);
-    margin-top: 4px;
-  }
-
-  .drawer-toast {
-    position: absolute;
-    top: 16px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-8px);
-    max-width: calc(100% - 80px);
-    padding: 12px;
-    background: var(--paper);
-    border: 1px solid rgba(26, 22, 20, 0.08);
-    border-radius: 12px;
-    font-family: var(--display);
-    font-style: italic;
-    font-weight: 400;
-    font-size: 14px;
-    color: var(--ink);
-    text-align: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 300ms ease, transform 300ms ease;
-    z-index: 3;
-  }
-  .drawer-toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  .drawer-body {
-    padding: 16px 24px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    overflow-y: auto;
-    flex: 1;
-  }
-
-  .door {
-    border: 1px solid rgba(26, 22, 20, 0.08);
-    border-radius: 12px;
-    padding: 20px;
-    background: var(--paper);
-  }
-  .door-eyebrow {
-    font-family: var(--body);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
-  .door-eyebrow.ocean { color: var(--ocean); }
-  .door-eyebrow.coral { color: var(--coral); }
-  .door-title {
-    font-family: var(--display);
-    font-style: italic;
-    font-weight: 400;
-    font-size: 22px;
-    line-height: 1.2;
-    color: var(--ink);
-    margin-top: 8px;
-  }
-  .door-copy {
-    font-family: var(--body);
-    font-size: 15px;
-    line-height: 1.5;
-    color: var(--ink);
-    margin-top: 12px;
-  }
-  .door-btn {
-    width: 100%;
-    height: 44px;
-    margin-top: 16px;
-    border-radius: 999px;
-    font-family: var(--body);
-    font-weight: 500;
-    font-size: 15px;
-    color: var(--paper);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 200ms ease;
-  }
-  .door-btn.ocean { background: var(--ocean); }
-  .door-btn.ocean:hover { background: #225b8a; }
-  .door-btn.coral { background: var(--coral); }
-  .door-btn.coral:hover { background: var(--coral-dark); }
-
   /* -------- MEDIA QUERIES -------- */
   @media (max-width: 767px) {
     .topbar { padding: 14px 18px; }
@@ -699,8 +528,6 @@
     .close { padding: 88px 28px; }
     .practical { margin: 72px auto; }
     .scene { margin-bottom: 72px; }
-    .drawer-body { flex-direction: row; gap: 16px; }
-    .door { flex: 1; }
   }
 </style>
 </head>
@@ -718,7 +545,7 @@
       <a href="#">Journal</a>
       <a href="/about.html">About</a>
     </nav>
-    <a href="#drawer" class="enquire-link open-drawer">Start a letter</a>
+    <a href="#" class="enquire-link" data-mpt-drawer="doors">Start a letter</a>
   </div>
 </header>
 
@@ -857,15 +684,15 @@
 
   <section class="close" aria-label="The close">
     <div class="close-inner">
-      <p>Three days in Iloilo will not cover the city. That is the point. You leave knowing which grandson to phone, which morning the kansi is right, and which church sings on Sundays. If you have a question first, <a href="#drawer" class="open-drawer">ask us</a>.</p>
+      <p>Three days in Iloilo will not cover the city. That is the point. You leave knowing which grandson to phone, which morning the kansi is right, and which church sings on Sundays. If you have a question first, <a href="#" data-mpt-drawer="doors">ask us</a>.</p>
     </div>
   </section>
 
 </main>
 
 <div class="price-bar" role="region" aria-label="Trip actions">
-  <a href="#drawer" class="ask-link open-drawer">Have a question?</a>
-  <a href="#drawer" class="price-cta open-drawer">Book this trip</a>
+  <a href="#" class="ask-link" data-mpt-drawer="doors">Have a question?</a>
+  <a href="#" class="price-cta" data-mpt-drawer="doors">Book this trip</a>
 </div>
 
 <nav class="back-nav" aria-label="Back to destinations">
@@ -875,50 +702,16 @@
   </a>
 </nav>
 
-<div class="drawer-backdrop" id="drawer-backdrop" aria-hidden="true"></div>
-
-<aside
-  class="drawer"
-  id="drawer"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="drawer-title"
-  aria-hidden="true">
-  <button type="button" class="drawer-close" id="drawer-close" aria-label="Close">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M6 6l12 12M18 6l-12 12" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </button>
-
-  <div class="drawer-toast" id="drawer-toast" role="status" aria-live="polite">Mockup. This will connect to the real flow.</div>
-
-  <header class="drawer-head">
-    <div class="drawer-context">
-      <p class="drawer-context-trip">Iloilo &middot; 3D2N</p>
-      <p class="drawer-context-price">From USD 229 per person &middot; minimum 2 pax</p>
-    </div>
-    <span class="drawer-eyebrow">Get in touch</span>
-    <h2 class="drawer-title-main" id="drawer-title">Have a question?</h2>
-  </header>
-
-  <div class="drawer-body">
-
-    <article class="door">
-      <span class="door-eyebrow ocean">Answer now</span>
-      <h3 class="door-title">Start a conversation</h3>
-      <p class="door-copy">Ask anything about this trip. We&rsquo;ll get back to you quickly.</p>
-      <button type="button" class="door-btn ocean" id="door-conversation-btn">Start conversation</button>
-    </article>
-
-    <article class="door">
-      <span class="door-eyebrow coral">Not ready yet</span>
-      <h3 class="door-title">Write a letter</h3>
-      <p class="door-copy">Tell us the shape of your trip and we&rsquo;ll write back within a day.</p>
-      <button type="button" class="door-btn coral" id="door-letter-btn">Write a letter</button>
-    </article>
-
-  </div>
-</aside>
+<script>
+  window.MPT_DESTINATION = {
+    slug: 'iloilo',
+    title: 'Iloilo',
+    duration: '3D2N',
+    pricePerPerson: 229,
+    minPax: 2
+  };
+</script>
+<script src="drawer.js"></script>
 
 <script>
   // Topbar scrolled state
@@ -943,84 +736,6 @@
     btn.addEventListener('click', function () {
       const expanded = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!expanded));
-    });
-  })();
-
-  // Drawer
-  (function () {
-    const drawer = document.getElementById('drawer');
-    const backdrop = document.getElementById('drawer-backdrop');
-    const closeBtn = document.getElementById('drawer-close');
-    const toast = document.getElementById('drawer-toast');
-    const triggers = document.querySelectorAll('.open-drawer');
-    let lastFocus = null;
-    let toastTimer = null;
-
-    function focusables() {
-      return Array.from(drawer.querySelectorAll('button, a, [tabindex]:not([tabindex="-1"])'))
-        .filter(function (el) { return !el.disabled && el.offsetParent !== null; });
-    }
-
-    function openDrawer(e) {
-      if (e) e.preventDefault();
-      lastFocus = document.activeElement;
-      drawer.classList.add('open');
-      backdrop.classList.add('open');
-      drawer.setAttribute('aria-hidden', 'false');
-      backdrop.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      const f = focusables();
-      if (f.length) f[0].focus();
-    }
-
-    function closeDrawer() {
-      drawer.classList.remove('open');
-      backdrop.classList.remove('open');
-      drawer.setAttribute('aria-hidden', 'true');
-      backdrop.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-      if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
-    }
-
-    triggers.forEach(function (t) { t.addEventListener('click', openDrawer); });
-    backdrop.addEventListener('click', closeDrawer);
-    closeBtn.addEventListener('click', closeDrawer);
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && drawer.classList.contains('open')) {
-        closeDrawer();
-      }
-    });
-
-    // Focus trap
-    drawer.addEventListener('keydown', function (e) {
-      if (e.key !== 'Tab') return;
-      const f = focusables();
-      if (!f.length) return;
-      const first = f[0];
-      const last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    });
-
-    function showToast() {
-      toast.classList.add('visible');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(function () { toast.classList.remove('visible'); }, 3000);
-    }
-
-    document.getElementById('door-conversation-btn').addEventListener('click', function () {
-      console.log('Start conversation clicked');
-      showToast();
-    });
-    document.getElementById('door-letter-btn').addEventListener('click', function () {
-      console.log('Write a letter clicked');
-      showToast();
     });
   })();
 </script>
