@@ -117,7 +117,7 @@
     '.mpt-drawer-sub.is-visible { display: block; }',
 
     '.mpt-drawer-body {',
-    '  padding: 8px 24px 24px;',
+    '  padding: 8px 24px 0;',
     '  overflow-y: auto;',
     '  flex: 1;',
     '  opacity: 1;',
@@ -126,7 +126,7 @@
     '.mpt-drawer-body.is-fading { opacity: 0; }',
 
     /* doors */
-    '.mpt-doors { display: flex; flex-direction: column; gap: 16px; }',
+    '.mpt-doors { display: flex; flex-direction: column; gap: 16px; padding-bottom: 24px; }',
     '@media (min-width: ' + DESKTOP_BP + 'px) {',
     '  .mpt-doors { flex-direction: column; }',
     '}',
@@ -166,7 +166,7 @@
 
     /* placeholder bodies for stubs */
     '.mpt-placeholder {',
-    '  padding: 40px 0;',
+    '  padding: 40px 0 24px;',
     '  text-align: center;',
     '  color: rgba(26,26,26,0.6);',
     '  font-size: 14px;',
@@ -174,7 +174,11 @@
     '.mpt-placeholder b { color: #1A1A1A; font-weight: 500; }',
 
     /* booking flow */
-    '.mpt-booking { display: flex; flex-direction: column; gap: 18px; padding-bottom: 8px; }',
+    '.mpt-booking {',
+    '  display: flex; flex-direction: column;',
+    '  gap: 18px;',
+    '  min-height: 100%;',
+    '}',
 
     /* progress strip */
     '.mpt-progress {',
@@ -207,7 +211,7 @@
     '.mpt-step-heading {',
     '  font-family: "Fraunces", Georgia, serif;',
     '  font-weight: 400;',
-    '  font-size: 24px; line-height: 1.25;',
+    '  font-size: 22px; line-height: 1.25;',
     '  color: #1A1A1A;',
     '  letter-spacing: -0.01em;',
     '  margin-top: 4px;',
@@ -222,7 +226,7 @@
     '.mpt-cal {',
     '  border: 1px solid rgba(26,26,26,0.08);',
     '  border-radius: 12px;',
-    '  padding: 14px;',
+    '  padding: 10px;',
     '}',
     '.mpt-cal-head {',
     '  display: flex; align-items: center; justify-content: space-between;',
@@ -259,7 +263,7 @@
     '  padding: 6px 0 8px;',
     '}',
     '.mpt-cal-day {',
-    '  height: 40px;',
+    '  height: 36px;',
     '  display: inline-flex; align-items: center; justify-content: center;',
     '  border-radius: 4px;',
     '  font-size: 15px; color: #1A1A1A;',
@@ -276,12 +280,24 @@
     '.mpt-cal-info-start { font-size: 16px; color: #1A1A1A; line-height: 1.4; }',
     '.mpt-cal-info-end { font-size: 14px; color: rgba(26,26,26,0.6); line-height: 1.4; margin-top: 2px; }',
 
-    /* step actions row */
+    /* step actions: sticky footer pattern, applies to every booking step */
     '.mpt-step-actions {',
+    '  position: sticky;',
+    '  bottom: 0;',
+    '  margin-top: auto;',
+    '  margin-left: -24px;',
+    '  margin-right: -24px;',
+    '  padding: 16px 20px;',
+    '  min-height: 76px;',
+    '  box-sizing: border-box;',
+    '  background: #FFFFFF;',
+    '  border-top: 1px solid rgba(26,26,26,0.2);',
     '  display: flex; align-items: center; justify-content: space-between;',
-    '  gap: 12px; padding-top: 4px;',
+    '  gap: 12px;',
+    '  z-index: 1;',
     '}',
-    '.mpt-step-actions-spacer { flex: 0 0 auto; }',
+    /* step 1: only a primary, full row */
+    '.mpt-step-actions--solo { justify-content: flex-end; }',
     '.mpt-btn {',
     '  display: inline-flex; align-items: center; justify-content: center;',
     '  border: 0; cursor: pointer; font: inherit;',
@@ -302,11 +318,11 @@
     '  border-radius: 4px;',
     '}',
     '.mpt-btn--text:hover:not(:disabled) { color: #1A1A1A; text-decoration: underline; }',
-    '.mpt-step-actions .mpt-btn--ocean,',
-    '.mpt-step-actions .mpt-btn--coral { flex: 1 1 auto; }',
+    '.mpt-step-actions--solo .mpt-btn--ocean,',
+    '.mpt-step-actions--solo .mpt-btn--coral { flex: 1 1 auto; }',
     '@media (min-width: ' + DESKTOP_BP + 'px) {',
-    '  .mpt-step-actions .mpt-btn--ocean,',
-    '  .mpt-step-actions .mpt-btn--coral { flex: 0 0 auto; min-width: 220px; }',
+    '  .mpt-step-actions--solo .mpt-btn--ocean,',
+    '  .mpt-step-actions--solo .mpt-btn--coral { flex: 0 0 auto; min-width: 220px; }',
     '}',
 
     '@media (prefers-reduced-motion: reduce) {',
@@ -443,7 +459,7 @@
   }
 
   function formatDateLong(d) {
-    return DOW_SHORT[d.getDay()] + ', ' + pad2(d.getDate()) + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+    return DOW_SHORT[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
   }
 
   function parseNights(duration) {
@@ -453,7 +469,7 @@
   }
 
   function resetBooking(ctx) {
-    var today = new Date();
+    var earliest = startOfDay(addDays(new Date(), BOOKING_LEAD_DAYS));
     booking.step = 1;
     booking.startDate = null;
     booking.endDate = null;
@@ -463,8 +479,10 @@
     booking.total = 0;
     booking.reference = null;
     booking.completedAt = null;
-    booking.viewYear = today.getFullYear();
-    booking.viewMonth = today.getMonth();
+    // default the calendar view to the first month with bookable dates,
+    // not "today's month" (which would be all-disabled under the lead-time rule)
+    booking.viewYear = earliest.getFullYear();
+    booking.viewMonth = earliest.getMonth();
   }
 
   function renderProgress(currentStep) {
@@ -494,9 +512,8 @@
     var firstCol = (firstDay.getDay() + 6) % 7; // Monday-first
     var totalDays = lastDay.getDate();
 
-    // disable prev nav once view month is the current calendar month
-    var now = new Date();
-    var viewIsCurrentMonth = (year === now.getFullYear() && month === now.getMonth());
+    // disable prev nav at the earliest-bookable month: nothing useful before it
+    var viewIsEarliestMonth = (year === minDate.getFullYear() && month === minDate.getMonth());
 
     var cells = [];
     for (var i = 0; i < firstCol; i++) {
@@ -524,7 +541,7 @@
     return ''
       + '<div class="mpt-cal">'
       + '  <div class="mpt-cal-head">'
-      + '    <button type="button" class="mpt-cal-nav" data-cal-nav="-1" aria-label="Previous month"' + (viewIsCurrentMonth ? ' disabled' : '') + '>'
+      + '    <button type="button" class="mpt-cal-nav" data-cal-nav="-1" aria-label="Previous month"' + (viewIsEarliestMonth ? ' disabled' : '') + '>'
       + '      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
       + '    </button>'
       + '    <span class="mpt-cal-month">' + monthLabel + '</span>'
@@ -540,6 +557,7 @@
     var minDate = startOfDay(addDays(new Date(), BOOKING_LEAD_DAYS));
     var todayKey = dateKey(startOfDay(new Date()));
     var selectedKey = booking.startDate;
+    var subDest = ctx && ctx.title ? ctx.title : 'your destination';
 
     var info = '';
     if (booking.startDate) {
@@ -553,24 +571,27 @@
     }
 
     var nextDisabled = !booking.startDate;
-    var subDest = ctx && ctx.title ? ctx.title : 'your destination';
 
     return ''
       + '<h3 class="mpt-step-heading">Choose your start date.</h3>'
-      + '<p class="mpt-step-sub">Trips begin on the day of your arrival in ' + subDest + '.</p>'
+      + '<p class="mpt-step-sub">Earliest start is ' + formatDateLong(minDate) + '. Trips begin on the day you arrive in ' + subDest + '.</p>'
       + renderCalendar(booking.viewYear, booking.viewMonth, selectedKey, minDate, todayKey)
       + info
-      + '<div class="mpt-step-actions">'
-      + '  <span class="mpt-step-actions-spacer"></span>'
+      + '<div class="mpt-step-actions mpt-step-actions--solo">'
       + '  <button type="button" class="mpt-btn mpt-btn--ocean" data-booking-next="2"' + (nextDisabled ? ' disabled' : '') + '>Next</button>'
       + '</div>';
   }
 
   function renderBookingStub(label) {
+    // stubs for steps 2..5: placeholder body + sticky footer with a Back link
+    // so the calendar can be re-tested without closing the drawer.
     return ''
       + '<div class="mpt-placeholder">'
       + '  <p><b>' + label + '</b></p>'
       + '  <p>Built in the next commit.</p>'
+      + '</div>'
+      + '<div class="mpt-step-actions">'
+      + '  <button type="button" class="mpt-btn mpt-btn--text" data-booking-back>Back</button>'
       + '</div>';
   }
 
@@ -631,8 +652,19 @@
     }
   }
 
+  function wireBookingStub(ctx) {
+    var backBtn = els.body.querySelector('[data-booking-back]');
+    if (backBtn) {
+      backBtn.addEventListener('click', function () {
+        booking.step = Math.max(1, booking.step - 1);
+        rerenderBooking(ctx);
+      });
+    }
+  }
+
   function wireBooking(ctx) {
     if (booking.step === 1) wireBookingStep1(ctx);
+    else wireBookingStub(ctx);
   }
 
   // ---------- bodies ----------
