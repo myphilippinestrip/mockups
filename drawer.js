@@ -381,10 +381,18 @@
     /* step 3: review */
     '.mpt-step-3 { display: flex; flex-direction: column; padding-bottom: 6px; }',
     '.mpt-step-3 > .mpt-summary { margin-top: 24px; }',
-    '.mpt-step-3 > .mpt-field:nth-of-type(1) { margin-top: 28px; }',
-    '.mpt-step-3 > .mpt-field + .mpt-field { margin-top: 16px; }',
-    '.mpt-step-3 > .mpt-step-body-line { margin-top: 24px; }',
+    '.mpt-step-3 > .mpt-step-section-eyebrow { margin-top: 40px; }',
+    '.mpt-step-3 > .mpt-step-section-eyebrow + .mpt-field { margin-top: 16px; }',
+    '.mpt-step-3 > .mpt-field + .mpt-field { margin-top: 14px; }',
+    '.mpt-step-3 > .mpt-step-body-line { margin-top: 28px; }',
     '.mpt-step-3 > .mpt-step-microtext { margin-top: 14px; }',
+
+    /* section eyebrow (above the lead-traveller form) */
+    '.mpt-step-section-eyebrow {',
+    '  font-size: 12px; font-weight: 500;',
+    '  letter-spacing: 0.16em; text-transform: uppercase;',
+    '  color: rgba(26,26,26,0.6);',
+    '}',
 
     /* summary card */
     '.mpt-summary {',
@@ -1096,6 +1104,7 @@
       + '    <div class="mpt-summary-divider" aria-hidden="true"></div>'
       + '    <div class="mpt-summary-total"><span class="mpt-summary-total-label">Total</span><span class="mpt-summary-total-value">USD ' + formatPrice(total) + '</span></div>'
       + '  </div>'
+      + '  <p class="mpt-step-section-eyebrow">Lead traveller</p>'
       + '  <div class="mpt-field">'
       + '    <label class="mpt-field-label" for="mpt-lead-name">Lead traveller name</label>'
       + '    <input class="mpt-field-input" type="text" id="mpt-lead-name" name="leadName" autocomplete="name" value="' + escapeHtml(name) + '">'
