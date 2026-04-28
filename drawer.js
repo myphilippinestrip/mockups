@@ -461,6 +461,24 @@
     '.mpt-step-microtext { font-size: 12px; line-height: 1.4; color: rgba(26,26,26,0.6); }',
     '.mpt-step-microtext a { color: #2E74B0; text-decoration: underline; }',
 
+    /* step 4: redirect mock (matches the Maya hosted-checkout flow at launch) */
+    '.mpt-step-4 {',
+    '  display: flex; flex-direction: column; align-items: center;',
+    '  text-align: center;',
+    '  padding-bottom: 6px;',
+    '}',
+    '.mpt-step-4 .mpt-step-sub { font-size: 13px; margin-top: 6px; }',
+    '.mpt-step-4 .mpt-spinner { margin-top: 60px; margin-bottom: 60px; }',
+    '.mpt-spinner {',
+    '  width: 40px; height: 40px;',
+    '  border: 3px solid rgba(217,68,60,0.2);',
+    '  border-top-color: #D9443C;',
+    '  border-radius: 50%;',
+    '  animation: mpt-spin 800ms linear infinite;',
+    '}',
+    '@keyframes mpt-spin { to { transform: rotate(360deg); } }',
+    '@media (prefers-reduced-motion: reduce) { .mpt-spinner { animation: none; } }',
+
     /* step actions: sticky footer pattern, applies to every booking step */
     '.mpt-step-actions {',
     '  position: sticky;',
@@ -691,6 +709,26 @@
     };
   }
 
+  function generateBookingReference(ctx) {
+    // 3-letter code from slug ("iloilo" -> "ILO"). Fallback "XXX" guarantees a
+    // well-formed reference even if a destination slips in without context.
+    var code = (ctx && ctx.slug ? ctx.slug.slice(0, 3) : 'XXX').toUpperCase();
+    return 'MPT-' + code + '-' + Math.floor(100000 + Math.random() * 900000);
+  }
+
+  // ---------- redirect timer (step 4) ----------
+
+  // Holds the setTimeout that drives the 800ms drawer-to-confirmation hop.
+  // Cleared by close() so X mid-flight aborts the navigation per the brief.
+  var redirectTimer = null;
+
+  function clearRedirectTimer() {
+    if (redirectTimer) {
+      clearTimeout(redirectTimer);
+      redirectTimer = null;
+    }
+  }
+
   // ---------- booking persistence ----------
 
   var BOOKING_STORAGE_KEY = 'mpt_booking_draft';
@@ -743,7 +781,7 @@
     var canRestore = saved && sameDestination && !saved.completedAt;
 
     if (canRestore) {
-      var savedStep = (typeof saved.step === 'number' && saved.step >= 1 && saved.step <= 5) ? saved.step : 1;
+      var savedStep = (typeof saved.step === 'number' && saved.step >= 1 && saved.step <= 4) ? saved.step : 1;
       var savedT = (typeof saved.travellers === 'number') ? saved.travellers : minPax;
       // brief: if a previously saved value is below 2 or above 12 (shouldn't
       // happen, but guard), reset to 2
@@ -936,17 +974,18 @@
       + '</div>';
   }
 
-  function renderBookingStub(label) {
-    // stubs for steps 2..5: placeholder body + sticky footer with a Back link
-    // so the calendar can be re-tested without closing the drawer.
+  function renderBookingStep4(ctx) {
+    // Brief Phase A: replaces the old in-drawer "processing" animation with a
+    // brief redirect mock. The 800ms timer fires in wireBookingStep4 and
+    // navigates to /booking/confirmation.html. This is production-shaped: at
+    // launch, this is where the page actually leaves to Maya's hosted checkout.
     return ''
-      + '<div class="mpt-placeholder">'
-      + '  <p><b>' + label + '</b></p>'
-      + '  <p>Built in the next commit.</p>'
+      + '<div class="mpt-step-4">'
+      + '  <h3 class="mpt-step-heading">Redirecting to Maya.</h3>'
+      + '  <p class="mpt-step-sub">You will be taken to a secure payment page.</p>'
+      + '  <div class="mpt-spinner" aria-hidden="true"></div>'
       + '</div>'
-      + '<div class="mpt-step-actions">'
-      + '  <button type="button" class="mpt-btn mpt-btn--text" data-booking-back>Back</button>'
-      + '</div>';
+      + '<div class="mpt-step-actions"></div>';
   }
 
   function renderBooking(ctx) {
@@ -955,8 +994,7 @@
       case 1: stepBody = renderBookingStep1(ctx); break;
       case 2: stepBody = renderBookingStep2(ctx); break;
       case 3: stepBody = renderBookingStep3(ctx); break;
-      case 4: stepBody = renderBookingStub('Step 4: Payment'); break;
-      case 5: stepBody = renderBookingStub('Step 5: Confirmed'); break;
+      case 4: stepBody = renderBookingStep4(ctx); break;
       default: stepBody = '';
     }
     return ''
@@ -1171,8 +1209,14 @@
     if (payBtn) {
       payBtn.addEventListener('click', function () {
         if (payBtn.disabled) return;
+        // Brief: generate the booking reference at click time, mark the draft
+        // as completed, then transition to the redirecting state. The real
+        // Maya flow will set completedAt on webhook confirmation, not at click,
+        // but for the mockup these stand in for "submitted to payment".
+        booking.reference = generateBookingReference(ctx);
+        booking.completedAt = new Date().toISOString();
         booking.step = 4;
-        saveBookingDraft(); // flush latest input value + new step in one write
+        saveBookingDraft(); // flush latest input + ref + completedAt + step in one write
         rerenderBooking(ctx);
       });
     }
@@ -1186,22 +1230,28 @@
     }
   }
 
-  function wireBookingStub(ctx) {
-    var backBtn = els.body.querySelector('[data-booking-back]');
-    if (backBtn) {
-      backBtn.addEventListener('click', function () {
-        booking.step = Math.max(1, booking.step - 1);
-        saveBookingDraft();
-        rerenderBooking(ctx);
-      });
-    }
+  function wireBookingStep4(ctx) {
+    // Cancel any prior timer (defensive: rerender within step 4 shouldn't
+    // happen, but be safe).
+    clearRedirectTimer();
+
+    // MOCKUP: this navigates directly to the confirmation page.
+    // AT LAUNCH: replace with a fetch to /api/maya/create-checkout,
+    // then window.location = response.redirectUrl (Maya hosted page).
+    // The user will return to /booking/confirmation via Maya's redirect.
+    redirectTimer = setTimeout(function () {
+      redirectTimer = null;
+      var ref = booking.reference;
+      if (!ref) return; // defensive: nothing to navigate to
+      window.location.assign('/booking/confirmation.html?ref=' + encodeURIComponent(ref));
+    }, 800);
   }
 
   function wireBooking(ctx) {
     if (booking.step === 1) wireBookingStep1(ctx);
     else if (booking.step === 2) wireBookingStep2(ctx);
     else if (booking.step === 3) wireBookingStep3(ctx);
-    else wireBookingStub(ctx);
+    else if (booking.step === 4) wireBookingStep4(ctx);
   }
 
   // ---------- bodies ----------
@@ -1316,6 +1366,9 @@
 
   function close() {
     if (!state.open) return;
+    // If the user closes during the step 4 redirect mock (within the 800ms
+    // window), abort the navigation. Their state remains in sessionStorage.
+    clearRedirectTimer();
     els.drawer.classList.remove('is-open');
     els.backdrop.classList.remove('is-open');
     els.drawer.setAttribute('aria-hidden', 'true');
