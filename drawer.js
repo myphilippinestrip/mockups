@@ -253,7 +253,8 @@
     '.mpt-cal-grid {',
     '  display: grid;',
     '  grid-template-columns: repeat(7, 1fr);',
-    '  gap: 2px;',
+    '  row-gap: 2px;',
+    '  column-gap: 0;',
     '}',
     '.mpt-cal-dow {',
     '  font-size: 11px; font-weight: 500;',
@@ -262,22 +263,65 @@
     '  text-align: center;',
     '  padding: 6px 0 8px;',
     '}',
+
+    /* day cell: positioning container only. Two layers inside:
+       - mpt-cal-day-fill: absolute, behind, holds the range pill bg
+       - mpt-cal-day-num: relative, on top, holds the day number,
+         the hover wash, and the today inset border */
     '.mpt-cal-day {',
+    '  position: relative;',
     '  height: 36px;',
-    '  display: inline-flex; align-items: center; justify-content: center;',
-    '  border-radius: 4px;',
+    '  padding: 0;',
+    '  display: flex; align-items: center; justify-content: center;',
     '  font-size: 15px; color: #1A1A1A;',
     '  background: none; border: 0; cursor: pointer; font: inherit;',
-    '  transition: background 150ms ease, color 150ms ease;',
     '}',
     '.mpt-cal-day.is-blank { visibility: hidden; cursor: default; }',
-    '.mpt-cal-day.is-disabled { opacity: 0.3; cursor: default; }',
-    '.mpt-cal-day:not(.is-disabled):not(.is-start):not(.is-night):not(.is-end):hover { background: rgba(46,116,176,0.1); }',
-    '.mpt-cal-day.is-today { box-shadow: inset 0 0 0 1px #2E74B0; }',
-    /* date range: start / nights between / end */
-    '.mpt-cal-day.is-start { background: #D9443C; color: #FFFFFF; box-shadow: none; }',
-    '.mpt-cal-day.is-night { background: rgba(217,68,60,0.12); color: #1A1A1A; box-shadow: none; }',
-    '.mpt-cal-day.is-end { background: transparent; color: #1A1A1A; box-shadow: inset 0 0 0 1.5px #D9443C; }',
+    '.mpt-cal-day.is-disabled { cursor: default; }',
+    '.mpt-cal-day.is-disabled .mpt-cal-day-num { opacity: 0.3; }',
+
+    '.mpt-cal-day-fill {',
+    '  position: absolute;',
+    '  top: 0; bottom: 0; left: 0; right: 0;',
+    '  pointer-events: none;',
+    '  z-index: 0;',
+    '  background: transparent;',
+    '  border-radius: 0;',
+    '}',
+
+    '.mpt-cal-day-num {',
+    '  position: relative;',
+    '  z-index: 1;',
+    '  display: inline-flex; align-items: center; justify-content: center;',
+    '  width: 32px; height: 32px;',
+    '  border-radius: 4px;',
+    '  transition: background 150ms ease, color 150ms ease;',
+    '}',
+
+    /* hover (non-range, non-disabled) sits on the day number, not the cell */
+    '.mpt-cal-day:not(.is-disabled):not(.is-start):not(.is-night):not(.is-end):hover .mpt-cal-day-num {',
+    '  background: rgba(46,116,176,0.1);',
+    '}',
+
+    '.mpt-cal-day.is-today .mpt-cal-day-num { box-shadow: inset 0 0 0 1px #2E74B0; }',
+
+    /* range fills: continuous pill, edge-to-edge across adjacent cells */
+    '.mpt-cal-day.is-start .mpt-cal-day-fill,',
+    '.mpt-cal-day.is-end .mpt-cal-day-fill { background: #D9443C; }',
+    '.mpt-cal-day.is-night .mpt-cal-day-fill { background: rgba(217,68,60,0.12); }',
+    '.mpt-cal-day.range-left .mpt-cal-day-fill {',
+    '  border-top-left-radius: 6px;',
+    '  border-bottom-left-radius: 6px;',
+    '}',
+    '.mpt-cal-day.range-right .mpt-cal-day-fill {',
+    '  border-top-right-radius: 6px;',
+    '  border-bottom-right-radius: 6px;',
+    '}',
+
+    /* day-number colour in range: white on the solid coral cells, ink on the night fill */
+    '.mpt-cal-day.is-start .mpt-cal-day-num,',
+    '.mpt-cal-day.is-end .mpt-cal-day-num { color: #FFFFFF; box-shadow: none; background: transparent; }',
+    '.mpt-cal-day.is-night .mpt-cal-day-num { color: #1A1A1A; box-shadow: none; background: transparent; }',
 
     '.mpt-cal-info { margin-top: 4px; }',
     '.mpt-cal-info-start { font-size: 16px; color: #1A1A1A; line-height: 1.4; }',
@@ -526,18 +570,38 @@
       var date = new Date(year, month, d);
       var key = dateKey(date);
       var disabled = date < minDate;
+      var col = (firstCol + (d - 1)) % 7; // 0 = Mon, 6 = Sun
+      // range: ISO date strings sort lexically the same as chronologically
+      var isStart = (key === startKey);
+      var isEnd = (key === endKey);
+      var isNight = (startKey && endKey && !isStart && !isEnd && key > startKey && key < endKey);
+      var inRange = isStart || isEnd || isNight;
+
       var classes = ['mpt-cal-day'];
       if (disabled) classes.push('is-disabled');
       if (key === todayKey) classes.push('is-today');
-      // range: ISO date strings sort lexically the same as chronologically
-      if (key === startKey) classes.push('is-start');
-      else if (key === endKey) classes.push('is-end');
-      else if (startKey && endKey && key > startKey && key < endKey) classes.push('is-night');
+      if (isStart) classes.push('is-start');
+      if (isEnd) classes.push('is-end');
+      if (isNight) classes.push('is-night');
+      if (inRange) {
+        // pill caps: actual start/end always close, plus row-edges and
+        // month-edges so wrap and cross-month ranges read as continuous
+        var roundLeft = isStart || col === 0 || d === 1;
+        var roundRight = isEnd || col === 6 || d === totalDays;
+        if (roundLeft) classes.push('range-left');
+        if (roundRight) classes.push('range-right');
+      }
+
       var label = formatDateLong(date);
       var attrs = disabled
         ? 'disabled aria-disabled="true" aria-label="' + label + ', not selectable"'
         : 'data-cal-day="' + key + '" aria-label="' + label + '"';
-      cells.push('<button type="button" class="' + classes.join(' ') + '" ' + attrs + '>' + d + '</button>');
+      cells.push(
+        '<button type="button" class="' + classes.join(' ') + '" ' + attrs + '>'
+          + '<span class="mpt-cal-day-fill"></span>'
+          + '<span class="mpt-cal-day-num">' + d + '</span>'
+        + '</button>'
+      );
     }
 
     var dowRow = DOW_LABELS.map(function (l) {
