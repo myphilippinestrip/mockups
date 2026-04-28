@@ -272,9 +272,12 @@
     '}',
     '.mpt-cal-day.is-blank { visibility: hidden; cursor: default; }',
     '.mpt-cal-day.is-disabled { opacity: 0.3; cursor: default; }',
-    '.mpt-cal-day:not(.is-disabled):not(.is-selected):hover { background: rgba(46,116,176,0.1); }',
+    '.mpt-cal-day:not(.is-disabled):not(.is-start):not(.is-night):not(.is-end):hover { background: rgba(46,116,176,0.1); }',
     '.mpt-cal-day.is-today { box-shadow: inset 0 0 0 1px #2E74B0; }',
-    '.mpt-cal-day.is-selected { background: #D9443C; color: #FFFFFF; box-shadow: none; }',
+    /* date range: start / nights between / end */
+    '.mpt-cal-day.is-start { background: #D9443C; color: #FFFFFF; box-shadow: none; }',
+    '.mpt-cal-day.is-night { background: rgba(217,68,60,0.12); color: #1A1A1A; box-shadow: none; }',
+    '.mpt-cal-day.is-end { background: transparent; color: #1A1A1A; box-shadow: inset 0 0 0 1.5px #D9443C; }',
 
     '.mpt-cal-info { margin-top: 4px; }',
     '.mpt-cal-info-start { font-size: 16px; color: #1A1A1A; line-height: 1.4; }',
@@ -505,7 +508,7 @@
       + '<p class="mpt-step-label">' + STEP_LABELS[currentStep - 1] + '</p>';
   }
 
-  function renderCalendar(year, month, selectedKey, minDate, todayKey) {
+  function renderCalendar(year, month, startKey, endKey, minDate, todayKey) {
     var monthLabel = MONTHS[month] + ' ' + year;
     var firstDay = new Date(year, month, 1);
     var lastDay = new Date(year, month + 1, 0);
@@ -526,7 +529,10 @@
       var classes = ['mpt-cal-day'];
       if (disabled) classes.push('is-disabled');
       if (key === todayKey) classes.push('is-today');
-      if (key === selectedKey) classes.push('is-selected');
+      // range: ISO date strings sort lexically the same as chronologically
+      if (key === startKey) classes.push('is-start');
+      else if (key === endKey) classes.push('is-end');
+      else if (startKey && endKey && key > startKey && key < endKey) classes.push('is-night');
       var label = formatDateLong(date);
       var attrs = disabled
         ? 'disabled aria-disabled="true" aria-label="' + label + ', not selectable"'
@@ -556,7 +562,6 @@
   function renderBookingStep1(ctx) {
     var minDate = startOfDay(addDays(new Date(), BOOKING_LEAD_DAYS));
     var todayKey = dateKey(startOfDay(new Date()));
-    var selectedKey = booking.startDate;
     var subDest = ctx && ctx.title ? ctx.title : 'your destination';
 
     var info = '';
@@ -575,7 +580,7 @@
     return ''
       + '<h3 class="mpt-step-heading">Choose your start date.</h3>'
       + '<p class="mpt-step-sub">Earliest start is ' + formatDateLong(minDate) + '. Trips begin on the day you arrive in ' + subDest + '.</p>'
-      + renderCalendar(booking.viewYear, booking.viewMonth, selectedKey, minDate, todayKey)
+      + renderCalendar(booking.viewYear, booking.viewMonth, booking.startDate, booking.endDate, minDate, todayKey)
       + info
       + '<div class="mpt-step-actions mpt-step-actions--solo">'
       + '  <button type="button" class="mpt-btn mpt-btn--ocean" data-booking-next="2"' + (nextDisabled ? ' disabled' : '') + '>Next</button>'
