@@ -331,6 +331,53 @@
     '.mpt-cal-info-start { font-size: 16px; color: #1A1A1A; line-height: 1.4; }',
     '.mpt-cal-info-end { font-size: 14px; color: rgba(26,26,26,0.6); line-height: 1.4; margin-top: 2px; }',
 
+    /* step 2 wrapper: opt out of the booking flex gap so internal spacings
+       can be set per the design (64px / 32px / 24px) without doing
+       arithmetic against the parent gap value */
+    '.mpt-step-2 { display: flex; flex-direction: column; padding-bottom: 6px; }',
+    '.mpt-step-2 > .mpt-step-sub { margin-top: 6px; }',
+    '.mpt-step-2 > .mpt-counter { margin-top: 64px; }',
+    '.mpt-step-2 > .mpt-totals { margin-top: 32px; }',
+    '.mpt-step-2 > .mpt-step-bottom-note { margin-top: 24px; }',
+
+    /* counter widget */
+    '.mpt-counter {',
+    '  display: flex; align-items: center; justify-content: center;',
+    '  gap: 16px;',
+    '}',
+    '.mpt-counter-btn {',
+    '  width: 48px; height: 48px;',
+    '  background: #FFFFFF;',
+    '  border: 1.5px solid rgba(26,26,26,0.2);',
+    '  border-radius: 8px;',
+    '  cursor: pointer;',
+    '  font-family: inherit; font-weight: 500; font-size: 24px;',
+    '  color: #1A1A1A;',
+    '  display: inline-flex; align-items: center; justify-content: center;',
+    '  line-height: 1;',
+    '  transition: border-color 200ms ease;',
+    '}',
+    '.mpt-counter-btn:hover:not(:disabled) { border-color: rgba(26,26,26,0.4); }',
+    '.mpt-counter-btn:disabled { opacity: 0.4; cursor: default; }',
+    '.mpt-counter-num {',
+    '  font-family: "Fraunces", Georgia, serif;',
+    '  font-weight: 400; font-size: 56px;',
+    '  color: #1A1A1A;',
+    '  width: 96px;',
+    '  text-align: center;',
+    '  line-height: 1;',
+    '}',
+
+    /* totals + bottom note */
+    '.mpt-totals { text-align: center; display: flex; flex-direction: column; gap: 8px; }',
+    '.mpt-totals-per { font-size: 14px; color: rgba(26,26,26,0.6); }',
+    '.mpt-totals-total { font-size: 24px; font-weight: 500; color: #D9443C; }',
+    '.mpt-step-bottom-note {',
+    '  text-align: center;',
+    '  font-size: 13px; line-height: 1.5;',
+    '  color: rgba(26,26,26,0.6);',
+    '}',
+
     /* step actions: sticky footer pattern, applies to every booking step */
     '.mpt-step-actions {',
     '  position: sticky;',
@@ -519,21 +566,105 @@
     return m ? parseInt(m[1], 10) : 0;
   }
 
+  function formatPrice(n) {
+    // thousands separator: 458 -> "458", 2748 -> "2,748"
+    return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  // ---------- booking persistence ----------
+
+  var BOOKING_STORAGE_KEY = 'mpt_booking_draft';
+
+  function loadBookingDraft() {
+    try {
+      var raw = window.sessionStorage && sessionStorage.getItem(BOOKING_STORAGE_KEY);
+      if (!raw) return null;
+      var data = JSON.parse(raw);
+      return (data && typeof data === 'object') ? data : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function saveBookingDraft() {
+    try {
+      if (!window.sessionStorage) return;
+      sessionStorage.setItem(BOOKING_STORAGE_KEY, JSON.stringify({
+        destination: state.context ? {
+          slug: state.context.slug,
+          title: state.context.title,
+          duration: state.context.duration,
+          pricePerPerson: state.context.pricePerPerson,
+          minPax: state.context.minPax
+        } : null,
+        step: booking.step,
+        startDate: booking.startDate,
+        endDate: booking.endDate,
+        travellers: booking.travellers,
+        leadName: booking.leadName,
+        leadEmail: booking.leadEmail,
+        total: booking.total,
+        reference: booking.reference,
+        completedAt: booking.completedAt
+      }));
+    } catch (e) { /* sessionStorage may be disabled or full; silently ignore */ }
+  }
+
+  function clearBookingDraft() {
+    try { window.sessionStorage && sessionStorage.removeItem(BOOKING_STORAGE_KEY); } catch (e) {}
+  }
+
   function resetBooking(ctx) {
     var earliest = startOfDay(addDays(new Date(), BOOKING_LEAD_DAYS));
-    booking.step = 1;
-    booking.startDate = null;
-    booking.endDate = null;
-    booking.travellers = (ctx && ctx.minPax) || 2;
-    booking.leadName = '';
-    booking.leadEmail = '';
-    booking.total = 0;
-    booking.reference = null;
-    booking.completedAt = null;
-    // default the calendar view to the first month with bookable dates,
-    // not "today's month" (which would be all-disabled under the lead-time rule)
-    booking.viewYear = earliest.getFullYear();
-    booking.viewMonth = earliest.getMonth();
+    var per = (ctx && ctx.pricePerPerson) || 0;
+    var minPax = (ctx && ctx.minPax) || 2;
+    var saved = loadBookingDraft();
+    var sameDestination = saved && saved.destination && ctx && saved.destination.slug === ctx.slug;
+    var canRestore = saved && sameDestination && !saved.completedAt;
+
+    if (canRestore) {
+      var savedStep = (typeof saved.step === 'number' && saved.step >= 1 && saved.step <= 5) ? saved.step : 1;
+      var savedT = (typeof saved.travellers === 'number') ? saved.travellers : minPax;
+      // brief: if a previously saved value is below 2 or above 12 (shouldn't
+      // happen, but guard), reset to 2
+      if (savedT < 2 || savedT > 12) savedT = 2;
+
+      booking.step = savedStep;
+      booking.startDate = saved.startDate || null;
+      booking.endDate = saved.endDate || null;
+      booking.travellers = savedT;
+      booking.leadName = saved.leadName || '';
+      booking.leadEmail = saved.leadEmail || '';
+      booking.total = (typeof saved.total === 'number') ? saved.total : (savedT * per);
+      booking.reference = saved.reference || null;
+      booking.completedAt = null;
+
+      // calendar view: jump to the saved selection's month if one exists,
+      // otherwise the first bookable month
+      if (booking.startDate) {
+        var sd = dateFromKey(booking.startDate);
+        booking.viewYear = sd.getFullYear();
+        booking.viewMonth = sd.getMonth();
+      } else {
+        booking.viewYear = earliest.getFullYear();
+        booking.viewMonth = earliest.getMonth();
+      }
+    } else {
+      booking.step = 1;
+      booking.startDate = null;
+      booking.endDate = null;
+      booking.travellers = minPax;
+      booking.leadName = '';
+      booking.leadEmail = '';
+      booking.total = minPax * per;
+      booking.reference = null;
+      booking.completedAt = null;
+      booking.viewYear = earliest.getFullYear();
+      booking.viewMonth = earliest.getMonth();
+      // a saved draft from a different destination, or a completed one, is
+      // stale: drop it so we don't keep restoring it
+      if (saved) clearBookingDraft();
+    }
   }
 
   function renderProgress(currentStep) {
@@ -702,7 +833,7 @@
     var stepBody;
     switch (booking.step) {
       case 1: stepBody = renderBookingStep1(ctx); break;
-      case 2: stepBody = renderBookingStub('Step 2: How many travellers?'); break;
+      case 2: stepBody = renderBookingStep2(ctx); break;
       case 3: stepBody = renderBookingStub('Step 3: Review'); break;
       case 4: stepBody = renderBookingStub('Step 4: Payment'); break;
       case 5: stepBody = renderBookingStub('Step 5: Confirmed'); break;
@@ -741,6 +872,7 @@
         var nights = parseNights(ctx && ctx.duration);
         var sd = dateFromKey(key);
         booking.endDate = nights > 0 ? dateKey(addDays(sd, nights)) : null;
+        saveBookingDraft();
         rerenderBooking(ctx);
       });
     });
@@ -750,6 +882,79 @@
       nextBtn.addEventListener('click', function () {
         if (!booking.startDate) return;
         booking.step = 2;
+        saveBookingDraft();
+        rerenderBooking(ctx);
+      });
+    }
+  }
+
+  function renderBookingStep2(ctx) {
+    var per = (ctx && ctx.pricePerPerson) || 0;
+    var minTravellers = 2; // brief: floor is hard 2 regardless of ctx
+    var maxTravellers = 12;
+    var n = booking.travellers;
+    if (n < minTravellers) n = minTravellers;
+    if (n > maxTravellers) n = maxTravellers;
+    var total = n * per;
+
+    var minusDisabled = (n <= minTravellers) ? ' disabled aria-disabled="true"' : '';
+    var plusDisabled = (n >= maxTravellers) ? ' disabled aria-disabled="true"' : '';
+
+    return ''
+      + '<div class="mpt-step-2">'
+      + '  <h3 class="mpt-step-heading">How many travellers?</h3>'
+      + '  <p class="mpt-step-sub">Including yourself. The trip is private throughout.</p>'
+      + '  <div class="mpt-counter">'
+      + '    <button type="button" class="mpt-counter-btn" data-counter-step="-1" aria-label="Decrease travellers"' + minusDisabled + '>−</button>'
+      + '    <span class="mpt-counter-num" aria-live="polite" aria-atomic="true">' + n + '</span>'
+      + '    <button type="button" class="mpt-counter-btn" data-counter-step="1" aria-label="Increase travellers"' + plusDisabled + '>+</button>'
+      + '  </div>'
+      + '  <div class="mpt-totals">'
+      + '    <p class="mpt-totals-per">USD ' + per + ' per person</p>'
+      + '    <p class="mpt-totals-total">Total: USD ' + formatPrice(total) + '</p>'
+      + '  </div>'
+      + '  <p class="mpt-step-bottom-note">Minimum 2 travellers. The trip remains private regardless of group size.</p>'
+      + '</div>'
+      + '<div class="mpt-step-actions">'
+      + '  <button type="button" class="mpt-btn mpt-btn--text" data-booking-back>Back</button>'
+      + '  <button type="button" class="mpt-btn mpt-btn--ocean" data-booking-next="3">Next</button>'
+      + '</div>';
+  }
+
+  function wireBookingStep2(ctx) {
+    var per = (ctx && ctx.pricePerPerson) || 0;
+    var minTravellers = 2;
+    var maxTravellers = 12;
+
+    var counterBtns = els.body.querySelectorAll('[data-counter-step]');
+    Array.prototype.forEach.call(counterBtns, function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.disabled) return;
+        var delta = parseInt(btn.getAttribute('data-counter-step'), 10);
+        var next = booking.travellers + delta;
+        if (next < minTravellers) next = minTravellers;
+        if (next > maxTravellers) next = maxTravellers;
+        booking.travellers = next;
+        booking.total = next * per;
+        saveBookingDraft();
+        rerenderBooking(ctx);
+      });
+    });
+
+    var backBtn = els.body.querySelector('[data-booking-back]');
+    if (backBtn) {
+      backBtn.addEventListener('click', function () {
+        booking.step = 1;
+        saveBookingDraft();
+        rerenderBooking(ctx);
+      });
+    }
+
+    var nextBtn = els.body.querySelector('[data-booking-next="3"]');
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function () {
+        booking.step = 3;
+        saveBookingDraft();
         rerenderBooking(ctx);
       });
     }
@@ -760,6 +965,7 @@
     if (backBtn) {
       backBtn.addEventListener('click', function () {
         booking.step = Math.max(1, booking.step - 1);
+        saveBookingDraft();
         rerenderBooking(ctx);
       });
     }
@@ -767,6 +973,7 @@
 
   function wireBooking(ctx) {
     if (booking.step === 1) wireBookingStep1(ctx);
+    else if (booking.step === 2) wireBookingStep2(ctx);
     else wireBookingStub(ctx);
   }
 
