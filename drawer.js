@@ -173,8 +173,145 @@
     '}',
     '.mpt-placeholder b { color: #1A1A1A; font-weight: 500; }',
 
+    /* booking flow */
+    '.mpt-booking { display: flex; flex-direction: column; gap: 18px; padding-bottom: 8px; }',
+
+    /* progress strip */
+    '.mpt-progress {',
+    '  display: flex; align-items: center; justify-content: center;',
+    '  padding: 0 8px; gap: 0;',
+    '}',
+    '.mpt-progress-step {',
+    '  flex: 0 0 auto; width: 8px; height: 8px; border-radius: 50%;',
+    '  border: 1px solid rgba(26,26,26,0.2); background: transparent;',
+    '  transition: background 200ms ease, border-color 200ms ease;',
+    '}',
+    '.mpt-progress-step.is-upcoming { width: 6px; height: 6px; }',
+    '.mpt-progress-step.is-completed { background: #2E74B0; border-color: #2E74B0; }',
+    '.mpt-progress-step.is-active { background: #D9443C; border-color: #D9443C; }',
+    '.mpt-progress-line {',
+    '  flex: 1 1 auto; height: 1px; max-width: 36px; min-width: 12px;',
+    '  background: rgba(26,26,26,0.2);',
+    '  margin: 0 4px;',
+    '}',
+    '.mpt-progress-line.is-completed { background: #2E74B0; }',
+
+    '.mpt-step-label {',
+    '  text-align: center;',
+    '  font-size: 12px; font-weight: 500;',
+    '  letter-spacing: 0.16em; text-transform: uppercase;',
+    '  color: rgba(26,26,26,0.6);',
+    '  margin-top: 4px;',
+    '}',
+
+    '.mpt-step-heading {',
+    '  font-family: "Fraunces", Georgia, serif;',
+    '  font-weight: 400;',
+    '  font-size: 24px; line-height: 1.25;',
+    '  color: #1A1A1A;',
+    '  letter-spacing: -0.01em;',
+    '  margin-top: 4px;',
+    '}',
+    '.mpt-step-sub {',
+    '  font-size: 14px; line-height: 1.5;',
+    '  color: rgba(26,26,26,0.6);',
+    '  margin-top: 6px;',
+    '}',
+
+    /* calendar */
+    '.mpt-cal {',
+    '  border: 1px solid rgba(26,26,26,0.08);',
+    '  border-radius: 12px;',
+    '  padding: 14px;',
+    '}',
+    '.mpt-cal-head {',
+    '  display: flex; align-items: center; justify-content: space-between;',
+    '  margin-bottom: 10px;',
+    '}',
+    '.mpt-cal-month {',
+    '  font-family: "Fraunces", Georgia, serif;',
+    '  font-weight: 400;',
+    '  font-size: 17px;',
+    '  color: #1A1A1A;',
+    '}',
+    '.mpt-cal-nav {',
+    '  width: 36px; height: 36px;',
+    '  display: inline-flex; align-items: center; justify-content: center;',
+    '  background: none; border: 0; cursor: pointer; color: #1A1A1A;',
+    '  border-radius: 6px;',
+    '  transition: background 150ms ease;',
+    '}',
+    '.mpt-cal-nav:hover { background: rgba(46,116,176,0.08); }',
+    '.mpt-cal-nav:disabled { opacity: 0.3; cursor: default; }',
+    '.mpt-cal-nav:disabled:hover { background: none; }',
+    '.mpt-cal-nav svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.5; fill: none; }',
+
+    '.mpt-cal-grid {',
+    '  display: grid;',
+    '  grid-template-columns: repeat(7, 1fr);',
+    '  gap: 2px;',
+    '}',
+    '.mpt-cal-dow {',
+    '  font-size: 11px; font-weight: 500;',
+    '  letter-spacing: 0.10em; text-transform: uppercase;',
+    '  color: rgba(26,26,26,0.5);',
+    '  text-align: center;',
+    '  padding: 6px 0 8px;',
+    '}',
+    '.mpt-cal-day {',
+    '  height: 40px;',
+    '  display: inline-flex; align-items: center; justify-content: center;',
+    '  border-radius: 4px;',
+    '  font-size: 15px; color: #1A1A1A;',
+    '  background: none; border: 0; cursor: pointer; font: inherit;',
+    '  transition: background 150ms ease, color 150ms ease;',
+    '}',
+    '.mpt-cal-day.is-blank { visibility: hidden; cursor: default; }',
+    '.mpt-cal-day.is-disabled { opacity: 0.3; cursor: default; }',
+    '.mpt-cal-day:not(.is-disabled):not(.is-selected):hover { background: rgba(46,116,176,0.1); }',
+    '.mpt-cal-day.is-today { box-shadow: inset 0 0 0 1px #2E74B0; }',
+    '.mpt-cal-day.is-selected { background: #D9443C; color: #FFFFFF; box-shadow: none; }',
+
+    '.mpt-cal-info { margin-top: 4px; }',
+    '.mpt-cal-info-start { font-size: 16px; color: #1A1A1A; line-height: 1.4; }',
+    '.mpt-cal-info-end { font-size: 14px; color: rgba(26,26,26,0.6); line-height: 1.4; margin-top: 2px; }',
+
+    /* step actions row */
+    '.mpt-step-actions {',
+    '  display: flex; align-items: center; justify-content: space-between;',
+    '  gap: 12px; padding-top: 4px;',
+    '}',
+    '.mpt-step-actions-spacer { flex: 0 0 auto; }',
+    '.mpt-btn {',
+    '  display: inline-flex; align-items: center; justify-content: center;',
+    '  border: 0; cursor: pointer; font: inherit;',
+    '  padding: 14px 28px; min-height: 44px;',
+    '  border-radius: 999px;',
+    '  font-weight: 500; font-size: 14px;',
+    '  transition: background 200ms ease, opacity 200ms ease;',
+    '}',
+    '.mpt-btn--ocean { background: #2E74B0; color: #FFFFFF; }',
+    '.mpt-btn--ocean:hover:not(:disabled) { background: #265F92; }',
+    '.mpt-btn--coral { background: #D9443C; color: #FFFFFF; }',
+    '.mpt-btn--coral:hover:not(:disabled) { background: #B8352E; }',
+    '.mpt-btn:disabled { opacity: 0.4; cursor: default; }',
+    '.mpt-btn--text {',
+    '  background: none; padding: 8px 4px; min-height: 36px; min-width: 0;',
+    '  color: rgba(26,26,26,0.6);',
+    '  font-weight: 500; font-size: 14px;',
+    '  border-radius: 4px;',
+    '}',
+    '.mpt-btn--text:hover:not(:disabled) { color: #1A1A1A; text-decoration: underline; }',
+    '.mpt-step-actions .mpt-btn--ocean,',
+    '.mpt-step-actions .mpt-btn--coral { flex: 1 1 auto; }',
+    '@media (min-width: ' + DESKTOP_BP + 'px) {',
+    '  .mpt-step-actions .mpt-btn--ocean,',
+    '  .mpt-step-actions .mpt-btn--coral { flex: 0 0 auto; min-width: 220px; }',
+    '}',
+
     '@media (prefers-reduced-motion: reduce) {',
     '  .mpt-drawer, .mpt-drawer-backdrop, .mpt-drawer-body { transition: none !important; }',
+    '  .mpt-progress-step, .mpt-progress-line, .mpt-cal-day, .mpt-cal-nav, .mpt-btn { transition: none !important; }',
     '}'
   ].join('\n');
 
@@ -257,6 +394,247 @@
     els.back.classList.toggle('is-visible', showBack);
   }
 
+  // ---------- booking ----------
+
+  var DOW_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var DOW_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  var MONTHS = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  var STEP_LABELS = ['WHEN', 'HOW MANY', 'REVIEW', 'PAYMENT', 'CONFIRMED'];
+  var BOOKING_LEAD_DAYS = 11;
+
+  var booking = {
+    step: 1,
+    startDate: null,
+    endDate: null,
+    travellers: 2,
+    leadName: '',
+    leadEmail: '',
+    total: 0,
+    reference: null,
+    completedAt: null,
+    viewYear: null,
+    viewMonth: null
+  };
+
+  function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function dateKey(d) {
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  }
+
+  function dateFromKey(k) {
+    var p = k.split('-');
+    return new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10));
+  }
+
+  function startOfDay(d) {
+    var c = new Date(d);
+    c.setHours(0, 0, 0, 0);
+    return c;
+  }
+
+  function addDays(d, n) {
+    var c = new Date(d);
+    c.setDate(c.getDate() + n);
+    return c;
+  }
+
+  function formatDateLong(d) {
+    return DOW_SHORT[d.getDay()] + ', ' + pad2(d.getDate()) + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function parseNights(duration) {
+    if (!duration) return 0;
+    var m = /(\d+)N/i.exec(duration);
+    return m ? parseInt(m[1], 10) : 0;
+  }
+
+  function resetBooking(ctx) {
+    var today = new Date();
+    booking.step = 1;
+    booking.startDate = null;
+    booking.endDate = null;
+    booking.travellers = (ctx && ctx.minPax) || 2;
+    booking.leadName = '';
+    booking.leadEmail = '';
+    booking.total = 0;
+    booking.reference = null;
+    booking.completedAt = null;
+    booking.viewYear = today.getFullYear();
+    booking.viewMonth = today.getMonth();
+  }
+
+  function renderProgress(currentStep) {
+    var parts = [];
+    for (var i = 1; i <= 5; i++) {
+      var stepClass = 'mpt-progress-step';
+      if (i < currentStep) stepClass += ' is-completed';
+      else if (i === currentStep) stepClass += ' is-active';
+      else stepClass += ' is-upcoming';
+      parts.push('<span class="' + stepClass + '" aria-hidden="true"></span>');
+      if (i < 5) {
+        var lineClass = 'mpt-progress-line' + (i < currentStep ? ' is-completed' : '');
+        parts.push('<span class="' + lineClass + '" aria-hidden="true"></span>');
+      }
+    }
+    return ''
+      + '<div class="mpt-progress" role="progressbar" aria-valuemin="1" aria-valuemax="5" aria-valuenow="' + currentStep + '">'
+      + parts.join('')
+      + '</div>'
+      + '<p class="mpt-step-label">' + STEP_LABELS[currentStep - 1] + '</p>';
+  }
+
+  function renderCalendar(year, month, selectedKey, minDate, todayKey) {
+    var monthLabel = MONTHS[month] + ' ' + year;
+    var firstDay = new Date(year, month, 1);
+    var lastDay = new Date(year, month + 1, 0);
+    var firstCol = (firstDay.getDay() + 6) % 7; // Monday-first
+    var totalDays = lastDay.getDate();
+
+    // disable prev nav once view month is the current calendar month
+    var now = new Date();
+    var viewIsCurrentMonth = (year === now.getFullYear() && month === now.getMonth());
+
+    var cells = [];
+    for (var i = 0; i < firstCol; i++) {
+      cells.push('<span class="mpt-cal-day is-blank" aria-hidden="true"></span>');
+    }
+    for (var d = 1; d <= totalDays; d++) {
+      var date = new Date(year, month, d);
+      var key = dateKey(date);
+      var disabled = date < minDate;
+      var classes = ['mpt-cal-day'];
+      if (disabled) classes.push('is-disabled');
+      if (key === todayKey) classes.push('is-today');
+      if (key === selectedKey) classes.push('is-selected');
+      var label = formatDateLong(date);
+      var attrs = disabled
+        ? 'disabled aria-disabled="true" aria-label="' + label + ', not selectable"'
+        : 'data-cal-day="' + key + '" aria-label="' + label + '"';
+      cells.push('<button type="button" class="' + classes.join(' ') + '" ' + attrs + '>' + d + '</button>');
+    }
+
+    var dowRow = DOW_LABELS.map(function (l) {
+      return '<span class="mpt-cal-dow" aria-hidden="true">' + l + '</span>';
+    }).join('');
+
+    return ''
+      + '<div class="mpt-cal">'
+      + '  <div class="mpt-cal-head">'
+      + '    <button type="button" class="mpt-cal-nav" data-cal-nav="-1" aria-label="Previous month"' + (viewIsCurrentMonth ? ' disabled' : '') + '>'
+      + '      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      + '    </button>'
+      + '    <span class="mpt-cal-month">' + monthLabel + '</span>'
+      + '    <button type="button" class="mpt-cal-nav" data-cal-nav="1" aria-label="Next month">'
+      + '      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      + '    </button>'
+      + '  </div>'
+      + '  <div class="mpt-cal-grid">' + dowRow + cells.join('') + '</div>'
+      + '</div>';
+  }
+
+  function renderBookingStep1(ctx) {
+    var minDate = startOfDay(addDays(new Date(), BOOKING_LEAD_DAYS));
+    var todayKey = dateKey(startOfDay(new Date()));
+    var selectedKey = booking.startDate;
+
+    var info = '';
+    if (booking.startDate) {
+      var sd = dateFromKey(booking.startDate);
+      var ed = booking.endDate ? dateFromKey(booking.endDate) : null;
+      info = ''
+        + '<div class="mpt-cal-info">'
+        + '  <p class="mpt-cal-info-start">Start: ' + formatDateLong(sd) + '</p>'
+        + (ed ? '  <p class="mpt-cal-info-end">End: ' + formatDateLong(ed) + '</p>' : '')
+        + '</div>';
+    }
+
+    var nextDisabled = !booking.startDate;
+    var subDest = ctx && ctx.title ? ctx.title : 'your destination';
+
+    return ''
+      + '<h3 class="mpt-step-heading">Choose your start date.</h3>'
+      + '<p class="mpt-step-sub">Trips begin on the day of your arrival in ' + subDest + '.</p>'
+      + renderCalendar(booking.viewYear, booking.viewMonth, selectedKey, minDate, todayKey)
+      + info
+      + '<div class="mpt-step-actions">'
+      + '  <span class="mpt-step-actions-spacer"></span>'
+      + '  <button type="button" class="mpt-btn mpt-btn--ocean" data-booking-next="2"' + (nextDisabled ? ' disabled' : '') + '>Next</button>'
+      + '</div>';
+  }
+
+  function renderBookingStub(label) {
+    return ''
+      + '<div class="mpt-placeholder">'
+      + '  <p><b>' + label + '</b></p>'
+      + '  <p>Built in the next commit.</p>'
+      + '</div>';
+  }
+
+  function renderBooking(ctx) {
+    var stepBody;
+    switch (booking.step) {
+      case 1: stepBody = renderBookingStep1(ctx); break;
+      case 2: stepBody = renderBookingStub('Step 2: How many travellers?'); break;
+      case 3: stepBody = renderBookingStub('Step 3: Review'); break;
+      case 4: stepBody = renderBookingStub('Step 4: Payment'); break;
+      case 5: stepBody = renderBookingStub('Step 5: Confirmed'); break;
+      default: stepBody = '';
+    }
+    return ''
+      + '<div class="mpt-booking">'
+      + renderProgress(booking.step)
+      + stepBody
+      + '</div>';
+  }
+
+  function rerenderBooking(ctx) {
+    els.body.innerHTML = renderBooking(ctx);
+    wireBooking(ctx);
+  }
+
+  function wireBookingStep1(ctx) {
+    var navBtns = els.body.querySelectorAll('[data-cal-nav]');
+    Array.prototype.forEach.call(navBtns, function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.disabled) return;
+        var dir = parseInt(btn.getAttribute('data-cal-nav'), 10);
+        booking.viewMonth += dir;
+        while (booking.viewMonth < 0) { booking.viewMonth += 12; booking.viewYear -= 1; }
+        while (booking.viewMonth > 11) { booking.viewMonth -= 12; booking.viewYear += 1; }
+        rerenderBooking(ctx);
+      });
+    });
+
+    var dayBtns = els.body.querySelectorAll('[data-cal-day]');
+    Array.prototype.forEach.call(dayBtns, function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-cal-day');
+        booking.startDate = key;
+        var nights = parseNights(ctx && ctx.duration);
+        var sd = dateFromKey(key);
+        booking.endDate = nights > 0 ? dateKey(addDays(sd, nights)) : null;
+        rerenderBooking(ctx);
+      });
+    });
+
+    var nextBtn = els.body.querySelector('[data-booking-next="2"]');
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function () {
+        if (!booking.startDate) return;
+        booking.step = 2;
+        rerenderBooking(ctx);
+      });
+    }
+  }
+
+  function wireBooking(ctx) {
+    if (booking.step === 1) wireBookingStep1(ctx);
+  }
+
   // ---------- bodies ----------
 
   function renderDoors(ctx) {
@@ -294,7 +672,7 @@
     if (mode === 'doors') return renderDoors(ctx);
     if (mode === 'aichat') return renderPlaceholder('aichat', 'Phase 3');
     if (mode === 'letter') return renderPlaceholder('letter', 'Phase 3');
-    if (mode === 'booking') return renderPlaceholder('booking', 'Phase 4');
+    if (mode === 'booking') return renderBooking(ctx);
     return '';
   }
 
@@ -306,6 +684,7 @@
         setMode(nextMode, { from: 'doors' });
       });
     });
+    if (state.mode === 'booking') wireBooking(state.context);
   }
 
   // ---------- mode switching ----------
@@ -343,12 +722,14 @@
       // already open — just switch modes (treated as direct entry)
       state.context = ctxOverride !== undefined ? ctxOverride : readContextFromPage();
       state.fromMode = null;
+      if (mode === 'booking') resetBooking(state.context);
       setMode(mode, { from: null });
       return;
     }
     state.lastFocus = document.activeElement;
     state.context = ctxOverride !== undefined ? ctxOverride : readContextFromPage();
     state.fromMode = null;
+    if (mode === 'booking') resetBooking(state.context);
 
     state.mode = null; // force non-crossfade first render
     setMode(mode);
