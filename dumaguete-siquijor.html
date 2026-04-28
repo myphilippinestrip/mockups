@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<!--
+  dumaguete-siquijor.html. Dumaguete & Siquijor destination page.
+  Inherits structure from iloilo / bohol / coron / bacolod.
+
+  First 4D3N destination in the spine (others are 3D2N). The drawer derives
+  nights from the duration string regex, so "4D3N" yields end = start + 3
+  nights and Step 3 renders "4 days, 3 nights" without any drawer change.
+
+  Placeholder: hero image (Picsum, seeded), three scene images (Picsum, seeded).
+  Each <img> is annotated with the destination-specific subject for the
+  Adobe Stock swap.
+-->
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<title>Dumaguete &amp; Siquijor · 4 days, 3 nights · My Philippines Trip</title>
+<meta name="description" content="Four days across Dumaguete and Siquijor: the Rizal Boulevard at dawn, the 400-year-old balete tree, sea turtles at Apo Island. From USD 849 per person.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --coral: #D9443C;
+    --coral-dark: #B8352E;
+    --ocean: #2E74B0;
+    --palm: #2E8B4F;
+    --sunset: #E8883A;
+    --ink: #1A1614;
+    --ink-soft: #5B544E;
+    --paper: #FFFFFF;
+    --cream: #FAF7F2;
+    --line: #E8E2DA;
+    --display: 'Fraunces', Georgia, serif;
+    --body: 'DM Sans', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding-bottom: calc(112px + env(safe-area-inset-bottom));
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
+
+  :focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; border-radius: 2px; }
+
+  /* -------- TOPBAR (transparent over hero, solid on scroll) -------- */
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
+  }
+
+  .topbar.scrolled {
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 22px;
+  }
+
+  .logo-mark { display: flex; align-items: center; gap: 10px; -webkit-tap-highlight-color: transparent; }
+  .logo-mark img { width: 38px; height: 38px; object-fit: contain; }
+  .logo-mark .logo-white { display: block; }
+  .logo-mark .logo-colour { display: none; }
+  .topbar.scrolled .logo-mark .logo-white { display: none; }
+  .topbar.scrolled .logo-mark .logo-colour { display: block; }
+
+  .wordmark {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+    transition: color 0.4s ease;
+    line-height: 1;
+  }
+  .topbar.scrolled .wordmark { color: var(--ink); }
+  .wordmark em { font-style: italic; font-weight: 400; }
+
+  .topbar-right { display: flex; align-items: center; gap: 32px; }
+  .topbar-nav { display: flex; gap: 28px; }
+
+  .topbar-nav a {
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--paper);
+    opacity: 0.9;
+    transition: color 0.4s ease, opacity 0.3s ease;
+  }
+  .topbar-nav a:hover { opacity: 1; }
+  .topbar.scrolled .topbar-nav a { color: var(--ink); }
+
+  .enquire-link {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper);
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    padding-bottom: 3px;
+    transition: color 0.4s ease, border-color 0.4s ease;
+  }
+  .topbar.scrolled .enquire-link {
+    color: var(--coral);
+    border-bottom-color: var(--coral);
+  }
+
+  /* -------- COVER -------- */
+  .cover {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: min(100vh, 100dvh);
+    min-height: 70vh;
+    overflow: hidden;
+    color: var(--paper);
+    display: flex;
+    align-items: flex-end;
+  }
+  .cover-img {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .cover-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.88) saturate(1.03);
+  }
+  .cover-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26,22,20,0.35) 0%, rgba(26,22,20,0) 40%, rgba(26,22,20,0.72) 100%);
+  }
+  .cover-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 28px calc(56px + 56px + env(safe-area-inset-bottom) + 24px);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .cover-eyebrow {
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--paper);
+    margin-bottom: 16px;
+  }
+  .cover-headline {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--paper);
+    font-size: clamp(48px, 12vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* -------- LEDE -------- */
+  .lede {
+    padding: 48px 28px;
+  }
+  .lede-inner {
+    max-width: 620px;
+    margin: 0 auto;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(22px, 5.5vw, 24px);
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+    color: var(--coral);
+  }
+
+  /* -------- SHAPE / PROSE -------- */
+  .shape {
+    padding: 40px 28px;
+  }
+  .shape-inner {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .shape-inner p {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .shape-inner p + p { margin-top: 20px; }
+
+  /* -------- SCENES -------- */
+  .scene { margin-bottom: 48px; }
+  .scene:last-of-type { margin-bottom: 0; }
+  .scene-img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+  .scene-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .scene-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--coral);
+    max-width: 620px;
+    margin: 24px auto 16px;
+    padding: 0 28px;
+  }
+  .scene-body {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  @media (min-width: 768px) {
+    .scene-img { aspect-ratio: 16 / 9; }
+  }
+
+  /* -------- THE DAYS -------- */
+  .days {
+    padding: 48px 28px 32px;
+  }
+  .days-inner {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .days-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--coral);
+    text-align: left;
+    margin-bottom: 32px;
+  }
+  .days-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .day-eyebrow {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+    margin-bottom: 6px;
+  }
+  .day-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .day-body {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+    margin-top: 10px;
+  }
+
+  /* -------- PRICE LINE (quiet body price) -------- */
+  .price-line {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 32px 28px;
+    text-align: center;
+  }
+  .price-line p {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    color: rgba(26, 22, 20, 0.7);
+  }
+
+  /* -------- PRACTICAL PANEL -------- */
+  .practical {
+    max-width: 620px;
+    margin: 32px 28px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 28px;
+  }
+  .practical-card {
+    border: 1px solid rgba(46, 116, 176, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .practical-toggle {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+    min-height: 64px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .practical-label {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+  }
+  .practical-chevron {
+    width: 20px;
+    height: 20px;
+    stroke: var(--ocean);
+    stroke-width: 1.5;
+    fill: none;
+    flex-shrink: 0;
+    transition: transform 300ms ease;
+  }
+  .practical-toggle[aria-expanded="true"] .practical-chevron { transform: rotate(180deg); }
+
+  .practical-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 300ms ease, opacity 300ms ease;
+  }
+  .practical-toggle[aria-expanded="true"] + .practical-content {
+    max-height: 2000px;
+    opacity: 1;
+  }
+
+  .practical-dl {
+    padding: 0 20px 20px;
+    display: grid;
+    gap: 16px;
+  }
+  .practical-dl dt {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+    margin-bottom: 4px;
+  }
+  .practical-dl dd {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .practical-chevron,
+    .practical-content { transition: none !important; }
+  }
+
+  /* -------- CLOSE -------- */
+  .close {
+    padding: 48px 28px;
+  }
+  .close-inner {
+    max-width: 620px;
+    margin: 0 auto;
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .close-inner a {
+    color: var(--coral);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: color 200ms ease;
+  }
+  .close-inner a:hover { color: var(--coral-dark); }
+
+  /* -------- STICKY PRICE BAR (above bottom nav) -------- */
+  .price-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(56px + env(safe-area-inset-bottom));
+    z-index: 55;
+    height: 56px;
+    background: var(--paper);
+    border-top: 1px solid rgba(26, 22, 20, 0.10);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    gap: 12px;
+  }
+  .ask-link {
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--ink);
+    padding: 12px 4px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    transition: color 200ms ease;
+    text-decoration: none;
+  }
+  .ask-link:hover,
+  .ask-link:focus-visible { color: var(--coral); }
+  .price-cta {
+    background: var(--coral);
+    color: var(--paper);
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 15px;
+    height: 40px;
+    padding: 0 24px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: background 200ms ease;
+    text-decoration: none;
+  }
+  .price-cta:hover { background: var(--coral-dark); }
+
+  /* -------- BACK NAV (destination pages) -------- */
+  .back-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    height: 56px;
+    padding: 0 20px env(safe-area-inset-bottom);
+    background: var(--paper);
+    border-top: 1px solid rgba(26, 22, 20, 0.08);
+    display: flex;
+    align-items: center;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink);
+    text-decoration: none;
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: color 200ms ease;
+    padding: 10px 4px;
+    min-height: 44px;
+  }
+  .back-link:hover,
+  .back-link:focus-visible { color: var(--coral); }
+  .back-link svg {
+    transition: transform 200ms ease;
+    flex-shrink: 0;
+  }
+  .back-link:hover svg,
+  .back-link:focus-visible svg { transform: translateX(-2px); }
+
+  /* -------- MEDIA QUERIES -------- */
+  @media (max-width: 767px) {
+    .topbar { padding: 14px 18px; }
+    .topbar.scrolled { padding: 10px 18px; }
+    .topbar-nav { display: none; }
+    .topbar-right { gap: 0; }
+    .logo-mark img { width: 34px; height: 34px; }
+    .wordmark { font-size: 15px; }
+  }
+
+  @media (min-width: 768px) {
+    .cover-content { padding-bottom: calc(56px + env(safe-area-inset-bottom) + 24px); }
+    .lede { padding: 88px 28px; }
+    .shape { padding: 72px 28px; }
+    .close { padding: 88px 28px; }
+    .practical { margin: 72px auto; }
+    .scene { margin-bottom: 72px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <a href="/" class="logo-mark">
+    <img src="logo-white.png" alt="" class="logo-white">
+    <img src="logo-colour.png" alt="" class="logo-colour">
+    <span class="wordmark">My <em>Philippines</em> Trip</span>
+  </a>
+  <div class="topbar-right">
+    <nav class="topbar-nav">
+      <a href="/#destinations">Destinations</a>
+      <a href="#">Journal</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <a href="#" class="enquire-link" data-mpt-drawer="doors">Start a letter</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="cover" aria-labelledby="cover-headline">
+    <div class="cover-img">
+      <!-- TODO: swap to Adobe Stock. Subject: Paliton Beach, Siquijor, palms over white sand, late afternoon. -->
+      <img src="https://picsum.photos/seed/dumaguete-paliton-beach/1600/1000" alt="Paliton Beach on Siquijor, palms over white sand, calm shallows, late afternoon light.">
+    </div>
+    <div class="cover-content">
+      <div class="cover-eyebrow">Gentleness / Soft edges</div>
+      <h1 class="cover-headline" id="cover-headline">Dumaguete &amp; Siquijor</h1>
+    </div>
+  </section>
+
+  <section class="lede" aria-label="Lede">
+    <div class="lede-inner">
+      <p>Four days, two islands, one ferry. The pace is the point.</p>
+    </div>
+  </section>
+
+  <section class="shape" aria-label="The shape of it">
+    <div class="shape-inner">
+      <p>Dumaguete is a university town on the southern tip of Negros, and a quiet one for somewhere that has been growing steadily for thirty years. The Rizal Boulevard runs along the seafront for about a kilometre. From the boulevard, in the morning, you can see Cebu and Siquijor on a clear day, and the ferry to Siquijor leaves twice in the early hours. The trip uses Dumaguete as the base. You sleep there for three nights and travel out in the morning to Siquijor, to Apo Island, and on the last day, into the Valencia uplands.</p>
+      <p>Siquijor itself is a small island of about ninety-five thousand people, ringed by a single road that takes most of a day to drive properly. It has a reputation, partly earned and partly cultivated, for folk healing and mysticism. The reputation makes for striking signage and for tourist stops you can choose to take seriously or not. What is genuinely there, at no need for embellishment, is a 400-year-old balete tree with a freshwater pool at its base, a Spanish-era church in Lazi, and a stretch of beach at Paliton that holds up against any in the Visayas.</p>
+      <p>After Palawan, what this trip offers is a different kind of slow. Not beach-resort slow, not honeymoon slow. Coastal university town in the morning, ferry across a strait at midday, mystic-leaning small island in the afternoon, sea turtles the next day, volcanic uplands on the way out. The geographic spread does the editorial work; the brand of slowness is gentle, varied, and particular to this corner of the country.</p>
+    </div>
+  </section>
+
+  <section class="scenes" aria-label="Scenes">
+
+    <article class="scene">
+      <div class="scene-img">
+        <!-- TODO: swap to Adobe Stock. Subject: Rizal Boulevard at 6:40am, joggers, the early ferry leaving the pier, view across to Siquijor. -->
+        <img src="https://picsum.photos/seed/dumaguete-rizal-boulevard-dawn/1200/1500" alt="The Rizal Boulevard in Dumaguete at dawn, joggers along the seafront, the early ferry visible at the pier.">
+      </div>
+      <h2 class="scene-title">The boulevard at 6:40</h2>
+      <p class="scene-body">At 6:40 on a Tuesday, the Rizal Boulevard in Dumaguete is already busy. The joggers are finishing, the tricycle drivers are starting, and the 7:00 ferry to Siquijor is loading at the pier just south of the boulevard. You can sit at one of the cafés that open early (Sans Rival is the famous one, slightly tourist now but still doing the silvanas they have always done) and watch the ferry leave with whoever caught the early run. The view across the strait, on a clear morning, is Siquijor itself. From the boulevard it looks closer than it is; the ferry is forty-five minutes by fast craft. The slowness of the boulevard and the faster boat to the island is the rhythm of the trip.</p>
+    </article>
+
+    <article class="scene">
+      <div class="scene-img">
+        <!-- TODO: swap to Adobe Stock. Subject: 400-year-old balete tree at Lazi, root-curtain canopy, freshwater pool at the base. -->
+        <img src="https://picsum.photos/seed/siquijor-balete-tree-lazi/1200/1500" alt="The 400-year-old balete tree in Lazi, root-curtain canopy above a small freshwater pool.">
+      </div>
+      <h2 class="scene-title">The balete tree, Siquijor</h2>
+      <p class="scene-body">The Old Enchanted Balete Tree in Lazi is genuinely four hundred years old, give or take, and is a banyan rather than a balete in the strict botanical sense, but the local naming is what counts. At the base of the tree is a small freshwater pool fed by spring water, and in the pool live small fish that nibble dead skin from the feet of anyone who sits on the edge with their feet in the water. The fish spa is, technically, a tourist attraction. The tree itself is something else: roots dropping like ropes from twenty metres up, the trunk wider than three people standing arm-to-arm, bark that has been touched smooth by hands across centuries. You will not believe the age of the tree until you see it. You will believe it after.</p>
+    </article>
+
+    <article class="scene">
+      <div class="scene-img">
+        <!-- TODO: swap to Adobe Stock. Subject: Apo Island, green sea turtle in clear water, snorkeller keeping respectful distance. -->
+        <img src="https://picsum.photos/seed/apo-island-sea-turtle/1200/1500" alt="A green sea turtle in clear shallow water at Apo Island, a snorkeller keeping a respectful distance.">
+      </div>
+      <h2 class="scene-title">Apo Island, with the turtles</h2>
+      <p class="scene-body">Apo Island is a small volcanic outcrop forty-five minutes by boat from Dumaguete, a fishing community of about a thousand people, and one of the oldest community-managed marine reserves in the Philippines. Since 1985, locals have worked the protected zones themselves, and the result is a turtle population dense enough that nearly every snorkeller sees one within the first ten minutes. The water is clear, the reef shelves quickly, and the green sea turtles are unbothered by swimmers who keep a respectful distance. There is also, on a half-day visit, time to climb the short trail to the lighthouse view deck. From the deck the island is laid out below you, the channels visible, the boats pulling in for lunch.</p>
+    </article>
+
+  </section>
+
+  <section class="days" aria-labelledby="days-title">
+    <div class="days-inner">
+      <h2 class="days-title" id="days-title">The days</h2>
+      <ol class="days-list">
+
+        <li>
+          <div class="day-eyebrow">Day 01</div>
+          <h3 class="day-title">Arrival</h3>
+          <p class="day-body">Landing at Dumaguete airport, transfer to Coco Grande in the city centre. Around fifteen minutes by van. Afternoon Dumaguete city tour: Silliman University, the Rizal Boulevard, the cathedral and bell tower. On your own this evening; the boulevard is good walking after dark.</p>
+        </li>
+
+        <li>
+          <div class="day-eyebrow">Day 02</div>
+          <h3 class="day-title">Siquijor</h3>
+          <p class="day-body">A full day on Siquijor. Early ferry from Dumaguete, then a circumnavigation of the island anti-clockwise: Paliton Beach, Pitogo Cliff, the Enchanted Balete Tree at Lazi, Cambugahay Falls, Salagdoong Beach, the Triad Café viewpoint. Back to Dumaguete by evening ferry.</p>
+        </li>
+
+        <li>
+          <div class="day-eyebrow">Day 03</div>
+          <h3 class="day-title">Apo Island</h3>
+          <p class="day-body">Early boat from Dumaguete to Apo Island. Snorkelling in the marine reserve with sea turtles, a short trek to the lighthouse view deck, lunch on the island. Back to the city in the afternoon. Free evening.</p>
+        </li>
+
+        <li>
+          <div class="day-eyebrow">Day 04</div>
+          <h3 class="day-title">Valencia and out</h3>
+          <p class="day-body">Breakfast, then check-out and the Valencia upland tour: Cata-al War Museum, Tierra Alta Forest Camp, Sulfuric Mountain, Red Rock Hot Spring, and Pulang Bato Falls. Lunch in the uplands. Standard transfer to Dumaguete airport for departure.</p>
+        </li>
+
+      </ol>
+    </div>
+  </section>
+
+  <div class="price-line">
+    <p>From USD 849 per person &middot; minimum 2 pax.</p>
+  </div>
+
+  <section class="practical" aria-label="Practical note">
+    <div class="practical-card">
+      <button
+        type="button"
+        class="practical-toggle"
+        id="practical-btn"
+        aria-expanded="false"
+        aria-controls="practical-panel">
+        <span class="practical-label">The Practical Note</span>
+        <svg class="practical-chevron" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="practical-content" id="practical-panel" role="region" aria-labelledby="practical-btn">
+        <dl class="practical-dl">
+          <div>
+            <dt>Lunch</dt>
+            <dd>Day 2 lunch on Siquijor; Day 3 lunch on Apo Island after snorkelling; Day 4 lunch in the Valencia uplands. All on your own and arranged by the driver-guide. Dumaguete is famously good for street eats, particularly silvanas and budbud (sticky rice in banana leaf).</dd>
+          </div>
+          <div>
+            <dt>Includes</dt>
+            <dd>Three nights at Coco Grande Hotel in central Dumaguete. Roundtrip airport, port, and hotel transfers. Daily breakfast. Air-conditioned private vehicle and driver throughout (mainland portion). Ferry tickets Dumaguete to Siquijor return. Siquijor Swing Tour with DOT-accredited guide. Apo Island day with accredited boat operator. Valencia Tour on Day 4. All applicable entrance fees on the listed stops.</dd>
+          </div>
+          <div>
+            <dt>Accommodation</dt>
+            <dd>Coco Grande Hotel, central Dumaguete. Walking distance to the Rizal Boulevard and Silliman University.</dd>
+          </div>
+          <div>
+            <dt>Not included</dt>
+            <dd>International flights. Travel insurance. All lunches and dinners. Tips and gratuities. Optional extensions (Bohol leg, Apo Island homestay).</dd>
+          </div>
+          <div>
+            <dt>Travel times</dt>
+            <dd>Dumaguete airport to Coco Grande: around 15 minutes. Hotel to ferry pier: 5 minutes. Dumaguete to Siquijor by fast ferry: 45 minutes. Dumaguete to Apo Island by boat: 45 minutes. Day 2 (Siquijor Swing Tour) runs roughly 7am to 6pm including the return ferry. Day 3 (Apo Island) runs roughly 7am to 3pm.</dd>
+          </div>
+          <div>
+            <dt>When to come</dt>
+            <dd>March through May is dry and clear, the best months for Apo Island visibility. June through October is wet season; ferries to Siquijor occasionally cancel in heavy weather, and Apo Island is sometimes unreachable for a day or two. November through February is cool dry, comfortable, and the most reliable for the boat days.</dd>
+          </div>
+          <div>
+            <dt>Worth knowing</dt>
+            <dd>The package covers four days of fairly continuous activity. Day 4 ends with a same-day flight after the Valencia tour, which is tight; the driver-guide tracks your departure time and flexes the morning if needed. Apo Island swimming with sea turtles is the highlight for many; if you don&rsquo;t snorkel, the boat trip is still worth it for the lighthouse view. The Siquijor Swing Tour covers the entire island in one day, which is a lot; we sometimes recommend a one-night stay on Siquijor for slower travel, arranged after booking.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="close" aria-label="The close">
+    <div class="close-inner">
+      <p>Four days for this trip is calibrated. The fourth day is the Valencia uplands on the way to the airport, which is a useful contrast to the three coastal days that came before; sulphur, hot springs, freshwater pools, then your flight. We can extend with a Bohol leg (one ferry, two hours) or a slow stay on Apo Island in a small homestay, if either is the trip you&rsquo;d rather have. <a href="#" data-mpt-drawer="aichat">Ask us</a>.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="price-bar" role="region" aria-label="Trip actions">
+  <a href="#" class="ask-link" data-mpt-drawer="aichat">Have a question?</a>
+  <a href="#" class="price-cta" data-mpt-drawer="booking">Book this trip</a>
+</div>
+
+<nav class="back-nav" aria-label="Back to destinations">
+  <a href="/#destinations" class="back-link">
+    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    <span>All destinations</span>
+  </a>
+</nav>
+
+<script>
+  window.MPT_DESTINATION = {
+    slug: 'dumaguete-siquijor',
+    title: 'Dumaguete & Siquijor',
+    duration: '4D3N',
+    durationDays: 4,
+    durationNights: 3,
+    pricePerPerson: 849,
+    minPax: 2,
+    refPrefix: 'DUM'
+  };
+</script>
+<script src="drawer.js"></script>
+
+<script>
+  // Topbar scrolled state
+  (function () {
+    const topbar = document.getElementById('topbar');
+    let ticking = false;
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(function () {
+          if (window.scrollY > 80) topbar.classList.add('scrolled');
+          else topbar.classList.remove('scrolled');
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  })();
+
+  // Accordion
+  (function () {
+    const btn = document.getElementById('practical-btn');
+    btn.addEventListener('click', function () {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+    });
+  })();
+</script>
+
+</body>
+</html>
