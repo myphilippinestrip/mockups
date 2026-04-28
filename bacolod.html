@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<!--
+  bacolod.html. Bacolod destination page. Inherits structure from iloilo / bohol / coron.
+
+  Placeholder: hero image (Picsum, seeded), three scene images (Picsum, seeded).
+  Each <img> is annotated with the Bacolod-specific subject for the eventual
+  Adobe Stock swap.
+  Real: every line of copy, navigation wiring, drawer / accordion / price-bar chrome.
+-->
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<title>Bacolod · 3 days, 2 nights · My Philippines Trip</title>
+<meta name="description" content="Three days in Bacolod: the heritage houses of Silay, The Ruins at five o&rsquo;clock, chicken inasal at night. From USD 419 per person.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --coral: #D9443C;
+    --coral-dark: #B8352E;
+    --ocean: #2E74B0;
+    --palm: #2E8B4F;
+    --sunset: #E8883A;
+    --ink: #1A1614;
+    --ink-soft: #5B544E;
+    --paper: #FFFFFF;
+    --cream: #FAF7F2;
+    --line: #E8E2DA;
+    --display: 'Fraunces', Georgia, serif;
+    --body: 'DM Sans', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding-bottom: calc(112px + env(safe-area-inset-bottom));
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
+
+  :focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; border-radius: 2px; }
+
+  /* -------- TOPBAR (transparent over hero, solid on scroll) -------- */
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
+  }
+
+  .topbar.scrolled {
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 22px;
+  }
+
+  .logo-mark { display: flex; align-items: center; gap: 10px; -webkit-tap-highlight-color: transparent; }
+  .logo-mark img { width: 38px; height: 38px; object-fit: contain; }
+  .logo-mark .logo-white { display: block; }
+  .logo-mark .logo-colour { display: none; }
+  .topbar.scrolled .logo-mark .logo-white { display: none; }
+  .topbar.scrolled .logo-mark .logo-colour { display: block; }
+
+  .wordmark {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+    transition: color 0.4s ease;
+    line-height: 1;
+  }
+  .topbar.scrolled .wordmark { color: var(--ink); }
+  .wordmark em { font-style: italic; font-weight: 400; }
+
+  .topbar-right { display: flex; align-items: center; gap: 32px; }
+  .topbar-nav { display: flex; gap: 28px; }
+
+  .topbar-nav a {
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--paper);
+    opacity: 0.9;
+    transition: color 0.4s ease, opacity 0.3s ease;
+  }
+  .topbar-nav a:hover { opacity: 1; }
+  .topbar.scrolled .topbar-nav a { color: var(--ink); }
+
+  .enquire-link {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper);
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    padding-bottom: 3px;
+    transition: color 0.4s ease, border-color 0.4s ease;
+  }
+  .topbar.scrolled .enquire-link {
+    color: var(--coral);
+    border-bottom-color: var(--coral);
+  }
+
+  /* -------- COVER -------- */
+  .cover {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: min(100vh, 100dvh);
+    min-height: 70vh;
+    overflow: hidden;
+    color: var(--paper);
+    display: flex;
+    align-items: flex-end;
+  }
+  .cover-img {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .cover-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.88) saturate(1.03);
+  }
+  .cover-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26,22,20,0.35) 0%, rgba(26,22,20,0) 40%, rgba(26,22,20,0.72) 100%);
+  }
+  .cover-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 28px calc(56px + 56px + env(safe-area-inset-bottom) + 24px);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .cover-eyebrow {
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--paper);
+    margin-bottom: 16px;
+  }
+  .cover-headline {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--paper);
+    font-size: clamp(48px, 12vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* -------- LEDE -------- */
+  .lede {
+    padding: 48px 28px;
+  }
+  .lede-inner {
+    max-width: 620px;
+    margin: 0 auto;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(22px, 5.5vw, 24px);
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+    color: var(--coral);
+  }
+
+  /* -------- SHAPE / PROSE -------- */
+  .shape {
+    padding: 40px 28px;
+  }
+  .shape-inner {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .shape-inner p {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .shape-inner p + p { margin-top: 20px; }
+
+  /* -------- SCENES -------- */
+  .scene { margin-bottom: 48px; }
+  .scene:last-of-type { margin-bottom: 0; }
+  .scene-img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+  .scene-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .scene-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--coral);
+    max-width: 620px;
+    margin: 24px auto 16px;
+    padding: 0 28px;
+  }
+  .scene-body {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  @media (min-width: 768px) {
+    .scene-img { aspect-ratio: 16 / 9; }
+  }
+
+  /* -------- THE DAYS -------- */
+  .days {
+    padding: 48px 28px 32px;
+  }
+  .days-inner {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .days-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--coral);
+    text-align: left;
+    margin-bottom: 32px;
+  }
+  .days-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .day-eyebrow {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+    margin-bottom: 6px;
+  }
+  .day-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .day-body {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+    margin-top: 10px;
+  }
+
+  /* -------- PRICE LINE (quiet body price) -------- */
+  .price-line {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 32px 28px;
+    text-align: center;
+  }
+  .price-line p {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    color: rgba(26, 22, 20, 0.7);
+  }
+
+  /* -------- PRACTICAL PANEL -------- */
+  .practical {
+    max-width: 620px;
+    margin: 32px 28px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 28px;
+  }
+  .practical-card {
+    border: 1px solid rgba(46, 116, 176, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .practical-toggle {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+    min-height: 64px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .practical-label {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+  }
+  .practical-chevron {
+    width: 20px;
+    height: 20px;
+    stroke: var(--ocean);
+    stroke-width: 1.5;
+    fill: none;
+    flex-shrink: 0;
+    transition: transform 300ms ease;
+  }
+  .practical-toggle[aria-expanded="true"] .practical-chevron { transform: rotate(180deg); }
+
+  .practical-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 300ms ease, opacity 300ms ease;
+  }
+  .practical-toggle[aria-expanded="true"] + .practical-content {
+    max-height: 2000px;
+    opacity: 1;
+  }
+
+  .practical-dl {
+    padding: 0 20px 20px;
+    display: grid;
+    gap: 16px;
+  }
+  .practical-dl dt {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+    margin-bottom: 4px;
+  }
+  .practical-dl dd {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .practical-chevron,
+    .practical-content { transition: none !important; }
+  }
+
+  /* -------- CLOSE -------- */
+  .close {
+    padding: 48px 28px;
+  }
+  .close-inner {
+    max-width: 620px;
+    margin: 0 auto;
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .close-inner a {
+    color: var(--coral);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: color 200ms ease;
+  }
+  .close-inner a:hover { color: var(--coral-dark); }
+
+  /* -------- STICKY PRICE BAR (above bottom nav) -------- */
+  .price-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(56px + env(safe-area-inset-bottom));
+    z-index: 55;
+    height: 56px;
+    background: var(--paper);
+    border-top: 1px solid rgba(26, 22, 20, 0.10);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    gap: 12px;
+  }
+  .ask-link {
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--ink);
+    padding: 12px 4px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    transition: color 200ms ease;
+    text-decoration: none;
+  }
+  .ask-link:hover,
+  .ask-link:focus-visible { color: var(--coral); }
+  .price-cta {
+    background: var(--coral);
+    color: var(--paper);
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 15px;
+    height: 40px;
+    padding: 0 24px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: background 200ms ease;
+    text-decoration: none;
+  }
+  .price-cta:hover { background: var(--coral-dark); }
+
+  /* -------- BACK NAV (destination pages) -------- */
+  .back-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    height: 56px;
+    padding: 0 20px env(safe-area-inset-bottom);
+    background: var(--paper);
+    border-top: 1px solid rgba(26, 22, 20, 0.08);
+    display: flex;
+    align-items: center;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink);
+    text-decoration: none;
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: color 200ms ease;
+    padding: 10px 4px;
+    min-height: 44px;
+  }
+  .back-link:hover,
+  .back-link:focus-visible { color: var(--coral); }
+  .back-link svg {
+    transition: transform 200ms ease;
+    flex-shrink: 0;
+  }
+  .back-link:hover svg,
+  .back-link:focus-visible svg { transform: translateX(-2px); }
+
+  /* -------- MEDIA QUERIES -------- */
+  @media (max-width: 767px) {
+    .topbar { padding: 14px 18px; }
+    .topbar.scrolled { padding: 10px 18px; }
+    .topbar-nav { display: none; }
+    .topbar-right { gap: 0; }
+    .logo-mark img { width: 34px; height: 34px; }
+    .wordmark { font-size: 15px; }
+  }
+
+  @media (min-width: 768px) {
+    .cover-content { padding-bottom: calc(56px + env(safe-area-inset-bottom) + 24px); }
+    .lede { padding: 88px 28px; }
+    .shape { padding: 72px 28px; }
+    .close { padding: 88px 28px; }
+    .practical { margin: 72px auto; }
+    .scene { margin-bottom: 72px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <a href="/" class="logo-mark">
+    <img src="logo-white.png" alt="" class="logo-white">
+    <img src="logo-colour.png" alt="" class="logo-colour">
+    <span class="wordmark">My <em>Philippines</em> Trip</span>
+  </a>
+  <div class="topbar-right">
+    <nav class="topbar-nav">
+      <a href="/#destinations">Destinations</a>
+      <a href="#">Journal</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <a href="#" class="enquire-link" data-mpt-drawer="doors">Start a letter</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="cover" aria-labelledby="cover-headline">
+    <div class="cover-img">
+      <!-- TODO: swap to Adobe Stock. Subject: The Ruins, Talisay, late afternoon golden light on the limestone superstructure. -->
+      <img src="https://picsum.photos/seed/bacolod-hero-the-ruins/1600/1000" alt="The Ruins of Talisay, the limestone superstructure of a burned 1900s mansion glowing in late afternoon light.">
+    </div>
+    <div class="cover-content">
+      <div class="cover-eyebrow">Exuberance / Sugar light</div>
+      <h1 class="cover-headline" id="cover-headline">Bacolod</h1>
+    </div>
+  </section>
+
+  <section class="lede" aria-label="Lede">
+    <div class="lede-inner">
+      <p>Bacolod was built on sugar. Most of what you&rsquo;ll come to see, the houses, the cathedrals, the long afternoon light, was paid for by it.</p>
+    </div>
+  </section>
+
+  <section class="shape" aria-label="The shape of it">
+    <div class="shape-inner">
+      <p>In the late nineteenth century, Negros Occidental was the wealthiest province in the Philippines per capita, and Bacolod was its capital. Sugar barons built mansions in the city and across the surrounding towns, Silay and Talisay, in a style that was part American colonial, part Italian Renaissance, part whatever the foreign architect they hired had in mind. Many of those houses are still standing. A few of them are open to the public, by appointment, which usually means phoning ahead. The trip is built around an unhurried day across the three cities, with the houses as anchors.</p>
+      <p>You stay at L&rsquo;Fisher in the city centre, which is a hotel from a different era and is not pretending otherwise. From there, the tri-city loop runs anti-clockwise on Day 2, starting in Silay (the heritage town, museums in the morning), through Bacolod itself (the cathedrals, the plaza, the markers), and out to Talisay in the late afternoon for The Ruins. The driver moves at a pace that allows for actual looking. Most stops are between fifteen and thirty minutes. The Ruins is longer.</p>
+      <p>After Palawan, what Bacolod offers is a city, not an island. Streets, not coasts. Old houses you can walk into rather than landscapes you photograph from boats. The food is famously good. The light, in the afternoons, is warm in a way that flatters the limestone. You will leave understanding why the festival is called the City of Smiles, but the smiles are not the point of the trip; the houses are.</p>
+    </div>
+  </section>
+
+  <section class="scenes" aria-label="Scenes">
+
+    <article class="scene">
+      <div class="scene-img">
+        <!-- TODO: swap to Adobe Stock. Subject: The Ruins at five o'clock, sun low, ivory limestone glowing, columns and arches intact. -->
+        <img src="https://picsum.photos/seed/bacolod-ruins-sunset/1200/1500" alt="The columns and arches of The Ruins glowing ivory in five o&rsquo;clock light, lawn around them.">
+      </div>
+      <h2 class="scene-title">The Ruins, at five o&rsquo;clock</h2>
+      <p class="scene-body">The Ruins, in Talisay, is the skeleton of a mansion built in the early 1900s by Don Mariano Ledesma Lacson for his Portuguese wife, Maria Braga, who died in childbirth before the house was finished. He completed it anyway. It stood for forty years. In 1942, with Japanese forces advancing on the province, the United States Army Forces in the Far East asked Filipino civilians to destroy properties of likely strategic value rather than let them be occupied. The Lacson family burned their own house. The fire took three days. What remains is the ivory-stone superstructure, the columns and arches and pediments, with the entire interior gone. At five in the afternoon the limestone glows. You will hear someone in your group say it looks like an Italian villa, and they will be right.</p>
+    </article>
+
+    <article class="scene">
+      <div class="scene-img">
+        <!-- TODO: swap to Adobe Stock. Subject: a Silay heritage house interior or façade, Hofileña or Balay Negrense, morning light, wooden floors. -->
+        <img src="https://picsum.photos/seed/bacolod-silay-heritage-house/1200/1500" alt="A heritage-house façade in Silay, wooden shutters and limestone steps, morning light.">
+      </div>
+      <h2 class="scene-title">A morning in Silay</h2>
+      <p class="scene-body">Silay is fifteen kilometres north of Bacolod. In the morning, before the heat, you can walk a stretch of about six blocks and see four of the heritage houses without rushing. Hofileña Ancestral House is the one with the art collection, Filipino masters, mostly, from the Lacson family&rsquo;s circle and beyond. Balay Negrense is the bigger museum, the former home of Don Victor Fernandez Gaston, sugar baron, with the rooms preserved roughly as they were lived in. Both houses have grandchildren who do the unlocking. You phone ahead. You take your shoes off at the door. You listen.</p>
+    </article>
+
+    <article class="scene">
+      <div class="scene-img">
+        <!-- TODO: swap to Adobe Stock. Subject: chicken inasal grilling over coconut-husk charcoal, annatto-orange marinade, smoke. -->
+        <img src="https://picsum.photos/seed/bacolod-inasal-grilled/1200/1500" alt="Skewered chicken inasal, annatto-orange, grilling over coconut-husk charcoal at a side-street stand.">
+      </div>
+      <h2 class="scene-title">Inasal, at night</h2>
+      <p class="scene-body">Chicken inasal is what Bacolod cooks better than anywhere else, and saying that anywhere else in the Philippines will start an argument. The marinade is calamansi, pepper, vinegar, and annatto, which is the colour. The chicken is grilled over coconut husk charcoal, which is the smoke. It is served with rice and a small dish of chicken oil mixed with soy and calamansi to drizzle. You will be asked which part you want; the answer most people don&rsquo;t know to give is paa (leg). It is not part of the package, because almost nobody comes to Bacolod and eats inasal only at the hotel. We will tell you which place to go to. There are several. The good ones are in the side streets.</p>
+    </article>
+
+  </section>
+
+  <section class="days" aria-labelledby="days-title">
+    <div class="days-inner">
+      <h2 class="days-title" id="days-title">The days</h2>
+      <ol class="days-list">
+
+        <li>
+          <div class="day-eyebrow">Day 01</div>
+          <h3 class="day-title">Arrival</h3>
+          <p class="day-body">Landing at Bacolod-Silay airport, transfer to L&rsquo;Fisher Hotel in central Bacolod. Around half an hour by van. Afternoon free to settle in or walk the plaza. On your own this evening; ask the driver-guide where to find inasal.</p>
+        </li>
+
+        <li>
+          <div class="day-eyebrow">Day 02</div>
+          <h3 class="day-title">Tri-city tour</h3>
+          <p class="day-body">A full day across Silay, Bacolod, and Talisay. Morning in Silay for the heritage houses (Hofileña, Balay Negrense). Through Bacolod for the cathedrals, the Capitol Lagoon, and the city&rsquo;s markers. Late afternoon at The Ruins in Talisay. Roughly 8am to 6pm with a midday break for lunch.</p>
+        </li>
+
+        <li>
+          <div class="day-eyebrow">Day 03</div>
+          <h3 class="day-title">Out</h3>
+          <p class="day-body">Breakfast at the hotel, then check-out. Free time until the airport transfer. Standard transfer to Bacolod-Silay for departure.</p>
+        </li>
+
+      </ol>
+    </div>
+  </section>
+
+  <div class="price-line">
+    <p>From USD 419 per person &middot; minimum 2 pax.</p>
+  </div>
+
+  <section class="practical" aria-label="Practical note">
+    <div class="practical-card">
+      <button
+        type="button"
+        class="practical-toggle"
+        id="practical-btn"
+        aria-expanded="false"
+        aria-controls="practical-panel">
+        <span class="practical-label">The Practical Note</span>
+        <svg class="practical-chevron" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="practical-content" id="practical-panel" role="region" aria-labelledby="practical-btn">
+        <dl class="practical-dl">
+          <div>
+            <dt>Lunch</dt>
+            <dd>Day 2 lunch is on your own during the tri-city tour. Your driver-guide can recommend places along the route, typically a stop in Silay or back in Bacolod. Inasal is the obvious answer.</dd>
+          </div>
+          <div>
+            <dt>Includes</dt>
+            <dd>Two nights at L&rsquo;Fisher Hotel in central Bacolod. Roundtrip airport transfers. Daily breakfast at the hotel. Air-conditioned private vehicle and driver throughout. Local driver-guide. DOT-accredited tour guide for Day 2.</dd>
+          </div>
+          <div>
+            <dt>Accommodation</dt>
+            <dd>L&rsquo;Fisher Hotel, Bacolod city centre. Walking distance to the cathedrals and the plaza. Older property, well-kept, central rather than scenic.</dd>
+          </div>
+          <div>
+            <dt>Not included</dt>
+            <dd>International flights. Travel insurance. All lunches and dinners. Tips and gratuities. Optional extensions (Mambukal hot springs, inland sugar towns).</dd>
+          </div>
+          <div>
+            <dt>Travel times</dt>
+            <dd>Bacolod-Silay airport to the hotel: around 30 minutes. Hotel to Silay: 15 km, around 30 minutes. Hotel to The Ruins, Talisay: around 45 minutes. The Day 2 loop runs roughly 8am to 6pm, with a midday break for lunch.</dd>
+          </div>
+          <div>
+            <dt>When to come</dt>
+            <dd>November through May is dry. October is MassKara month, which doubles the festival energy and roughly doubles room prices; book early or after. June through September is wet, and the heritage houses are still open but the outdoor stops feel different.</dd>
+          </div>
+          <div>
+            <dt>Worth knowing</dt>
+            <dd>Day 2 covers thirteen named stops, but most are 15-30 minute photo stops with three longer stays at Hofileña, Balay Negrense, and The Ruins. The Ruins admission is paid on the day. Heritage houses sometimes close for private events; we confirm a week before your trip. The trip can be extended by a day for Mambukal Mountain Resort or an inland sugar-town loop, both arranged after booking.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="close" aria-label="The close">
+    <div class="close-inner">
+      <p>Three days for Bacolod is the right shape. Day 2 is full and the heritage houses in particular benefit from being walked rather than rushed. We can extend to a fourth day for a Mambukal hot spring run, or a longer countryside loop into the inland sugar towns, if that&rsquo;s the trip you&rsquo;d rather have. <a href="#" data-mpt-drawer="aichat">Ask us</a>.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="price-bar" role="region" aria-label="Trip actions">
+  <a href="#" class="ask-link" data-mpt-drawer="aichat">Have a question?</a>
+  <a href="#" class="price-cta" data-mpt-drawer="booking">Book this trip</a>
+</div>
+
+<nav class="back-nav" aria-label="Back to destinations">
+  <a href="/#destinations" class="back-link">
+    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    <span>All destinations</span>
+  </a>
+</nav>
+
+<script>
+  window.MPT_DESTINATION = {
+    slug: 'bacolod',
+    title: 'Bacolod',
+    duration: '3D2N',
+    durationDays: 3,
+    durationNights: 2,
+    pricePerPerson: 419,
+    minPax: 2,
+    refPrefix: 'BAC'
+  };
+</script>
+<script src="drawer.js"></script>
+
+<script>
+  // Topbar scrolled state
+  (function () {
+    const topbar = document.getElementById('topbar');
+    let ticking = false;
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(function () {
+          if (window.scrollY > 80) topbar.classList.add('scrolled');
+          else topbar.classList.remove('scrolled');
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  })();
+
+  // Accordion
+  (function () {
+    const btn = document.getElementById('practical-btn');
+    btn.addEventListener('click', function () {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+    });
+  })();
+</script>
+
+</body>
+</html>
