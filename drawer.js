@@ -703,10 +703,15 @@
   }
 
   function generateBookingReference(ctx) {
-    // 3-letter code from slug ("iloilo" -> "ILO"). Fallback "XXX" guarantees a
-    // well-formed reference even if a destination slips in without context.
-    var code = (ctx && ctx.slug ? ctx.slug.slice(0, 3) : 'XXX').toUpperCase();
-    return 'MPT-' + code + '-' + Math.floor(100000 + Math.random() * 900000);
+    // Prefer an explicit refPrefix on the destination ("ILO", "BOH", ...).
+    // Fall back to the first 3 letters of the slug for any destination that
+    // doesn't set one ("iloilo" -> "ILO", "bohol" -> "BOH"). "XXX" guards
+    // the case where ctx is missing entirely.
+    var prefix;
+    if (ctx && ctx.refPrefix) prefix = ctx.refPrefix;
+    else if (ctx && ctx.slug) prefix = ctx.slug.slice(0, 3);
+    else prefix = 'XXX';
+    return 'MPT-' + prefix.toUpperCase() + '-' + Math.floor(100000 + Math.random() * 900000);
   }
 
   // ---------- redirect timer (step 4) ----------
