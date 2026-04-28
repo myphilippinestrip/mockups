@@ -276,9 +276,13 @@
     '  font-size: 15px; color: #1A1A1A;',
     '  background: none; border: 0; cursor: pointer; font: inherit;',
     '}',
-    '.mpt-cal-day.is-blank { visibility: hidden; cursor: default; }',
     '.mpt-cal-day.is-disabled { cursor: default; }',
     '.mpt-cal-day.is-disabled .mpt-cal-day-num { opacity: 0.3; }',
+    /* spillover: previous-month tail and next-month lead. Decorative only,
+       not interactive. Range styling overrides the muted colour when a
+       spillover sits inside a selected range. */
+    '.mpt-cal-day.is-spillover { cursor: default; }',
+    '.mpt-cal-day.is-spillover .mpt-cal-day-num { color: rgba(26,26,26,0.3); }',
 
     '.mpt-cal-day-fill {',
     '  position: absolute;',
@@ -552,6 +556,46 @@
       + '<p class="mpt-step-label">' + STEP_LABELS[currentStep - 1] + '</p>';
   }
 
+  function renderDayCell(date, displayDay, col, isSpillover, startKey, endKey, minDate, todayKey) {
+    var key = dateKey(date);
+    // lead-time disabled state only applies to in-month cells; spillover is
+    // already non-interactive via its own class (no click handler, no hover)
+    var disabled = !isSpillover && date < minDate;
+    var isStart = (key === startKey);
+    var isEnd = (key === endKey);
+    var isNight = (startKey && endKey && !isStart && !isEnd && key > startKey && key < endKey);
+    var inRange = isStart || isEnd || isNight;
+
+    var classes = ['mpt-cal-day'];
+    if (isSpillover) classes.push('is-spillover');
+    if (disabled) classes.push('is-disabled');
+    if (!isSpillover && key === todayKey) classes.push('is-today');
+    if (isStart) classes.push('is-start');
+    if (isEnd) classes.push('is-end');
+    if (isNight) classes.push('is-night');
+    if (inRange) {
+      // pill caps: actual start/end close the pill; row-edges (col 0 / col 6)
+      // close it on wrap. Month edges no longer need a special rule because
+      // spillover always fills the grid, so the pill continues across.
+      if (isStart || col === 0) classes.push('range-left');
+      if (isEnd || col === 6) classes.push('range-right');
+    }
+
+    var inner = ''
+      + '<span class="mpt-cal-day-fill"></span>'
+      + '<span class="mpt-cal-day-num">' + displayDay + '</span>';
+
+    if (isSpillover) {
+      return '<span class="' + classes.join(' ') + '" aria-hidden="true">' + inner + '</span>';
+    }
+
+    var label = formatDateLong(date);
+    var attrs = disabled
+      ? 'disabled aria-disabled="true" aria-label="' + label + ', not selectable"'
+      : 'data-cal-day="' + key + '" aria-label="' + label + '"';
+    return '<button type="button" class="' + classes.join(' ') + '" ' + attrs + '>' + inner + '</button>';
+  }
+
   function renderCalendar(year, month, startKey, endKey, minDate, todayKey) {
     var monthLabel = MONTHS[month] + ' ' + year;
     var firstDay = new Date(year, month, 1);
@@ -562,46 +606,36 @@
     // disable prev nav at the earliest-bookable month: nothing useful before it
     var viewIsEarliestMonth = (year === minDate.getFullYear() && month === minDate.getMonth());
 
+    // previous-month tail (leading spillover)
+    var prevMonth = month - 1;
+    var prevYear = year;
+    if (prevMonth < 0) { prevMonth = 11; prevYear -= 1; }
+    var prevLastDay = new Date(prevYear, prevMonth + 1, 0).getDate();
+
+    // next-month lead (trailing spillover)
+    var nextMonth = month + 1;
+    var nextYear = year;
+    if (nextMonth > 11) { nextMonth = 0; nextYear += 1; }
+
     var cells = [];
+
     for (var i = 0; i < firstCol; i++) {
-      cells.push('<span class="mpt-cal-day is-blank" aria-hidden="true"></span>');
+      var leadDay = prevLastDay - firstCol + 1 + i;
+      cells.push(renderDayCell(new Date(prevYear, prevMonth, leadDay), leadDay, i, true, startKey, endKey, minDate, todayKey));
     }
+
     for (var d = 1; d <= totalDays; d++) {
-      var date = new Date(year, month, d);
-      var key = dateKey(date);
-      var disabled = date < minDate;
       var col = (firstCol + (d - 1)) % 7; // 0 = Mon, 6 = Sun
-      // range: ISO date strings sort lexically the same as chronologically
-      var isStart = (key === startKey);
-      var isEnd = (key === endKey);
-      var isNight = (startKey && endKey && !isStart && !isEnd && key > startKey && key < endKey);
-      var inRange = isStart || isEnd || isNight;
+      cells.push(renderDayCell(new Date(year, month, d), d, col, false, startKey, endKey, minDate, todayKey));
+    }
 
-      var classes = ['mpt-cal-day'];
-      if (disabled) classes.push('is-disabled');
-      if (key === todayKey) classes.push('is-today');
-      if (isStart) classes.push('is-start');
-      if (isEnd) classes.push('is-end');
-      if (isNight) classes.push('is-night');
-      if (inRange) {
-        // pill caps: actual start/end always close, plus row-edges and
-        // month-edges so wrap and cross-month ranges read as continuous
-        var roundLeft = isStart || col === 0 || d === 1;
-        var roundRight = isEnd || col === 6 || d === totalDays;
-        if (roundLeft) classes.push('range-left');
-        if (roundRight) classes.push('range-right');
+    var trailStartCol = (firstCol + totalDays) % 7;
+    if (trailStartCol !== 0) {
+      var trailCount = 7 - trailStartCol;
+      for (var t = 1; t <= trailCount; t++) {
+        var trailCol = (trailStartCol + (t - 1)) % 7;
+        cells.push(renderDayCell(new Date(nextYear, nextMonth, t), t, trailCol, true, startKey, endKey, minDate, todayKey));
       }
-
-      var label = formatDateLong(date);
-      var attrs = disabled
-        ? 'disabled aria-disabled="true" aria-label="' + label + ', not selectable"'
-        : 'data-cal-day="' + key + '" aria-label="' + label + '"';
-      cells.push(
-        '<button type="button" class="' + classes.join(' ') + '" ' + attrs + '>'
-          + '<span class="mpt-cal-day-fill"></span>'
-          + '<span class="mpt-cal-day-num">' + d + '</span>'
-        + '</button>'
-      );
     }
 
     var dowRow = DOW_LABELS.map(function (l) {
