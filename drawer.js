@@ -378,6 +378,81 @@
     '  color: rgba(26,26,26,0.6);',
     '}',
 
+    /* step 3: review */
+    '.mpt-step-3 { display: flex; flex-direction: column; padding-bottom: 6px; }',
+    '.mpt-step-3 > .mpt-summary { margin-top: 24px; }',
+    '.mpt-step-3 > .mpt-field:nth-of-type(1) { margin-top: 28px; }',
+    '.mpt-step-3 > .mpt-field + .mpt-field { margin-top: 16px; }',
+    '.mpt-step-3 > .mpt-step-body-line { margin-top: 24px; }',
+    '.mpt-step-3 > .mpt-step-microtext { margin-top: 14px; }',
+
+    /* summary card */
+    '.mpt-summary {',
+    '  background: rgba(46,116,176,0.06);',
+    '  padding: 18px;',
+    '  border-radius: 8px;',
+    '  display: flex; flex-direction: column;',
+    '  gap: 8px;',
+    '}',
+    '.mpt-summary-row {',
+    '  display: flex; align-items: center; justify-content: space-between;',
+    '  gap: 12px;',
+    '}',
+    '.mpt-summary-label { font-size: 13px; font-weight: 400; color: rgba(26,26,26,0.6); }',
+    '.mpt-summary-value { font-size: 14px; font-weight: 500; color: #1A1A1A; text-align: right; }',
+    '.mpt-summary-divider {',
+    '  height: 1px;',
+    '  background: rgba(26,26,26,0.2);',
+    '  margin: 4px 0;',
+    '}',
+    '.mpt-summary-total {',
+    '  display: flex; align-items: center; justify-content: space-between;',
+    '  gap: 12px;',
+    '}',
+    '.mpt-summary-total-label { font-size: 16px; font-weight: 500; color: #1A1A1A; }',
+    '.mpt-summary-total-value {',
+    '  font-family: "Fraunces", Georgia, serif;',
+    '  font-weight: 400; font-size: 22px;',
+    '  color: #D9443C;',
+    '}',
+
+    /* form fields */
+    '.mpt-field { display: flex; flex-direction: column; }',
+    '.mpt-field-label {',
+    '  font-size: 13px; font-weight: 500;',
+    '  letter-spacing: 0.04em;',
+    '  color: #1A1A1A;',
+    '  margin-bottom: 6px;',
+    '}',
+    '.mpt-field-input {',
+    '  width: 100%;',
+    '  padding: 12px;',
+    '  border: 1px solid rgba(26,26,26,0.2);',
+    '  border-radius: 6px;',
+    '  font-family: inherit;',
+    '  font-size: 16px; font-weight: 400;',
+    '  color: #1A1A1A; background: #FFFFFF;',
+    '  -webkit-appearance: none;',
+    '  appearance: none;',
+    '  transition: border-color 200ms ease;',
+    '  box-sizing: border-box;',
+    '}',
+    '.mpt-field-input:focus {',
+    '  outline: none;',
+    '  border-color: #2E74B0;',
+    '  box-shadow: none;',
+    '}',
+    '.mpt-field-helper {',
+    '  font-size: 13px;',
+    '  color: rgba(26,26,26,0.6);',
+    '  margin-top: 6px;',
+    '}',
+
+    /* body line + microtext */
+    '.mpt-step-body-line { font-size: 14px; line-height: 1.5; color: #1A1A1A; }',
+    '.mpt-step-microtext { font-size: 12px; line-height: 1.4; color: rgba(26,26,26,0.6); }',
+    '.mpt-step-microtext a { color: #2E74B0; text-decoration: underline; }',
+
     /* step actions: sticky footer pattern, applies to every booking step */
     '.mpt-step-actions {',
     '  position: sticky;',
@@ -569,6 +644,43 @@
   function formatPrice(n) {
     // thousands separator: 458 -> "458", 2748 -> "2,748"
     return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function formatStartShort(d) {
+    // "Sat, 9 May" — no year, used for the start half of a same-context range
+    return DOW_SHORT[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS[d.getMonth()];
+  }
+
+  function formatDatesRange(startKey, endKey) {
+    if (!startKey || !endKey) return '';
+    return formatStartShort(dateFromKey(startKey)) + ' to ' + formatDateLong(dateFromKey(endKey));
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function isValidLeadName(s) {
+    return typeof s === 'string' && s.trim().length >= 1;
+  }
+
+  function isValidLeadEmail(s) {
+    // brief: basic check, no regex strictness. Just @ and . present.
+    return typeof s === 'string' && s.indexOf('@') !== -1 && s.indexOf('.') !== -1;
+  }
+
+  function debounce(fn, wait) {
+    var t = null;
+    return function () {
+      var args = arguments, ctx = this;
+      clearTimeout(t);
+      t = setTimeout(function () { fn.apply(ctx, args); }, wait);
+    };
   }
 
   // ---------- booking persistence ----------
@@ -834,7 +946,7 @@
     switch (booking.step) {
       case 1: stepBody = renderBookingStep1(ctx); break;
       case 2: stepBody = renderBookingStep2(ctx); break;
-      case 3: stepBody = renderBookingStub('Step 3: Review'); break;
+      case 3: stepBody = renderBookingStep3(ctx); break;
       case 4: stepBody = renderBookingStub('Step 4: Payment'); break;
       case 5: stepBody = renderBookingStub('Step 5: Confirmed'); break;
       default: stepBody = '';
@@ -960,6 +1072,111 @@
     }
   }
 
+  function renderBookingStep3(ctx) {
+    var per = (ctx && ctx.pricePerPerson) || 0;
+    var dest = (ctx && ctx.title) || 'Your destination';
+    var nights = parseNights(ctx && ctx.duration);
+    var days = nights + 1;
+    var n = booking.travellers;
+    var total = n * per;
+    var datesStr = (booking.startDate && booking.endDate) ? formatDatesRange(booking.startDate, booking.endDate) : '—';
+    var name = booking.leadName || '';
+    var email = booking.leadEmail || '';
+    var canPay = isValidLeadName(name) && isValidLeadEmail(email);
+
+    return ''
+      + '<div class="mpt-step-3">'
+      + '  <h3 class="mpt-step-heading">Your trip.</h3>'
+      + '  <div class="mpt-summary">'
+      + '    <div class="mpt-summary-row"><span class="mpt-summary-label">Destination</span><span class="mpt-summary-value">' + escapeHtml(dest) + '</span></div>'
+      + '    <div class="mpt-summary-row"><span class="mpt-summary-label">Length</span><span class="mpt-summary-value">' + days + ' days, ' + nights + ' nights</span></div>'
+      + '    <div class="mpt-summary-row"><span class="mpt-summary-label">Dates</span><span class="mpt-summary-value">' + datesStr + '</span></div>'
+      + '    <div class="mpt-summary-row"><span class="mpt-summary-label">Travellers</span><span class="mpt-summary-value">' + n + '</span></div>'
+      + '    <div class="mpt-summary-row"><span class="mpt-summary-label">Price per person</span><span class="mpt-summary-value">USD ' + per + '</span></div>'
+      + '    <div class="mpt-summary-divider" aria-hidden="true"></div>'
+      + '    <div class="mpt-summary-total"><span class="mpt-summary-total-label">Total</span><span class="mpt-summary-total-value">USD ' + formatPrice(total) + '</span></div>'
+      + '  </div>'
+      + '  <div class="mpt-field">'
+      + '    <label class="mpt-field-label" for="mpt-lead-name">Lead traveller name</label>'
+      + '    <input class="mpt-field-input" type="text" id="mpt-lead-name" name="leadName" autocomplete="name" value="' + escapeHtml(name) + '">'
+      + '  </div>'
+      + '  <div class="mpt-field">'
+      + '    <label class="mpt-field-label" for="mpt-lead-email">Lead traveller email</label>'
+      + '    <input class="mpt-field-input" type="email" id="mpt-lead-email" name="leadEmail" autocomplete="email" inputmode="email" value="' + escapeHtml(email) + '">'
+      + '    <p class="mpt-field-helper">We&rsquo;ll send your booking confirmation here.</p>'
+      + '  </div>'
+      + '  <p class="mpt-step-body-line">Payment is taken in full upfront. Our operator confirms with you within 24 hours.</p>'
+      + '  <p class="mpt-step-microtext">By paying you agree to our <a href="#" data-mpt-legal="terms">terms</a> and <a href="#" data-mpt-legal="cancellation">cancellation policy</a>.</p>'
+      + '</div>'
+      + '<div class="mpt-step-actions">'
+      + '  <button type="button" class="mpt-btn mpt-btn--text" data-booking-back>Back</button>'
+      + '  <button type="button" class="mpt-btn mpt-btn--coral" data-booking-pay' + (canPay ? '' : ' disabled aria-disabled="true"') + '>Pay USD ' + formatPrice(total) + '</button>'
+      + '</div>';
+  }
+
+  function wireBookingStep3(ctx) {
+    var nameInput = els.body.querySelector('#mpt-lead-name');
+    var emailInput = els.body.querySelector('#mpt-lead-email');
+    var payBtn = els.body.querySelector('[data-booking-pay]');
+    var backBtn = els.body.querySelector('[data-booking-back]');
+    var legalLinks = els.body.querySelectorAll('[data-mpt-legal]');
+
+    // Inputs update state + Pay button directly: a full rerender on every
+    // keystroke would steal focus from the field and dismiss the keyboard
+    // on mobile. Save is debounced to keep sessionStorage I/O off the
+    // hot path while typing.
+    var debouncedSave = debounce(saveBookingDraft, 300);
+
+    function refreshPayState() {
+      var canPay = isValidLeadName(booking.leadName) && isValidLeadEmail(booking.leadEmail);
+      if (canPay) {
+        payBtn.removeAttribute('disabled');
+        payBtn.removeAttribute('aria-disabled');
+      } else {
+        payBtn.setAttribute('disabled', 'disabled');
+        payBtn.setAttribute('aria-disabled', 'true');
+      }
+    }
+
+    if (nameInput) {
+      nameInput.addEventListener('input', function () {
+        booking.leadName = nameInput.value;
+        refreshPayState();
+        debouncedSave();
+      });
+    }
+    if (emailInput) {
+      emailInput.addEventListener('input', function () {
+        booking.leadEmail = emailInput.value;
+        refreshPayState();
+        debouncedSave();
+      });
+    }
+
+    // Placeholder legal anchors: prevent the # jump from messing with the
+    // drawer / scroll. Real pages wire up later.
+    Array.prototype.forEach.call(legalLinks, function (a) {
+      a.addEventListener('click', function (e) { e.preventDefault(); });
+    });
+
+    if (payBtn) {
+      payBtn.addEventListener('click', function () {
+        if (payBtn.disabled) return;
+        booking.step = 4;
+        saveBookingDraft(); // flush latest input value + new step in one write
+        rerenderBooking(ctx);
+      });
+    }
+
+    if (backBtn) {
+      backBtn.addEventListener('click', function () {
+        booking.step = 2;
+        saveBookingDraft();
+        rerenderBooking(ctx);
+      });
+    }
+  }
+
   function wireBookingStub(ctx) {
     var backBtn = els.body.querySelector('[data-booking-back]');
     if (backBtn) {
@@ -974,6 +1191,7 @@
   function wireBooking(ctx) {
     if (booking.step === 1) wireBookingStep1(ctx);
     else if (booking.step === 2) wireBookingStep2(ctx);
+    else if (booking.step === 3) wireBookingStep3(ctx);
     else wireBookingStub(ctx);
   }
 
