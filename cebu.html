@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<!--
+  cebu.html. Cebu destination page. Inherits structure from the earlier
+  destination pages. 3D2N.
+
+  Placeholder: hero image (Picsum, seeded), three scene images (Picsum, seeded).
+  Each <img> is annotated with the Cebu-specific subject for the
+  Adobe Stock swap.
+-->
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<title>Cebu · 3 days, 2 nights · My Philippines Trip</title>
+<meta name="description" content="Three days in Cebu, the founding city: the Santo Niño in glass, Magellan&rsquo;s cross in its kiosk, Fort San Pedro on the harbour. From USD 249 per person.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --coral: #D9443C;
+    --coral-dark: #B8352E;
+    --ocean: #2E74B0;
+    --palm: #2E8B4F;
+    --sunset: #E8883A;
+    --ink: #1A1614;
+    --ink-soft: #5B544E;
+    --paper: #FFFFFF;
+    --cream: #FAF7F2;
+    --line: #E8E2DA;
+    --display: 'Fraunces', Georgia, serif;
+    --body: 'DM Sans', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.55;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding-bottom: calc(112px + env(safe-area-inset-bottom));
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
+
+  :focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; border-radius: 2px; }
+
+  /* -------- TOPBAR (transparent over hero, solid on scroll) -------- */
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
+  }
+
+  .topbar.scrolled {
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 22px;
+  }
+
+  .logo-mark { display: flex; align-items: center; gap: 10px; -webkit-tap-highlight-color: transparent; }
+  .logo-mark img { width: 38px; height: 38px; object-fit: contain; }
+  .logo-mark .logo-white { display: block; }
+  .logo-mark .logo-colour { display: none; }
+  .topbar.scrolled .logo-mark .logo-white { display: none; }
+  .topbar.scrolled .logo-mark .logo-colour { display: block; }
+
+  .wordmark {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+    transition: color 0.4s ease;
+    line-height: 1;
+  }
+  .topbar.scrolled .wordmark { color: var(--ink); }
+  .wordmark em { font-style: italic; font-weight: 400; }
+
+  .topbar-right { display: flex; align-items: center; gap: 32px; }
+  .topbar-nav { display: flex; gap: 28px; }
+
+  .topbar-nav a {
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--paper);
+    opacity: 0.9;
+    transition: color 0.4s ease, opacity 0.3s ease;
+  }
+  .topbar-nav a:hover { opacity: 1; }
+  .topbar.scrolled .topbar-nav a { color: var(--ink); }
+
+  .enquire-link {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper);
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    padding-bottom: 3px;
+    transition: color 0.4s ease, border-color 0.4s ease;
+  }
+  .topbar.scrolled .enquire-link {
+    color: var(--coral);
+    border-bottom-color: var(--coral);
+  }
+
+  /* -------- COVER -------- */
+  .cover {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: min(100vh, 100dvh);
+    min-height: 70vh;
+    overflow: hidden;
+    color: var(--paper);
+    display: flex;
+    align-items: flex-end;
+  }
+  .cover-img {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .cover-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.88) saturate(1.03);
+  }
+  .cover-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26,22,20,0.35) 0%, rgba(26,22,20,0) 40%, rgba(26,22,20,0.72) 100%);
+  }
+  .cover-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 28px calc(56px + 56px + env(safe-area-inset-bottom) + 24px);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .cover-eyebrow {
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--paper);
+    margin-bottom: 16px;
+  }
+  .cover-headline {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--paper);
+    font-size: clamp(48px, 12vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* -------- LEDE -------- */
+  .lede {
+    padding: 48px 28px;
+  }
+  .lede-inner {
+    max-width: 620px;
+    margin: 0 auto;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(22px, 5.5vw, 24px);
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+    color: var(--coral);
+  }
+
+  /* -------- SHAPE / PROSE -------- */
+  .shape {
+    padding: 40px 28px;
+  }
+  .shape-inner {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .shape-inner p {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .shape-inner p + p { margin-top: 20px; }
+
+  /* -------- SCENES -------- */
+  .scene { margin-bottom: 48px; }
+  .scene:last-of-type { margin-bottom: 0; }
+  .scene-img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+  .scene-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .scene-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--coral);
+    max-width: 620px;
+    margin: 24px auto 16px;
+    padding: 0 28px;
+  }
+  .scene-body {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  @media (min-width: 768px) {
+    .scene-img { aspect-ratio: 16 / 9; }
+  }
+
+  /* -------- THE DAYS -------- */
+  .days {
+    padding: 48px 28px 32px;
+  }
+  .days-inner {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .days-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--coral);
+    text-align: left;
+    margin-bottom: 32px;
+  }
+  .days-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .day-eyebrow {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+    margin-bottom: 6px;
+  }
+  .day-title {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .day-body {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+    margin-top: 10px;
+  }
+
+  /* -------- PRICE LINE (quiet body price) -------- */
+  .price-line {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 32px 28px;
+    text-align: center;
+  }
+  .price-line p {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    color: rgba(26, 22, 20, 0.7);
+  }
+
+  /* -------- PRACTICAL PANEL -------- */
+  .practical {
+    max-width: 620px;
+    margin: 32px 28px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 28px;
+  }
+  .practical-card {
+    border: 1px solid rgba(46, 116, 176, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .practical-toggle {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+    min-height: 64px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .practical-label {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+  }
+  .practical-chevron {
+    width: 20px;
+    height: 20px;
+    stroke: var(--ocean);
+    stroke-width: 1.5;
+    fill: none;
+    flex-shrink: 0;
+    transition: transform 300ms ease;
+  }
+  .practical-toggle[aria-expanded="true"] .practical-chevron { transform: rotate(180deg); }
+
+  .practical-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 300ms ease, opacity 300ms ease;
+  }
+  .practical-toggle[aria-expanded="true"] + .practical-content {
+    max-height: 2000px;
+    opacity: 1;
+  }
+
+  .practical-dl {
+    padding: 0 20px 20px;
+    display: grid;
+    gap: 16px;
+  }
+  .practical-dl dt {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ocean);
+    margin-bottom: 4px;
+  }
+  .practical-dl dd {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .practical-chevron,
+    .practical-content { transition: none !important; }
+  }
+
+  /* -------- CLOSE -------- */
+  .close {
+    padding: 48px 28px;
+  }
+  .close-inner {
+    max-width: 620px;
+    margin: 0 auto;
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .close-inner a {
+    color: var(--coral);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: color 200ms ease;
+  }
+  .close-inner a:hover { color: var(--coral-dark); }
+
+  /* -------- STICKY PRICE BAR (above bottom nav) -------- */
+  .price-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(56px + env(safe-area-inset-bottom));
+    z-index: 55;
+    height: 56px;
+    background: var(--paper);
+    border-top: 1px solid rgba(26, 22, 20, 0.10);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    gap: 12px;
+  }
+  .ask-link {
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--ink);
+    padding: 12px 4px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    transition: color 200ms ease;
+    text-decoration: none;
+  }
+  .ask-link:hover,
+  .ask-link:focus-visible { color: var(--coral); }
+  .price-cta {
+    background: var(--coral);
+    color: var(--paper);
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 15px;
+    height: 40px;
+    padding: 0 24px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: background 200ms ease;
+    text-decoration: none;
+  }
+  .price-cta:hover { background: var(--coral-dark); }
+
+  /* -------- BACK NAV (destination pages) -------- */
+  .back-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    height: 56px;
+    padding: 0 20px env(safe-area-inset-bottom);
+    background: var(--paper);
+    border-top: 1px solid rgba(26, 22, 20, 0.08);
+    display: flex;
+    align-items: center;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink);
+    text-decoration: none;
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: color 200ms ease;
+    padding: 10px 4px;
+    min-height: 44px;
+  }
+  .back-link:hover,
+  .back-link:focus-visible { color: var(--coral); }
+  .back-link svg {
+    transition: transform 200ms ease;
+    flex-shrink: 0;
+  }
+  .back-link:hover svg,
+  .back-link:focus-visible svg { transform: translateX(-2px); }
+
+  /* -------- MEDIA QUERIES -------- */
+  @media (max-width: 767px) {
+    .topbar { padding: 14px 18px; }
+    .topbar.scrolled { padding: 10px 18px; }
+    .topbar-nav { display: none; }
+    .topbar-right { gap: 0; }
+    .logo-mark img { width: 34px; height: 34px; }
+    .wordmark { font-size: 15px; }
+  }
+
+  @media (min-width: 768px) {
+    .cover-content { padding-bottom: calc(56px + env(safe-area-inset-bottom) + 24px); }
+    .lede { padding: 88px 28px; }
+    .shape { padding: 72px 28px; }
+    .close { padding: 88px 28px; }
+    .practical { margin: 72px auto; }
+    .scene { margin-bottom: 72px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <a href="/" class="logo-mark">
+    <img src="logo-white.png" alt="" class="logo-white">
+    <img src="logo-colour.png" alt="" class="logo-colour">
+    <span class="wordmark">My <em>Philippines</em> Trip</span>
+  </a>
+  <div class="topbar-right">
+    <nav class="topbar-nav">
+      <a href="/#destinations">Destinations</a>
+      <a href="#">Journal</a>
+      <a href="/about.html">About</a>
+    </nav>
+    <a href="#" class="enquire-link" data-mpt-drawer="doors">Start a letter</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="cover" aria-labelledby="cover-headline">
+    <div class="cover-img">
+      <!-- TODO: swap to Adobe Stock. Subject: Basilica del Santo Niño courtyard or façade, candles in red and yellow ranks, late afternoon. -->
+      <img src="https://picsum.photos/seed/cebu-hero-basilica-santo-nino/1600/1000" alt="The Basilica del Santo Niño courtyard at late afternoon, candles in red and yellow ranks burning along the wall.">
+    </div>
+    <div class="cover-content">
+      <div class="cover-eyebrow">Origin / Sacred centre</div>
+      <h1 class="cover-headline" id="cover-headline">Cebu</h1>
+    </div>
+  </section>
+
+  <section class="lede" aria-label="Lede">
+    <div class="lede-inner">
+      <p>Cebu is where the Philippines you know begins. The Santo Niño was given here, the cross was planted here, the Spanish century started here. Most of what came after, came after.</p>
+    </div>
+  </section>
+
+  <section class="shape" aria-label="The shape of it">
+    <div class="shape-inner">
+      <p>In April 1521, Ferdinand Magellan&rsquo;s expedition reached the harbour at what is now Cebu City. Within a week he had baptised eight hundred locals, given Queen Juana of Cebu a small wooden image of the Christ child as a baptismal gift, and planted a wooden cross on the shore. Seven days later he was killed by Lapu-Lapu&rsquo;s warriors on Mactan, twelve kilometres east. The expedition sailed home without him. Forty-four years later, in 1565, Miguel López de Legazpi returned, founded the first Spanish settlement in the country, and the wooden Christ child given to Queen Juana was rediscovered, intact, in the burned remains of a hut. It is still there. The trip is built around going to see it.</p>
+      <p>You stay in central Cebu City at Rublin Hotel, walking distance to the Basilica del Santo Niño. Day 1 is arrival. Day 3 is breakfast and the airport. Day 2 is a full city day: the Basilica in the morning, Magellan&rsquo;s Cross beside it, the Cebu Heritage Monument at the old plaza, Fort San Pedro on the harbour, and Taboan dried-fish market. In the afternoon, the trip moves up into the hills above the city: Sirao Garden, the Temple of Leah, the 10,000 Roses Café, and the CCLEX bridge for sunset. The morning is what the trip is actually for. The afternoon is the rest of the day.</p>
+      <p>After Palawan, what Cebu offers is a city built on something. Not a beach. Not a landscape. A foundational moment that gave the country its name, its religion, its first colonial century. The basilica that holds the Santo Niño is the most-visited Catholic church in the Philippines; millions come every year, and most of them are Filipino. You will not be the only foreigner there, but you will be one of the very few.</p>
+    </div>
+  </section>
+
+  <section class="scenes" aria-label="Scenes">
+
+    <article class="scene">
+      <div class="scene-img">
+        <!-- TODO: swap to Adobe Stock. Subject: Santo Niño in glass case behind the side-chapel altar, robes and crown visible, soft candle light. -->
+        <img src="https://picsum.photos/seed/cebu-santo-nino-chapel/1200/1500" alt="The Santo Niño figure in its glass case in the side chapel of the Basilica, embroidered robes and crown visible.">
+      </div>
+      <h2 class="scene-title">The Santo Niño, in glass</h2>
+      <p class="scene-body">The Santo Niño is small. About thirty centimetres tall. Carved in Flanders sometime before 1500, given to Queen Juana of Cebu in April 1521, lost when the village burned, rediscovered in March 1565 by a Spanish soldier picking through the ash. The figure is dressed now in heavy embroidered robes, with a crown, and stands behind glass in a side chapel of the basilica. The chapel is busy. There is a queue most days. People light candles in the courtyard outside, in long ranks of red and yellow flames, and pass the figure asking for help with whatever they came to ask about. You can stand and watch this for as long as you want; nobody is timing the foreigners. The relic itself, behind the glass, is unremarkable to look at. The remarkableness is that it is still there, and that the queue has not ended in five hundred years.</p>
+    </article>
+
+    <article class="scene">
+      <div class="scene-img">
+        <!-- TODO: swap to Adobe Stock. Subject: Magellan's Cross kiosk, octagonal, painted ceiling, the encased tindalo cross inside. -->
+        <img src="https://picsum.photos/seed/cebu-magellan-cross-kiosk/1200/1500" alt="The octagonal kiosk housing Magellan&rsquo;s Cross, the painted ceiling above the encased tindalo cross.">
+      </div>
+      <h2 class="scene-title">Magellan&rsquo;s cross, in a kiosk</h2>
+      <p class="scene-body">Twenty metres from the basilica entrance, in a separate octagonal kiosk on the main road, is the cross Magellan&rsquo;s expedition planted. The original wood is encased inside a hollow tindalo cross, which means what you can see is a darker wooden shape inside a lighter wooden frame. The encasement is for protection. Pilgrims used to chip pieces off the original to take home as relics, and there was, by the late 1700s, very little cross left. The kiosk has a painted ceiling depicting the planting itself, faded, repainted twice. The cross is not theologically important and is not, strictly speaking, a relic. It is significant because it is where Magellan&rsquo;s expedition stood five hundred years ago. The geography is the meaning.</p>
+    </article>
+
+    <article class="scene">
+      <div class="scene-img">
+        <!-- TODO: swap to Adobe Stock. Subject: Fort San Pedro stone walls, triangular footprint, courtyard garden, cannons along the rampart. -->
+        <img src="https://picsum.photos/seed/cebu-fort-san-pedro/1200/1500" alt="The stone walls of Fort San Pedro from the courtyard, a row of cannons along the rampart, garden in the foreground.">
+      </div>
+      <h2 class="scene-title">Fort San Pedro at the edge of the city</h2>
+      <p class="scene-body">Fort San Pedro is the smallest Spanish military fort in the Philippines, built in 1565 by Legazpi&rsquo;s company, finished in stone over the next century. The walls are thick. The triangular footprint encloses about two thousand square metres. Inside, there is a small museum, a courtyard, and a row of cannons. The garden inside the walls is well kept. The fort sits on the harbour, at what was once the working edge of the city, and is now slightly shadowed by the modern port behind it. You climb the walls and look out toward Mactan. Lapu-Lapu killed Magellan on the far shore of that water, in waist-deep surf, with the expedition&rsquo;s longboats unable to reach him in time. The Filipino who killed Magellan has a city named after him now, just across the bridge.</p>
+    </article>
+
+  </section>
+
+  <section class="days" aria-labelledby="days-title">
+    <div class="days-inner">
+      <h2 class="days-title" id="days-title">The days</h2>
+      <ol class="days-list">
+
+        <li>
+          <div class="day-eyebrow">Day 01</div>
+          <h3 class="day-title">Arrival</h3>
+          <p class="day-body">Landing at Mactan-Cebu airport, transfer to Rublin Hotel in central Cebu City. Around 45 minutes by van depending on bridge traffic. Standard check-in from 2pm. Afternoon free; the Basilica is a 15-minute walk if you&rsquo;d rather get the first visit out of the way and return later for a quieter morning.</p>
+        </li>
+
+        <li>
+          <div class="day-eyebrow">Day 02</div>
+          <h3 class="day-title">City and uphill</h3>
+          <p class="day-body">A full day. Morning in the heritage core: Basilica del Santo Niño, Magellan&rsquo;s Cross, the Cebu Heritage Monument, Fort San Pedro, Taboan dried-fish market. Afternoon up into the hills above the city: Sirao Garden, Temple of Leah, 10,000 Roses Café, the CCLEX bridge for sunset. Drop-off at SM Cebu City; own way back to the hotel.</p>
+        </li>
+
+        <li>
+          <div class="day-eyebrow">Day 03</div>
+          <h3 class="day-title">Out</h3>
+          <p class="day-body">Breakfast at the hotel, then check-out (standard 12pm). Free time until the airport transfer. Standard transfer to Mactan-Cebu for departure.</p>
+        </li>
+
+      </ol>
+    </div>
+  </section>
+
+  <div class="price-line">
+    <p>From USD 249 per person &middot; minimum 2 pax.</p>
+  </div>
+
+  <section class="practical" aria-label="Practical note">
+    <div class="practical-card">
+      <button
+        type="button"
+        class="practical-toggle"
+        id="practical-btn"
+        aria-expanded="false"
+        aria-controls="practical-panel">
+        <span class="practical-label">The Practical Note</span>
+        <svg class="practical-chevron" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="practical-content" id="practical-panel" role="region" aria-labelledby="practical-btn">
+        <dl class="practical-dl">
+          <div>
+            <dt>Lunch</dt>
+            <dd>Day 2 lunch is on your own during the city tour, typically a stop at Larsian (the famous outdoor barbecue strip near the Basilica) or back near the hotel. Cebu lechon is the famous answer; we will tell you which place to go to.</dd>
+          </div>
+          <div>
+            <dt>Includes</dt>
+            <dd>Two nights at Rublin Hotel or similar in central Cebu City. Roundtrip private airport transfers. Daily breakfast at the hotel. Day 2 city and uphill tour with English-speaking guide and admissions on the listed stops. All hotel taxes and surcharges.</dd>
+          </div>
+          <div>
+            <dt>Accommodation</dt>
+            <dd>Rublin Hotel or similar, central Cebu City. Walking distance to the Basilica del Santo Niño and Magellan&rsquo;s Cross.</dd>
+          </div>
+          <div>
+            <dt>Not included</dt>
+            <dd>International flights. Travel insurance. All lunches and dinners. Tips and gratuities. Optional extensions.</dd>
+          </div>
+          <div>
+            <dt>Travel times</dt>
+            <dd>Mactan-Cebu airport to Rublin Hotel: around 45 minutes by van depending on bridge traffic. The Day 2 tour runs roughly 8am to 5pm. The morning heritage stops are clustered within walking distance; the afternoon uphill stops involve about 90 minutes of driving across the city.</dd>
+          </div>
+          <div>
+            <dt>When to come</dt>
+            <dd>December through May is dry and the light is best for the heritage walking. June through October is wet season; the tour still runs but the open-air stops feel different. The Sinulog festival (third weekend of January) is the country&rsquo;s largest religious procession; the city doubles in population that week. Beautiful and crowded; book months ahead.</dd>
+          </div>
+          <div>
+            <dt>Worth knowing</dt>
+            <dd>The Basilica is technically open daily but quieter on weekday mornings. Photography is allowed in the courtyard but not in the chapel where the Santo Niño stands. We can extend the trip with a slower private day in the city, a Mactan beach stay, or a ferry to Bohol; all arranged after booking, not at checkout.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="close" aria-label="The close">
+    <div class="close-inner">
+      <p>Three days for Cebu is enough for the basilica, the fort, the Heritage Monument, and a slower morning walking the old streets without a guide. We can extend to a Bohol leg (one ferry, two hours), to a slower Mactan stay, or to other coastal areas of the province if you&rsquo;d like a fuller week. <a href="#" data-mpt-drawer="aichat">Ask us</a>.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="price-bar" role="region" aria-label="Trip actions">
+  <a href="#" class="ask-link" data-mpt-drawer="aichat">Have a question?</a>
+  <a href="#" class="price-cta" data-mpt-drawer="booking">Book this trip</a>
+</div>
+
+<nav class="back-nav" aria-label="Back to destinations">
+  <a href="/#destinations" class="back-link">
+    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    <span>All destinations</span>
+  </a>
+</nav>
+
+<script>
+  window.MPT_DESTINATION = {
+    slug: 'cebu',
+    title: 'Cebu',
+    duration: '3D2N',
+    durationDays: 3,
+    durationNights: 2,
+    pricePerPerson: 249,
+    minPax: 2,
+    refPrefix: 'CEB'
+  };
+</script>
+<script src="drawer.js"></script>
+
+<script>
+  // Topbar scrolled state
+  (function () {
+    const topbar = document.getElementById('topbar');
+    let ticking = false;
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(function () {
+          if (window.scrollY > 80) topbar.classList.add('scrolled');
+          else topbar.classList.remove('scrolled');
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  })();
+
+  // Accordion
+  (function () {
+    const btn = document.getElementById('practical-btn');
+    btn.addEventListener('click', function () {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+    });
+  })();
+</script>
+
+</body>
+</html>
