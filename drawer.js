@@ -383,7 +383,7 @@
     '.mpt-step-3 > .mpt-summary { margin-top: 24px; }',
     '.mpt-step-3 > .mpt-summary + .mpt-field { margin-top: 28px; }',
     '.mpt-step-3 > .mpt-field + .mpt-field { margin-top: 14px; }',
-    '.mpt-step-3 > .mpt-step-body-line { margin-top: 28px; }',
+    '.mpt-step-3 > .mpt-step-body-line { margin-top: 24px; }',
     '.mpt-step-3 > .mpt-step-microtext { margin-top: 14px; }',
 
     /* summary card */
@@ -619,6 +619,7 @@
     travellers: 2,
     leadName: '',
     leadEmail: '',
+    leadPhone: '',
     total: 0,
     reference: null,
     completedAt: null,
@@ -753,6 +754,7 @@
         travellers: booking.travellers,
         leadName: booking.leadName,
         leadEmail: booking.leadEmail,
+        leadPhone: booking.leadPhone,
         total: booking.total,
         reference: booking.reference,
         completedAt: booking.completedAt
@@ -785,6 +787,7 @@
       booking.travellers = savedT;
       booking.leadName = saved.leadName || '';
       booking.leadEmail = saved.leadEmail || '';
+      booking.leadPhone = saved.leadPhone || '';
       booking.total = (typeof saved.total === 'number') ? saved.total : (savedT * per);
       booking.reference = saved.reference || null;
       booking.completedAt = null;
@@ -806,6 +809,7 @@
       booking.travellers = minPax;
       booking.leadName = '';
       booking.leadEmail = '';
+      booking.leadPhone = '';
       booking.total = minPax * per;
       booking.reference = null;
       booking.completedAt = null;
@@ -1120,6 +1124,7 @@
     var datesStr = (booking.startDate && booking.endDate) ? formatDatesRange(booking.startDate, booking.endDate) : '—';
     var name = booking.leadName || '';
     var email = booking.leadEmail || '';
+    var phone = booking.leadPhone || '';
     var canPay = isValidLeadName(name) && isValidLeadEmail(email);
 
     return ''
@@ -1143,6 +1148,11 @@
       + '    <input class="mpt-field-input" type="email" id="mpt-lead-email" name="leadEmail" autocomplete="email" inputmode="email" value="' + escapeHtml(email) + '">'
       + '    <p class="mpt-field-helper">We&rsquo;ll send your booking confirmation here.</p>'
       + '  </div>'
+      + '  <div class="mpt-field">'
+      + '    <label class="mpt-field-label" for="mpt-lead-phone">Phone or WhatsApp</label>'
+      + '    <input class="mpt-field-input" type="tel" id="mpt-lead-phone" name="leadPhone" autocomplete="tel" inputmode="tel" value="' + escapeHtml(phone) + '">'
+      + '    <p class="mpt-field-helper">Optional, but useful if our operator needs to reach you urgently.</p>'
+      + '  </div>'
       + '  <p class="mpt-step-body-line">Payment is taken in full upfront. Our operator confirms with you within 24 hours.</p>'
       + '  <p class="mpt-step-microtext">By paying you agree to our <a href="#" data-mpt-legal="terms">terms</a> and <a href="#" data-mpt-legal="cancellation">cancellation policy</a>.</p>'
       + '</div>'
@@ -1155,6 +1165,7 @@
   function wireBookingStep3(ctx) {
     var nameInput = els.body.querySelector('#mpt-lead-name');
     var emailInput = els.body.querySelector('#mpt-lead-email');
+    var phoneInput = els.body.querySelector('#mpt-lead-phone');
     var payBtn = els.body.querySelector('[data-booking-pay]');
     var backBtn = els.body.querySelector('[data-booking-back]');
     var legalLinks = els.body.querySelectorAll('[data-mpt-legal]');
@@ -1187,6 +1198,13 @@
       emailInput.addEventListener('input', function () {
         booking.leadEmail = emailInput.value;
         refreshPayState();
+        debouncedSave();
+      });
+    }
+    // Phone is optional and not in the Pay validation gate; just persist.
+    if (phoneInput) {
+      phoneInput.addEventListener('input', function () {
+        booking.leadPhone = phoneInput.value;
         debouncedSave();
       });
     }
