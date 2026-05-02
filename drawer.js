@@ -453,6 +453,106 @@
     '.mpt-step-microtext { font-size: 12px; line-height: 1.4; color: rgba(26,26,26,0.6); }',
     '.mpt-step-microtext a { color: #2E74B0; text-decoration: underline; }',
 
+    /* letter mode: single-screen form + confirmation */
+    '.mpt-letter {',
+    '  display: flex; flex-direction: column;',
+    '  padding-bottom: 24px;',
+    '}',
+    '.mpt-letter-intro {',
+    '  margin-top: 4px;',
+    '  font-size: 15px; line-height: 1.6;',
+    '  color: #1A1A1A;',
+    '}',
+    '.mpt-letter > .mpt-letter-body-wrap { margin-top: 22px; }',
+    '.mpt-letter > .mpt-field { margin-top: 16px; }',
+    '.mpt-letter > .mpt-letter-send { margin-top: 22px; }',
+    '.mpt-letter > .mpt-letter-footer-note { margin-top: 12px; }',
+
+    /* the textarea (no visible label; placeholder is the cue) */
+    '.mpt-letter-textarea {',
+    '  width: 100%;',
+    '  min-height: 200px;',
+    '  resize: vertical;',
+    '  font-family: inherit;',
+    '  font-size: 16px; font-weight: 400;',
+    '  line-height: 1.6;',
+    '  color: #1A1A1A; background: #FFFFFF;',
+    '  border: 1px solid rgba(26,26,26,0.2);',
+    '  border-radius: 6px;',
+    '  padding: 14px;',
+    '  -webkit-appearance: none;',
+    '  appearance: none;',
+    '  transition: border-color 200ms ease;',
+    '  box-sizing: border-box;',
+    '  display: block;',
+    '}',
+    '.mpt-letter-textarea:focus {',
+    '  outline: none;',
+    '  border-color: #2E74B0;',
+    '  box-shadow: none;',
+    '}',
+    '.mpt-letter-textarea::placeholder { color: rgba(26,26,26,0.4); font-style: italic; }',
+    '@media (max-width: 767px) { .mpt-letter-textarea { resize: none; } }',
+
+    /* inline field error: kept quiet, sits under the input */
+    '.mpt-field-error {',
+    '  font-size: 13px; line-height: 1.4;',
+    '  color: #D9443C;',
+    '  margin-top: 6px;',
+    '}',
+    '.mpt-field-error:empty { display: none; }',
+
+    /* send button: Coral pill, full width on mobile, comfortable on desktop */
+    '.mpt-letter-send {',
+    '  display: inline-flex; align-items: center; justify-content: center;',
+    '  width: 100%;',
+    '  min-height: 44px;',
+    '  padding: 14px 28px;',
+    '  border: 0; border-radius: 999px;',
+    '  background: #D9443C; color: #FFFFFF;',
+    '  font-family: inherit; font-weight: 500; font-size: 14px;',
+    '  cursor: pointer;',
+    '  transition: background 200ms ease, opacity 200ms ease;',
+    '}',
+    '.mpt-letter-send:hover:not(:disabled) { background: #B8352E; }',
+    '.mpt-letter-send:disabled { opacity: 0.4; cursor: default; }',
+    '@media (min-width: ' + DESKTOP_BP + 'px) {',
+    '  .mpt-letter-send { width: auto; min-width: 220px; align-self: flex-end; }',
+    '}',
+
+    '.mpt-letter-footer-note {',
+    '  font-size: 12px; line-height: 1.4;',
+    '  color: rgba(26,26,26,0.6);',
+    '}',
+
+    /* confirmation state */
+    '.mpt-letter-confirm {',
+    '  display: flex; flex-direction: column;',
+    '  padding-top: 16px;',
+    '  padding-bottom: 24px;',
+    '}',
+    '.mpt-letter-confirm-body {',
+    '  font-size: 16px; line-height: 1.65;',
+    '  color: #1A1A1A;',
+    '}',
+    '.mpt-letter-confirm-signature {',
+    '  font-family: "Fraunces", Georgia, serif;',
+    '  font-style: italic; font-weight: 300;',
+    '  font-size: 18px; line-height: 1.4;',
+    '  color: #D9443C;',
+    '  margin-top: 18px;',
+    '}',
+    '.mpt-letter-confirm-close {',
+    '  align-self: flex-start;',
+    '  margin-top: 28px;',
+    '  background: none; border: 0; padding: 4px 0;',
+    '  cursor: pointer;',
+    '  font-family: inherit; font-weight: 500; font-size: 14px;',
+    '  color: #2E74B0;',
+    '  text-decoration: underline;',
+    '}',
+    '.mpt-letter-confirm-close:hover { color: #1F5A8B; }',
+
     /* step 4: redirect mock (matches the Maya hosted-checkout flow at launch) */
     '.mpt-step-4 {',
     '  display: flex; flex-direction: column; align-items: center;',
@@ -575,7 +675,13 @@
       };
     }
     if (mode === 'letter') {
-      return { title: 'Write a letter', sub: null };
+      if (hasCtx) {
+        return {
+          title: ctx.title + ' ' + DOT + ' ' + ctx.duration,
+          sub: 'Write us a letter'
+        };
+      }
+      return { title: 'Write us a letter', sub: null };
     }
     if (mode === 'booking') {
       if (!hasCtx) return { title: 'Book this trip', sub: null };
@@ -1268,6 +1374,202 @@
     else if (booking.step === 4) wireBookingStep4(ctx);
   }
 
+  // ---------- letter ----------
+
+  // Bootstrap the mpt.event namespace if nothing else has set it up. Console
+  // shim only; real analytics implementation swaps this at launch.
+  if (typeof window.mpt !== 'object' || window.mpt === null) window.mpt = {};
+  if (typeof window.mpt.event !== 'function') {
+    window.mpt.event = function (name, data) {
+      console.log('[MPT event]', name, data || {});
+    };
+  }
+
+  var letter = {
+    sent: false,
+    submitting: false,
+    name: '',
+    email: '',
+    body: ''
+  };
+
+  function resetLetter() {
+    letter.sent = false;
+    letter.submitting = false;
+    letter.name = '';
+    letter.email = '';
+    letter.body = '';
+  }
+
+  function isValidLetterEmail(s) {
+    // Brief: basic check, not aggressive. @ and . both present.
+    if (typeof s !== 'string') return false;
+    var t = s.trim();
+    return t.indexOf('@') !== -1 && t.indexOf('.') !== -1;
+  }
+
+  function renderLetterForm(ctx) {
+    var hasCtx = !!ctx;
+    var bodyPlaceholder = hasCtx
+      ? 'I’ve been thinking about ' + ctx.title + '…'
+      : 'Write to us…';
+    return ''
+      + '<div class="mpt-letter">'
+      + '  <p class="mpt-letter-intro">Tell us what you’re thinking about. There’s no form to fill in. Just write. We read every letter ourselves and write back within a working day, usually less.</p>'
+      + '  <div class="mpt-letter-body-wrap">'
+      + '    <textarea class="mpt-letter-textarea" id="mpt-letter-body" name="letter" aria-label="Your letter" placeholder="' + escapeHtml(bodyPlaceholder) + '">' + escapeHtml(letter.body) + '</textarea>'
+      + '    <p class="mpt-field-error" id="mpt-letter-body-error" role="alert"></p>'
+      + '  </div>'
+      + '  <div class="mpt-field">'
+      + '    <label class="mpt-field-label" for="mpt-letter-name">Your name</label>'
+      + '    <input class="mpt-field-input" type="text" id="mpt-letter-name" name="name" autocomplete="name" value="' + escapeHtml(letter.name) + '">'
+      + '    <p class="mpt-field-error" id="mpt-letter-name-error" role="alert"></p>'
+      + '  </div>'
+      + '  <div class="mpt-field">'
+      + '    <label class="mpt-field-label" for="mpt-letter-email">Email</label>'
+      + '    <input class="mpt-field-input" type="email" id="mpt-letter-email" name="email" autocomplete="email" inputmode="email" value="' + escapeHtml(letter.email) + '">'
+      + '    <p class="mpt-field-error" id="mpt-letter-email-error" role="alert"></p>'
+      + '  </div>'
+      + '  <button type="button" class="mpt-letter-send" id="mpt-letter-send">Send your letter</button>'
+      + '  <p class="mpt-letter-footer-note">We don’t share your details with anyone. We just want to write back.</p>'
+      + '</div>';
+  }
+
+  function renderLetterConfirmation(/* ctx */) {
+    return ''
+      + '<div class="mpt-letter-confirm">'
+      + '  <p class="mpt-letter-confirm-body">Thank you for writing. Your letter is with us. We’ll write back within a working day, usually less.</p>'
+      + '  <p class="mpt-letter-confirm-signature">— The writer</p>'
+      + '  <button type="button" class="mpt-letter-confirm-close" id="mpt-letter-close">Close this letter</button>'
+      + '</div>';
+  }
+
+  function renderLetter(ctx) {
+    return letter.sent ? renderLetterConfirmation(ctx) : renderLetterForm(ctx);
+  }
+
+  function rerenderLetter(ctx) {
+    els.body.innerHTML = renderLetter(ctx);
+    wireLetter(ctx);
+  }
+
+  function wireLetterForm(ctx) {
+    var nameInput = els.body.querySelector('#mpt-letter-name');
+    var emailInput = els.body.querySelector('#mpt-letter-email');
+    var bodyInput = els.body.querySelector('#mpt-letter-body');
+    var sendBtn = els.body.querySelector('#mpt-letter-send');
+    var nameErr = els.body.querySelector('#mpt-letter-name-error');
+    var emailErr = els.body.querySelector('#mpt-letter-email-error');
+    var bodyErr = els.body.querySelector('#mpt-letter-body-error');
+
+    function clearError(el) { if (el) el.textContent = ''; }
+
+    if (nameInput) {
+      nameInput.addEventListener('input', function () {
+        letter.name = nameInput.value;
+        clearError(nameErr);
+      });
+    }
+    if (emailInput) {
+      emailInput.addEventListener('input', function () {
+        letter.email = emailInput.value;
+        clearError(emailErr);
+      });
+    }
+    if (bodyInput) {
+      bodyInput.addEventListener('input', function () {
+        letter.body = bodyInput.value;
+        clearError(bodyErr);
+      });
+    }
+
+    if (sendBtn) {
+      sendBtn.addEventListener('click', function () {
+        if (sendBtn.disabled) return;
+
+        // Validate. Inline errors via direct DOM updates so focus on the
+        // current field is preserved (no full re-render at this stage).
+        clearError(nameErr); clearError(emailErr); clearError(bodyErr);
+        var firstInvalid = null;
+        if (!letter.body || !letter.body.trim()) {
+          bodyErr.textContent = 'Please write something before sending';
+          firstInvalid = firstInvalid || bodyInput;
+        }
+        if (!letter.name || !letter.name.trim()) {
+          nameErr.textContent = 'Please add your name';
+          firstInvalid = firstInvalid || nameInput;
+        }
+        if (!isValidLetterEmail(letter.email)) {
+          emailErr.textContent = 'Please add a valid email';
+          firstInvalid = firstInvalid || emailInput;
+        }
+        if (firstInvalid) {
+          firstInvalid.focus();
+          return;
+        }
+
+        // Disable form fields during submit so user can't change anything mid-flight
+        letter.submitting = true;
+        nameInput.disabled = true;
+        emailInput.disabled = true;
+        bodyInput.disabled = true;
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Sending…';
+
+        var payload = {
+          name: letter.name.trim(),
+          email: letter.email.trim(),
+          letter: letter.body.trim(),
+          destination: (ctx && ctx.slug) || null,
+          destination_title: (ctx && ctx.title) || null,
+          destination_duration: (ctx && ctx.duration) || null,
+          source_page: window.location.pathname,
+          submitted_at: new Date().toISOString()
+        };
+
+        // MOCKUP: this fires a fetch to /api/letter so the POST is visible
+        // in the network tab. There's no static endpoint at that path, so
+        // the request will 404. AT LAUNCH: this becomes a POST to the GHL
+        // contacts endpoint with the tags ('enquiry-letter' always, plus
+        // 'destination:<slug>' if present) and the letter body in the
+        // contact's notes field.
+        try {
+          fetch('/api/letter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }).catch(function () { /* ignore — no backend in mockup */ });
+        } catch (e) { /* ignore */ }
+
+        console.log('[MPT] Letter submitted:', JSON.stringify(payload, null, 2));
+        window.mpt.event('letter_submitted', {
+          destination: payload.destination,
+          has_destination_context: !!ctx
+        });
+
+        // Brief sending feel, then transition to confirmation inside the
+        // same drawer. No page navigation.
+        setTimeout(function () {
+          letter.sent = true;
+          letter.submitting = false;
+          rerenderLetter(ctx);
+        }, 600);
+      });
+    }
+  }
+
+  function wireLetterConfirmation(/* ctx */) {
+    var closeBtn = els.body.querySelector('#mpt-letter-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function () { close(); });
+    }
+  }
+
+  function wireLetter(ctx) {
+    if (letter.sent) wireLetterConfirmation(ctx);
+    else wireLetterForm(ctx);
+  }
+
   // ---------- bodies ----------
 
   function renderDoors(ctx) {
@@ -1286,9 +1588,9 @@
       + '  </article>'
       + '  <article class="mpt-door">'
       + '    <span class="mpt-door-eyebrow coral">Not ready yet</span>'
-      + '    <h3 class="mpt-door-title">Write a letter</h3>'
+      + '    <h3 class="mpt-door-title">Write us a letter</h3>'
       + '    <p class="mpt-door-copy">' + letterCopy + '</p>'
-      + '    <button type="button" class="mpt-door-btn coral" data-mpt-door="letter">Write a letter</button>'
+      + '    <button type="button" class="mpt-door-btn coral" data-mpt-door="letter">Write us a letter</button>'
       + '  </article>'
       + '</div>';
   }
@@ -1304,7 +1606,7 @@
   function renderBody(mode, ctx) {
     if (mode === 'doors') return renderDoors(ctx);
     if (mode === 'aichat') return renderPlaceholder('aichat', 'Phase 3');
-    if (mode === 'letter') return renderPlaceholder('letter', 'Phase 3');
+    if (mode === 'letter') return renderLetter(ctx);
     if (mode === 'booking') return renderBooking(ctx);
     return '';
   }
@@ -1318,6 +1620,7 @@
       });
     });
     if (state.mode === 'booking') wireBooking(state.context);
+    else if (state.mode === 'letter') wireLetter(state.context);
   }
 
   // ---------- mode switching ----------
@@ -1329,6 +1632,11 @@
     } else if (options.from === null) {
       state.fromMode = null;
     }
+
+    // Always reset the letter form when entering letter mode (direct open
+    // from a trigger, doors -> letter, or any future entry path). The brief
+    // explicitly accepts losing in-progress text for v1.
+    if (mode === 'letter') resetLetter();
 
     if (state.mode && state.open) {
       // crossfade
